@@ -2,7 +2,10 @@ locals {
   # https://github.com/hashicorp/terraform-provider-aws/blob/3c4cb52c5dc2c09e10e5a717f73d1d8bc4186e87/internal/service/elasticache/cluster.go#L271
   in_replication_group = var.replication_group_id != null
 
-  port = var.engine == "memcached" ? 11211 : 6379
+  security_group_ids = local.create_security_group ? concat(var.security_group_ids, aws_security_group.this[0].id) : var.security_group_ids
+  port               = var.engine == "memcached" ? 11211 : 6379
+
+  tags = merge(var.tags, { terraform-aws-modules = "elasticache" })
 }
 
 ################################################################################
@@ -39,12 +42,12 @@ resource "aws_elasticache_cluster" "this" {
   notification_topic_arn       = local.in_replication_group ? null : var.notification_topic_arn
   num_cache_nodes              = local.in_replication_group ? null : var.num_cache_nodes
   outpost_mode                 = var.outpost_mode
-  parameter_group_name         = local.in_replication_group ? null : local.parameter_group_name
+  parameter_group_name         = local.in_replication_group ? null : local.parameter_group_name_result
   port                         = local.in_replication_group ? null : coalesce(var.port, local.port)
   preferred_availability_zones = var.preferred_availability_zones
   preferred_outpost_arn        = var.preferred_outpost_arn
   replication_group_id         = var.create && var.create_replication_group ? aws_elasticache_replication_group.this[0].id : var.replication_group_id
-  security_group_ids           = local.in_replication_group ? null : var.security_group_ids
+  security_group_ids           = local.in_replication_group ? null : local.security_group_ids
   snapshot_arns                = local.in_replication_group ? null : var.snapshot_arns
   snapshot_name                = local.in_replication_group ? null : var.snapshot_name
   snapshot_retention_limit     = local.in_replication_group ? null : var.snapshot_retention_limit
@@ -52,7 +55,7 @@ resource "aws_elasticache_cluster" "this" {
   subnet_group_name            = local.in_replication_group ? null : var.subnet_group_name
   transit_encryption_enabled   = var.transit_encryption_enabled
 
-  tags = var.tags
+  tags = local.tags
 }
 
 ################################################################################
@@ -100,13 +103,13 @@ resource "aws_elasticache_replication_group" "this" {
   notification_topic_arn      = var.notification_topic_arn
   num_cache_clusters          = var.num_cache_clusters
   num_node_groups             = local.in_global_replication_group ? null : var.num_node_groups
-  parameter_group_name        = local.in_global_replication_group ? null : local.parameter_group_name
+  parameter_group_name        = local.in_global_replication_group ? null : local.parameter_group_name_result
   port                        = coalesce(var.port, local.port)
   preferred_cache_cluster_azs = var.preferred_cache_cluster_azs
   replicas_per_node_group     = var.replicas_per_node_group
   replication_group_id        = var.replication_group_id
   security_group_names        = local.in_global_replication_group ? null : var.security_group_names
-  security_group_ids          = var.security_group_ids
+  security_group_ids          = local.security_group_ids
   snapshot_arns               = local.in_global_replication_group ? null : var.snapshot_arns
   snapshot_name               = local.in_global_replication_group ? null : var.snapshot_name
   snapshot_retention_limit    = var.snapshot_retention_limit
@@ -115,7 +118,7 @@ resource "aws_elasticache_replication_group" "this" {
   transit_encryption_enabled  = local.in_global_replication_group ? null : var.transit_encryption_enabled
   user_group_ids              = var.user_group_ids
 
-  tags = var.tags
+  tags = local.tags
 }
 
 ################################################################################
@@ -123,7 +126,9 @@ resource "aws_elasticache_replication_group" "this" {
 ################################################################################
 
 locals {
-  parameter_group_name = var.create && var.create_parameter_group ? aws_elasticache_parameter_group.this[0].id : var.parameter_group_name
+  parameter_group_name = try(coalesce(var.parameter_group_name, var.cluster_id, var.replication_group_id), "")
+
+  parameter_group_name_result = var.create && var.create_parameter_group ? aws_elasticache_parameter_group.this[0].id : var.parameter_group_name
 }
 
 resource "aws_elasticache_parameter_group" "this" {
@@ -131,7 +136,7 @@ resource "aws_elasticache_parameter_group" "this" {
 
   description = coalesce(var.parameter_group_description, "ElastiCache parameter group")
   family      = var.parameter_group_family
-  name        = var.parameter_group_name
+  name        = "${local.parameter_group_name}-${var.parameter_group_family}"
 
   dynamic "parameter" {
     for_each = var.parameters
@@ -146,19 +151,85 @@ resource "aws_elasticache_parameter_group" "this" {
     create_before_destroy = true
   }
 
-  tags = var.tags
+  tags = local.tags
 }
 
 ################################################################################
 # Subnet Group
 ################################################################################
 
+locals {
+  subnet_group_name = try(coalesce(var.subnet_group_name, var.cluster_id, var.replication_group_id), "")
+}
+
 resource "aws_elasticache_subnet_group" "this" {
   count = var.create && var.create_subnet_group ? 1 : 0
 
-  name        = var.subnet_group_name
+  name        = local.subnet_group_name
   description = coalesce(var.subnet_group_description, "ElastiCache subnet group")
   subnet_ids  = var.subnet_ids
 
-  tags = var.tags
+  tags = local.tags
+}
+
+################################################################################
+# Security Group
+################################################################################
+
+locals {
+  create_security_group = var.create && var.create_security_group
+  security_group_name   = try(coalesce(var.security_group_name, var.cluster_id, var.replication_group_id), "")
+}
+
+resource "aws_security_group" "this" {
+  count = local.create_security_group ? 1 : 0
+
+  name        = var.security_group_use_name_prefix ? null : local.security_group_name
+  name_prefix = var.security_group_use_name_prefix ? "${local.security_group_name}-" : null
+  description = var.security_group_description
+  vpc_id      = var.vpc_id
+
+  tags = merge(local.tags, var.security_group_tags)
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "this" {
+  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type == "ingress") }
+
+  # Required
+  security_group_id = aws_security_group.this[0].id
+  ip_protocol       = try(each.value.ip_protocol, "tcp")
+
+  # Optional
+  cidr_ipv4                    = lookup(each.value, "cidr_ipv4", null)
+  cidr_ipv6                    = lookup(each.value, "cidr_ipv6", null)
+  description                  = try(each.value.description, null)
+  from_port                    = try(each.value.from_port, local.port)
+  prefix_list_id               = lookup(each.value, "prefix_list_id", null)
+  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null)
+  to_port                      = try(each.value.to_port, local.port)
+
+  tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
+}
+
+resource "aws_vpc_security_group_egress_rule" "this" {
+  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type == "egress") }
+
+  # Required
+  security_group_id = aws_security_group.this[0].id
+  ip_protocol       = try(each.value.ip_protocol, "tcp")
+
+  # Optional
+  cidr_ipv4                    = lookup(each.value, "cidr_ipv4", null)
+  cidr_ipv6                    = lookup(each.value, "cidr_ipv6", null)
+  description                  = try(each.value.description, null)
+  from_port                    = try(each.value.from_port, null)
+  prefix_list_id               = lookup(each.value, "prefix_list_id", null)
+  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null)
+  to_port                      = try(each.value.to_port, null)
+
+  tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
 }

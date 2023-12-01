@@ -88,3 +88,17 @@ output "subnet_group_name" {
   description = "The ElastiCache subnet group name"
   value       = module.elasticache.subnet_group_name
 }
+
+################################################################################
+# Security Group
+################################################################################
+
+output "security_group_arn" {
+  description = "Amazon Resource Name (ARN) of the security group"
+  value       = module.elasticache.security_group_arn
+}
+
+output "security_group_id" {
+  description = "ID of the security group"
+  value       = module.elasticache.security_group_id
+}

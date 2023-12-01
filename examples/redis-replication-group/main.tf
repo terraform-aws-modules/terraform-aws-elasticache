@@ -42,7 +42,14 @@ module "elasticache" {
   transit_encryption_enabled = true
   auth_token                 = "PickSomethingMoreSecure123!"
 
-  security_group_ids = []
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
 
   # subnet group
   subnet_group_name        = local.name

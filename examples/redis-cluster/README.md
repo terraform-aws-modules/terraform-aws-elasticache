@@ -64,6 +64,8 @@ No inputs.
 | <a name="output_rep_group_member_clusters"></a> [rep\_group\_member\_clusters](#output\_rep\_group\_member\_clusters) | Identifiers of all the nodes that are part of this replication group |
 | <a name="output_rep_group_primary_endpoint_address"></a> [rep\_group\_primary\_endpoint\_address](#output\_rep\_group\_primary\_endpoint\_address) | Address of the endpoint for the primary node in the replication group, if the cluster mode is disabled |
 | <a name="output_rep_group_reader_endpoint_address"></a> [rep\_group\_reader\_endpoint\_address](#output\_rep\_group\_reader\_endpoint\_address) | Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled |
+| <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | Amazon Resource Name (ARN) of the security group |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | ID of the security group |
 | <a name="output_subnet_group_name"></a> [subnet\_group\_name](#output\_subnet\_group\_name) | The ElastiCache subnet group name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -88,3 +88,17 @@ output "subnet_group_name" {
   description = "The ElastiCache subnet group name"
   value       = try(aws_elasticache_subnet_group.this[0].name, null)
 }
+
+################################################################################
+# Security Group
+################################################################################
+
+output "security_group_arn" {
+  description = "Amazon Resource Name (ARN) of the security group"
+  value       = try(aws_security_group.this[0].arn, null)
+}
+
+output "security_group_id" {
+  description = "ID of the security group"
+  value       = try(aws_security_group.this[0].id, null)
+}
