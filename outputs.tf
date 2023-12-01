@@ -65,19 +65,6 @@ output "rep_group_reader_endpoint_address" {
   description = "Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled"
   value       = try(aws_elasticache_replication_group.this[0].reader_endpoint_address, null)
 }
-################################################################################
-# Subnet Group
-################################################################################
-
-output "subnet_group_name" {
-  description = "The ElastiCache subnet group name"
-  value       = module.subnet_group.name
-}
-
-output "subnet_group_ids" {
-  description = "The ElastiCache subnet group IDs"
-  value       = module.subnet_group.ids
-}
 
 ################################################################################
 # Parameter Group
@@ -91,4 +78,13 @@ output "parameter_group_arn" {
 output "parameter_group_id" {
   description = "The ElastiCache parameter group name"
   value       = try(aws_elasticache_parameter_group.this[0].id, null)
+}
+
+################################################################################
+# Subnet Group
+################################################################################
+
+output "subnet_group_name" {
+  description = "The ElastiCache subnet group name"
+  value       = try(aws_elasticache_subnet_group.this[0].name, null)
 }

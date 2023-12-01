@@ -2,6 +2,8 @@
 
 Terraform module which creates AWS ElastiCache resources.
 
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+
 ## Usage
 
 See [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) directory for working examples to reference:
@@ -39,9 +41,7 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_subnet_group"></a> [subnet\_group](#module\_subnet\_group) | ./modules/subnet_group | n/a |
+No modules.
 
 ## Resources
 
@@ -50,6 +50,7 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | [aws_elasticache_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster) | resource |
 | [aws_elasticache_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_parameter_group) | resource |
 | [aws_elasticache_replication_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
+| [aws_elasticache_subnet_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_subnet_group) | resource |
 
 ## Inputs
 
@@ -104,7 +105,7 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | <a name="input_snapshot_retention_limit"></a> [snapshot\_retention\_limit](#input\_snapshot\_retention\_limit) | (Redis only) Number of days for which ElastiCache will retain automatic cache cluster snapshots before deleting them | `number` | `null` | no |
 | <a name="input_snapshot_window"></a> [snapshot\_window](#input\_snapshot\_window) | (Redis only) Daily time range (in UTC) during which ElastiCache will begin taking a daily snapshot of your cache cluster. Example: `05:00-09:00` | `string` | `null` | no |
 | <a name="input_subnet_group_description"></a> [subnet\_group\_description](#input\_subnet\_group\_description) | Description for the Elasticache subnet group | `string` | `null` | no |
-| <a name="input_subnet_group_name"></a> [subnet\_group\_name](#input\_subnet\_group\_name) | Name of the subnet group to be used for the cache cluster. Changing this value will re-create the resource | `string` | `null` | no |
+| <a name="input_subnet_group_name"></a> [subnet\_group\_name](#input\_subnet\_group\_name) | The name of the subnet group. If `create_subnet_group` is `true`, this is the name assigned to the subnet group created. Otherwise, this is the name of an existing subnet group | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC Subnet IDs for the Elasticache subnet group | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
 | <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC | `bool` | `null` | no |
@@ -128,7 +129,6 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | <a name="output_rep_group_member_clusters"></a> [rep\_group\_member\_clusters](#output\_rep\_group\_member\_clusters) | Identifiers of all the nodes that are part of this replication group |
 | <a name="output_rep_group_primary_endpoint_address"></a> [rep\_group\_primary\_endpoint\_address](#output\_rep\_group\_primary\_endpoint\_address) | Address of the endpoint for the primary node in the replication group, if the cluster mode is disabled |
 | <a name="output_rep_group_reader_endpoint_address"></a> [rep\_group\_reader\_endpoint\_address](#output\_rep\_group\_reader\_endpoint\_address) | Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled |
-| <a name="output_subnet_group_ids"></a> [subnet\_group\_ids](#output\_subnet\_group\_ids) | The ElastiCache subnet group IDs |
 | <a name="output_subnet_group_name"></a> [subnet\_group\_name](#output\_subnet\_group\_name) | The ElastiCache subnet group name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

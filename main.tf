@@ -39,7 +39,7 @@ resource "aws_elasticache_cluster" "this" {
   notification_topic_arn       = local.in_replication_group ? null : var.notification_topic_arn
   num_cache_nodes              = local.in_replication_group ? null : var.num_cache_nodes
   outpost_mode                 = var.outpost_mode
-  parameter_group_name         = local.in_replication_group ? null : var.parameter_group_name
+  parameter_group_name         = local.in_replication_group ? null : local.parameter_group_name
   port                         = local.in_replication_group ? null : coalesce(var.port, local.port)
   preferred_availability_zones = var.preferred_availability_zones
   preferred_outpost_arn        = var.preferred_outpost_arn
@@ -100,7 +100,7 @@ resource "aws_elasticache_replication_group" "this" {
   notification_topic_arn      = var.notification_topic_arn
   num_cache_clusters          = var.num_cache_clusters
   num_node_groups             = local.in_global_replication_group ? null : var.num_node_groups
-  parameter_group_name        = local.in_global_replication_group ? null : var.parameter_group_name
+  parameter_group_name        = local.in_global_replication_group ? null : local.parameter_group_name
   port                        = coalesce(var.port, local.port)
   preferred_cache_cluster_azs = var.preferred_cache_cluster_azs
   replicas_per_node_group     = var.replicas_per_node_group
@@ -121,6 +121,10 @@ resource "aws_elasticache_replication_group" "this" {
 ################################################################################
 # Parameter Group
 ################################################################################
+
+locals {
+  parameter_group_name = var.create && var.create_parameter_group ? aws_elasticache_parameter_group.this[0].id : var.parameter_group_name
+}
 
 resource "aws_elasticache_parameter_group" "this" {
   count = var.create && var.create_parameter_group ? 1 : 0
@@ -150,18 +154,12 @@ resource "aws_elasticache_parameter_group" "this" {
 # Subnet Group
 ################################################################################
 
-locals {
-  identifier           = local.in_replication_group ? var.replication_group_id : var.cluster_id
-  subnet_group_name    = var.create_subnet_group ? module.subnet_group.name : var.subnet_group_name
-  parameter_group_name = var.create_parameter_group ? module.parameter_group.id : var.parameter_group_name
-}
+resource "aws_elasticache_subnet_group" "this" {
+  count = var.create && var.create_subnet_group ? 1 : 0
 
-module "subnet_group" {
-  source = "./modules/subnet_group"
-
-  create      = var.create_subnet_group
-  identifier  = local.identifier
   name        = var.subnet_group_name
-  description = var.subnet_group_description
+  description = coalesce(var.subnet_group_description, "ElastiCache subnet group")
   subnet_ids  = var.subnet_ids
+
+  tags = var.tags
 }

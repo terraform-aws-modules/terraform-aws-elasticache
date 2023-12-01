@@ -170,12 +170,6 @@ variable "snapshot_window" {
   default     = null
 }
 
-variable "subnet_group_name" {
-  description = "Name of the subnet group to be used for the cache cluster. Changing this value will re-create the resource"
-  type        = string
-  default     = null
-}
-
 variable "transit_encryption_enabled" {
   description = "Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC"
   type        = bool
@@ -326,6 +320,12 @@ variable "create_subnet_group" {
   default     = false
 }
 
+variable "subnet_group_name" {
+  description = "The name of the subnet group. If `create_subnet_group` is `true`, this is the name assigned to the subnet group created. Otherwise, this is the name of an existing subnet group"
+  type        = string
+  default     = null
+}
+
 variable "subnet_group_description" {
   description = "Description for the Elasticache subnet group"
   type        = string
@@ -333,7 +333,7 @@ variable "subnet_group_description" {
 }
 
 variable "subnet_ids" {
-  description = "List of VPC Subnet IDs for the Elasticache subnet group "
+  description = "List of VPC Subnet IDs for the Elasticache subnet group"
   type        = list(string)
   default     = []
 }
