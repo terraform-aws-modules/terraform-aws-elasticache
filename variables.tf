@@ -295,7 +295,7 @@ variable "parameter_group_description" {
 variable "parameter_group_family" {
   description = "The family of the ElastiCache parameter group"
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "parameter_group_name" {

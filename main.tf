@@ -126,7 +126,8 @@ resource "aws_elasticache_replication_group" "this" {
 ################################################################################
 
 locals {
-  parameter_group_name = try(coalesce(var.parameter_group_name, var.cluster_id, var.replication_group_id), "")
+  inter_parameter_group_name = "${try(coalesce(var.cluster_id, var.replication_group_id), "")}-${var.parameter_group_family}"
+  parameter_group_name       = coalesce(var.parameter_group_name, local.inter_parameter_group_name)
 
   parameter_group_name_result = var.create && var.create_parameter_group ? aws_elasticache_parameter_group.this[0].id : var.parameter_group_name
 }
@@ -136,7 +137,7 @@ resource "aws_elasticache_parameter_group" "this" {
 
   description = coalesce(var.parameter_group_description, "ElastiCache parameter group")
   family      = var.parameter_group_family
-  name        = "${local.parameter_group_name}-${var.parameter_group_family}"
+  name        = local.parameter_group_name
 
   dynamic "parameter" {
     for_each = var.parameters
