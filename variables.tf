@@ -122,12 +122,6 @@ variable "outpost_mode" {
   default     = null
 }
 
-variable "parameter_group_name" {
-  description = "The name of the parameter group to associate with this cache cluster"
-  type        = string
-  default     = null
-}
-
 variable "port" {
   description = "The port number on which each of the cache nodes will accept connections. For Memcached the default is `11211`, and for Redis the default port is `6379`"
   type        = number
@@ -292,12 +286,6 @@ variable "user_group_ids" {
 # Parameter Group
 ################################################################################
 
-variable "parameter_group_family" {
-  description = "The family of the ElastiCache parameter group"
-  type        = string
-  default     = null
-}
-
 variable "create_parameter_group" {
   description = "Determines whether the ElastiCache parameter group will be created or not"
   type        = bool
@@ -305,9 +293,21 @@ variable "create_parameter_group" {
 }
 
 variable "parameter_group_description" {
-  description = "Description for the ElastiCache parameter group"
+  description = "The description of the ElastiCache parameter group. Defaults to `Managed by Terraform`"
   type        = string
-  default     = ""
+  default     = null
+}
+
+variable "parameter_group_family" {
+  description = "The family of the ElastiCache parameter group"
+  type        = string
+  default     = null
+}
+
+variable "parameter_group_name" {
+  description = "The name of the parameter group. If `create_parameter_group` is `true`, this is the name assigned to the parameter group created. Otherwise, this is the name of an existing parameter group"
+  type        = string
+  default     = null
 }
 
 variable "parameters" {

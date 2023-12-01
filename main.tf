@@ -119,6 +119,34 @@ resource "aws_elasticache_replication_group" "this" {
 }
 
 ################################################################################
+# Parameter Group
+################################################################################
+
+resource "aws_elasticache_parameter_group" "this" {
+  count = var.create && var.create_parameter_group ? 1 : 0
+
+  description = coalesce(var.parameter_group_description, "ElastiCache parameter group")
+  family      = var.parameter_group_family
+  name        = var.parameter_group_name
+
+  dynamic "parameter" {
+    for_each = var.parameters
+
+    content {
+      name  = parameter.value.name
+      value = parameter.value.value
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = var.tags
+}
+
+
+################################################################################
 # Subnet Group
 ################################################################################
 
@@ -136,15 +164,4 @@ module "subnet_group" {
   name        = var.subnet_group_name
   description = var.subnet_group_description
   subnet_ids  = var.subnet_ids
-}
-
-module "parameter_group" {
-  source = "./modules/parameter_group"
-
-  create      = var.create_parameter_group
-  identifier  = local.identifier
-  name        = var.parameter_group_name
-  family      = var.parameter_group_family
-  description = var.parameter_group_description
-  parameters  = var.parameters
 }

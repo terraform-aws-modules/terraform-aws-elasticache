@@ -1,4 +1,3 @@
-
 ################################################################################
 # Cluster
 ################################################################################
@@ -84,12 +83,12 @@ output "subnet_group_ids" {
 # Parameter Group
 ################################################################################
 
-output "parameter_group_name" {
-  description = "The ElastiCache parameter group name"
-  value       = module.parameter_group.name
+output "parameter_group_arn" {
+  description = "The AWS ARN associated with the parameter group"
+  value       = try(aws_elasticache_parameter_group.this[0].arn, null)
 }
 
 output "parameter_group_id" {
-  description = "The ElastiCache parameter group id"
-  value       = module.parameter_group.id
+  description = "The ElastiCache parameter group name"
+  value       = try(aws_elasticache_parameter_group.this[0].id, null)
 }

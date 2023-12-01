@@ -41,7 +41,6 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_parameter_group"></a> [parameter\_group](#module\_parameter\_group) | ./modules/parameter_group | n/a |
 | <a name="module_subnet_group"></a> [subnet\_group](#module\_subnet\_group) | ./modules/subnet_group | n/a |
 
 ## Resources
@@ -49,6 +48,7 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | Name | Type |
 |------|------|
 | [aws_elasticache_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster) | resource |
+| [aws_elasticache_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_parameter_group) | resource |
 | [aws_elasticache_replication_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
 
 ## Inputs
@@ -87,9 +87,9 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | <a name="input_num_cache_nodes"></a> [num\_cache\_nodes](#input\_num\_cache\_nodes) | The initial number of cache nodes that the cache cluster will have. For Redis, this value must be 1. For Memcached, this value must be between 1 and 40. If this number is reduced on subsequent runs, the highest numbered nodes will be removed | `number` | `1` | no |
 | <a name="input_num_node_groups"></a> [num\_node\_groups](#input\_num\_node\_groups) | Number of node groups (shards) for this Redis replication group. Changing this number will trigger a resizing operation before other settings modifications | `number` | `null` | no |
 | <a name="input_outpost_mode"></a> [outpost\_mode](#input\_outpost\_mode) | Specify the outpost mode that will apply to the cache cluster creation. Valid values are `single-outpost` and `cross-outpost`, however AWS currently only supports `single-outpost` mode | `string` | `null` | no |
-| <a name="input_parameter_group_description"></a> [parameter\_group\_description](#input\_parameter\_group\_description) | Description for the ElastiCache parameter group | `string` | `""` | no |
+| <a name="input_parameter_group_description"></a> [parameter\_group\_description](#input\_parameter\_group\_description) | The description of the ElastiCache parameter group. Defaults to `Managed by Terraform` | `string` | `null` | no |
 | <a name="input_parameter_group_family"></a> [parameter\_group\_family](#input\_parameter\_group\_family) | The family of the ElastiCache parameter group | `string` | `null` | no |
-| <a name="input_parameter_group_name"></a> [parameter\_group\_name](#input\_parameter\_group\_name) | The name of the parameter group to associate with this cache cluster | `string` | `null` | no |
+| <a name="input_parameter_group_name"></a> [parameter\_group\_name](#input\_parameter\_group\_name) | The name of the parameter group. If `create_parameter_group` is `true`, this is the name assigned to the parameter group created. Otherwise, this is the name of an existing parameter group | `string` | `null` | no |
 | <a name="input_parameters"></a> [parameters](#input\_parameters) | List of ElastiCache parameters to apply | `list(map(string))` | `[]` | no |
 | <a name="input_port"></a> [port](#input\_port) | The port number on which each of the cache nodes will accept connections. For Memcached the default is `11211`, and for Redis the default port is `6379` | `number` | `null` | no |
 | <a name="input_preferred_availability_zones"></a> [preferred\_availability\_zones](#input\_preferred\_availability\_zones) | List of the Availability Zones in which cache nodes are created | `list(string)` | `[]` | no |
@@ -119,8 +119,8 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | <a name="output_cluster_cache_nodes"></a> [cluster\_cache\_nodes](#output\_cluster\_cache\_nodes) | List of node objects including `id`, `address`, `port` and `availability_zone` |
 | <a name="output_cluster_configuration_endpoint"></a> [cluster\_configuration\_endpoint](#output\_cluster\_configuration\_endpoint) | (Memcached only) Configuration endpoint to allow host discovery |
 | <a name="output_cluster_engine_version_actual"></a> [cluster\_engine\_version\_actual](#output\_cluster\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
-| <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | The ElastiCache parameter group id |
-| <a name="output_parameter_group_name"></a> [parameter\_group\_name](#output\_parameter\_group\_name) | The ElastiCache parameter group name |
+| <a name="output_parameter_group_arn"></a> [parameter\_group\_arn](#output\_parameter\_group\_arn) | The AWS ARN associated with the parameter group |
+| <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | The ElastiCache parameter group name |
 | <a name="output_rep_group_arn"></a> [rep\_group\_arn](#output\_rep\_group\_arn) | ARN of the created ElastiCache Replication Group |
 | <a name="output_rep_group_coniguration_endpoint_address"></a> [rep\_group\_coniguration\_endpoint\_address](#output\_rep\_group\_coniguration\_endpoint\_address) | Address of the replication group configuration endpoint when cluster mode is enabled |
 | <a name="output_rep_group_engine_version_actual"></a> [rep\_group\_engine\_version\_actual](#output\_rep\_group\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
