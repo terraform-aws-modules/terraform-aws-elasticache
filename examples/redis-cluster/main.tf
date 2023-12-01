@@ -27,11 +27,8 @@ module "elasticache" {
 
   cluster_id = local.name
 
-  engine          = "memcached"
-  engine_version  = "1.6"
-  node_type       = "cache.t4g.small"
-  num_cache_nodes = 2
-  az_mode         = "cross-az"
+  engine_version = "7.1"
+  node_type      = "cache.t4g.small"
 
   security_group_ids = []
 
@@ -46,12 +43,16 @@ module "elasticache" {
   # parameter group
   create_parameter_group      = true
   parameter_group_name        = local.name
-  parameter_group_family      = "memcached1.6"
+  parameter_group_family      = "redis7.1"
   parameter_group_description = "${title(local.name)} parameter group"
   parameters = [
     {
-      name  = "idle_timeout"
-      value = 60
+      name  = "activerehashing"
+      value = "yes"
+    },
+    {
+      name  = "min-slaves-to-write"
+      value = "2"
     }
   ]
 

@@ -32,7 +32,7 @@ Note that this example may create resources which will incur monetary charges on
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../.. | n/a |
+| <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../../ | n/a |
 | <a name="module_elasticache_disabled"></a> [elasticache\_disabled](#module\_elasticache\_disabled) | ../.. | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
 
@@ -48,7 +48,23 @@ No inputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_cluster_address"></a> [cluster\_address](#output\_cluster\_address) | (Memcached only) DNS name of the cache cluster without the port appended |
+| <a name="output_cluster_arn"></a> [cluster\_arn](#output\_cluster\_arn) | The ARN of the ElastiCache Cluster |
+| <a name="output_cluster_cache_nodes"></a> [cluster\_cache\_nodes](#output\_cluster\_cache\_nodes) | List of node objects including `id`, `address`, `port` and `availability_zone` |
+| <a name="output_cluster_configuration_endpoint"></a> [cluster\_configuration\_endpoint](#output\_cluster\_configuration\_endpoint) | (Memcached only) Configuration endpoint to allow host discovery |
+| <a name="output_cluster_engine_version_actual"></a> [cluster\_engine\_version\_actual](#output\_cluster\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
+| <a name="output_parameter_group_arn"></a> [parameter\_group\_arn](#output\_parameter\_group\_arn) | The AWS ARN associated with the parameter group |
+| <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | The ElastiCache parameter group name |
+| <a name="output_rep_group_arn"></a> [rep\_group\_arn](#output\_rep\_group\_arn) | ARN of the created ElastiCache Replication Group |
+| <a name="output_rep_group_coniguration_endpoint_address"></a> [rep\_group\_coniguration\_endpoint\_address](#output\_rep\_group\_coniguration\_endpoint\_address) | Address of the replication group configuration endpoint when cluster mode is enabled |
+| <a name="output_rep_group_engine_version_actual"></a> [rep\_group\_engine\_version\_actual](#output\_rep\_group\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
+| <a name="output_rep_group_id"></a> [rep\_group\_id](#output\_rep\_group\_id) | ID of the ElastiCache Replication Group |
+| <a name="output_rep_group_member_clusters"></a> [rep\_group\_member\_clusters](#output\_rep\_group\_member\_clusters) | Identifiers of all the nodes that are part of this replication group |
+| <a name="output_rep_group_primary_endpoint_address"></a> [rep\_group\_primary\_endpoint\_address](#output\_rep\_group\_primary\_endpoint\_address) | Address of the endpoint for the primary node in the replication group, if the cluster mode is disabled |
+| <a name="output_rep_group_reader_endpoint_address"></a> [rep\_group\_reader\_endpoint\_address](#output\_rep\_group\_reader\_endpoint\_address) | Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled |
+| <a name="output_subnet_group_name"></a> [subnet\_group\_name](#output\_subnet\_group\_name) | The ElastiCache subnet group name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 Apache-2.0 Licensed. See [LICENSE](https://github.com/clowdhaus/terraform-aws-elasticache/blob/main/LICENSE).
