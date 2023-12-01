@@ -14,6 +14,12 @@ variable "tags" {
 # Cluster
 ################################################################################
 
+variable "create_cluster" {
+  description = "Determines whether an ElastiCache cluster will be created or not"
+  type        = bool
+  default     = true
+}
+
 variable "apply_immediately" {
   description = "Whether any database modifications are applied immediately, or during the next maintenance window. Default is `false`"
   type        = bool
@@ -22,6 +28,12 @@ variable "apply_immediately" {
 
 variable "auto_minor_version_upgrade" {
   description = "Specifies whether minor version engine upgrades will be applied automatically to the underlying Cache Cluster instances during the maintenance window. Only supported for engine type `redis` and if the engine version is 6 or higher. Defaults to `true`"
+  type        = bool
+  default     = null
+}
+
+variable "automatic_failover_enabled" {
+  description = "Specifies whether a read-only replica will be automatically promoted to read/write primary if the existing primary fails. If true, Multi-AZ is enabled for this replication group. If false, Multi-AZ is disabled for this replication group. Must be enabled for Redis (cluster mode enabled) replication groups"
   type        = bool
   default     = null
 }
@@ -186,28 +198,16 @@ variable "create_replication_group" {
   default     = false
 }
 
-variable "replication_group_id" {
-  description = "The replication group identifier. This parameter is stored as a lowercase string"
+variable "auth_token" {
+  description = "The password used to access a password protected server. Can be specified only if `transit_encryption_enabled = true`"
   type        = string
   default     = null
 }
 
-variable "replication_group_description" {
-  description = "A user-created description for the replication group"
+variable "auth_token_update_strategy" {
+  description = "Strategy to use when updating the `auth_token`. Valid values are `SET`, `ROTATE`, and `DELETE`. Defaults to `ROTATE`"
   type        = string
   default     = null
-}
-
-variable "number_cache_clusters" {
-  description = "(Required for Cluster Mode Disabled) The number of cache clusters (primary and replicas) this replication group will have. If Multi-AZ is enabled, the value of this parameter must be at least 2. Updates will occur before other modifications"
-  type        = number
-  default     = null
-}
-
-variable "automatic_failover_enabled" {
-  description = "Specifies whether a read-only replica will be automatically promoted to read/write primary if the existing primary fails. If true, Multi-AZ is enabled for this replication group. If false, Multi-AZ is disabled for this replication group. Must be enabled for Redis (cluster mode enabled) replication groups"
-  type        = bool
-  default     = true
 }
 
 variable "at_rest_encryption_enabled" {
@@ -216,27 +216,75 @@ variable "at_rest_encryption_enabled" {
   default     = true
 }
 
-variable "auth_token" {
-  description = "The password used to access a password protected server. Can be specified only if `transit_encryption_enabled = true`"
+variable "data_tiering_enabled" {
+  description = "Enables data tiering. Data tiering is only supported for replication groups using the `r6gd` node type. This parameter must be set to true when using `r6gd` nodes"
+  type        = bool
+  default     = null
+}
+
+variable "description" {
+  description = "User-created description for the replication group"
   type        = string
   default     = null
 }
 
-variable "kms_key_id" {
+variable "global_replication_group_id" {
+  description = "The ID of the global replication group to which this replication group should belong"
+  type        = string
+  default     = null
+}
+
+variable "kms_key_arn" {
   description = "The ARN of the key that you wish to use if encrypting at rest. If not supplied, uses service managed encryption. Can be specified only if `at_rest_encryption_enabled = true`"
   type        = string
   default     = null
 }
 
-variable "security_group_names" {
-  description = "A list of cache security group names to associate with this replication group"
+variable "multi_az_enabled" {
+  description = "Specifies whether to enable Multi-AZ Support for the replication group. If true, `automatic_failover_enabled` must also be enabled. Defaults to `false`"
+  type        = bool
+  default     = null
+}
+
+variable "num_cache_clusters" {
+  description = "Number of cache clusters (primary and replicas) this replication group will have. If Multi-AZ is enabled, the value of this parameter must be at least 2. Updates will occur before other modifications. Conflicts with `num_node_groups`. Defaults to `1`"
+  type        = number
+  default     = null
+}
+
+variable "num_node_groups" {
+  description = "Number of node groups (shards) for this Redis replication group. Changing this number will trigger a resizing operation before other settings modifications"
+  type        = number
+  default     = null
+}
+
+variable "preferred_cache_cluster_azs" {
+  description = "List of EC2 availability zones in which the replication group's cache clusters will be created. The order of the availability zones in the list is considered. The first item in the list will be the primary node. Ignored when updating"
   type        = list(string)
   default     = []
 }
 
-variable "cluster_mode" {
-  description = "Create a native redis cluster. automatic_failover_enabled must be set to true. Cluster Mode documented below. Only 1 cluster_mode block is allowed"
-  type        = list(map(string))
+variable "replicas_per_node_group" {
+  description = "Number of replica nodes in each node group. Changing this number will trigger a resizing operation before other settings modifications. Valid values are 0 to 5"
+  type        = number
+  default     = null
+}
+
+variable "replication_group_id" {
+  description = "Replication group identifier. When `create_replication_group` is set to `true`, this is the ID assigned to the replication group created. When `create_replication_group` is set to `false`, this is the ID of an externally created replication group"
+  type        = string
+  default     = null
+}
+
+variable "security_group_names" {
+  description = "Names of one or more Amazon VPC security groups associated with this replication group"
+  type        = list(string)
+  default     = []
+}
+
+variable "user_group_ids" {
+  description = "User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid"
+  type        = list(string)
   default     = []
 }
 

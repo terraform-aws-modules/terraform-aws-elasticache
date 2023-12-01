@@ -3,27 +3,27 @@
 # Cluster
 ################################################################################
 
-output "arn" {
+output "cluster_arn" {
   description = "The ARN of the ElastiCache Cluster"
   value       = try(aws_elasticache_cluster.this[0].arn, null)
 }
 
-output "engine_version_actual" {
+output "cluster_engine_version_actual" {
   description = "Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine"
   value       = try(aws_elasticache_cluster.this[0].engine_version_actual, null)
 }
 
-output "cache_nodes" {
+output "cluster_cache_nodes" {
   description = "List of node objects including `id`, `address`, `port` and `availability_zone`"
   value       = try(aws_elasticache_cluster.this[0].cache_nodes, null)
 }
 
-output "address" {
+output "cluster_address" {
   description = "(Memcached only) DNS name of the cache cluster without the port appended"
   value       = try(aws_elasticache_cluster.this[0].cluster_address, null)
 }
 
-output "configuration_endpoint" {
+output "cluster_configuration_endpoint" {
   description = "(Memcached only) Configuration endpoint to allow host discovery"
   value       = try(aws_elasticache_cluster.this[0].configuration_endpoint, null)
 }
@@ -32,26 +32,40 @@ output "configuration_endpoint" {
 # Replication Group
 ################################################################################
 
-output "replication_group_id" {
-  description = "The ID of the ElastiCache Replication Group"
-  value       = module.replication_group.id
+output "rep_group_arn" {
+  description = "ARN of the created ElastiCache Replication Group"
+  value       = try(aws_elasticache_replication_group.this[0].id, null)
 }
 
-output "replication_group_configuration_endpoint_address" {
-  description = "The address of the replication group configuration endpoint when cluster mode is enabled"
-  value       = module.replication_group.configuration_endpoint_address
+output "rep_group_engine_version_actual" {
+  description = "Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine"
+  value       = try(aws_elasticache_replication_group.this[0].engine_version_actual, null)
 }
 
-output "replication_group_primary_endpoint_address" {
-  description = "The address of the endpoint for the primary node in the replication group, if the cluster mode is disabled"
-  value       = module.replication_group.primary_endpoint_address
+output "rep_group_coniguration_endpoint_address" {
+  description = "Address of the replication group configuration endpoint when cluster mode is enabled"
+  value       = try(aws_elasticache_replication_group.this[0].configuration_endpoint_address, null)
 }
 
-output "replication_group_member_clusters" {
-  description = "The identifiers of all the nodes that are part of this replication group. "
-  value       = module.replication_group.member_clusters
+output "rep_group_id" {
+  description = "ID of the ElastiCache Replication Group"
+  value       = try(aws_elasticache_replication_group.this[0].id, null)
 }
 
+output "rep_group_member_clusters" {
+  description = "Identifiers of all the nodes that are part of this replication group"
+  value       = try(aws_elasticache_replication_group.this[0].member_clusters, null)
+}
+
+output "rep_group_primary_endpoint_address" {
+  description = "Address of the endpoint for the primary node in the replication group, if the cluster mode is disabled"
+  value       = try(aws_elasticache_replication_group.this[0].primary_endpoint_address, null)
+}
+
+output "rep_group_reader_endpoint_address" {
+  description = "Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled"
+  value       = try(aws_elasticache_replication_group.this[0].reader_endpoint_address, null)
+}
 ################################################################################
 # Subnet Group
 ################################################################################

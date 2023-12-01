@@ -15,10 +15,10 @@ module "redis_repl_group" {
   engine_version = local.full_version
   node_type      = "cache.t2.micro"
 
-  cluster_mode = [{
-    replicas_per_node_group = 1
-    num_node_groups         = 3
-  }]
+  # cluster_mode = [{
+  #   replicas_per_node_group = 1
+  #   num_node_groups         = 3
+  # }]
 
   # snapshot_retention_limit = 1
   # snapshot_window          = "20:00-23:00"
