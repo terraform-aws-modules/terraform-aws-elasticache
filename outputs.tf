@@ -1,3 +1,33 @@
+
+################################################################################
+# Cluster
+################################################################################
+
+output "arn" {
+  description = "The ARN of the ElastiCache Cluster"
+  value       = try(aws_elasticache_cluster.this[0].arn, null)
+}
+
+output "engine_version_actual" {
+  description = "Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine"
+  value       = try(aws_elasticache_cluster.this[0].engine_version_actual, null)
+}
+
+output "cache_nodes" {
+  description = "List of node objects including `id`, `address`, `port` and `availability_zone`"
+  value       = try(aws_elasticache_cluster.this[0].cache_nodes, null)
+}
+
+output "address" {
+  description = "(Memcached only) DNS name of the cache cluster without the port appended"
+  value       = try(aws_elasticache_cluster.this[0].cluster_address, null)
+}
+
+output "configuration_endpoint" {
+  description = "(Memcached only) Configuration endpoint to allow host discovery"
+  value       = try(aws_elasticache_cluster.this[0].configuration_endpoint, null)
+}
+
 ################################################################################
 # Replication Group
 ################################################################################
@@ -20,25 +50,6 @@ output "replication_group_primary_endpoint_address" {
 output "replication_group_member_clusters" {
   description = "The identifiers of all the nodes that are part of this replication group. "
   value       = module.replication_group.member_clusters
-}
-
-################################################################################
-# Cluster
-################################################################################
-
-output "cluster_cache_nodes" {
-  description = "List of node objects including id, address, port and availability_zone"
-  value       = module.cluster.cache_nodes
-}
-
-output "cluster_configuration_endpoint" {
-  description = "The configuration endpoint to allow host discovery"
-  value       = module.cluster.configuration_endpoint
-}
-
-output "cluster_address" {
-  description = "The DNS name of the cache cluster without the port appended"
-  value       = module.cluster.cluster_address
 }
 
 ################################################################################
