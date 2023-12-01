@@ -6,7 +6,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   region = "us-east-1"
-  name   = "elasticache-ex-${basename(path.cwd)}"
+  name   = "ex-${basename(path.cwd)}"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -19,16 +19,45 @@ locals {
 }
 
 ################################################################################
-# elasticache Module
+# ElastiCache Module
 ################################################################################
 
-module "elasticache" {
-  source = "../.."
+module "elasticache_cluster" {
+  source = "../../"
 
-  create = false
+  cluster_id = local.name
+
+  engine          = "memcached"
+  engine_version  = "1.6"
+  node_type       = "cache.t4g.small"
+  num_cache_nodes = 2
+  az_mode         = "cross-az"
+
+  security_group_ids = []
+
+  # subnet group
+  subnet_group_name        = local.name
+  subnet_group_description = "${title(local.name)} subnet group"
+  subnet_ids               = module.vpc.private_subnets
+
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # parameter group
+  create_parameter_group      = true
+  parameter_group_name        = local.name
+  parameter_group_family      = "memcached1.6"
+  parameter_group_description = "${title(local.name)} parameter group"
+  parameters = [
+    {
+      name  = "idle_timeout"
+      value = 60
+    }
+  ]
 
   tags = local.tags
 }
+
 
 module "elasticache_disabled" {
   source = "../.."

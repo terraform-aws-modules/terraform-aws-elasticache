@@ -317,7 +317,7 @@ variable "parameters" {
 variable "create_subnet_group" {
   description = "Determines whether the Elasticache subnet group will be created or not"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "subnet_group_name" {
