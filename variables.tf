@@ -82,8 +82,13 @@ variable "ip_discovery" {
 
 variable "log_delivery_configuration" {
   description = "(Redis only) Specifies the destination and format of Redis SLOWLOG or Redis Engine Log"
-  type        = list(map(string))
-  default     = []
+  type        = any
+  default = {
+    slow-log = {
+      destination_type = "cloudwatch-logs"
+      log_format       = "json"
+    }
+  }
 }
 
 variable "maintenance_window" {

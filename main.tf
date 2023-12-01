@@ -26,10 +26,10 @@ resource "aws_elasticache_cluster" "this" {
   ip_discovery               = var.ip_discovery
 
   dynamic "log_delivery_configuration" {
-    for_each = var.log_delivery_configuration
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" }
 
     content {
-      destination      = log_delivery_configuration.value.destination
+      destination      = try(v.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[each.key].name : log_delivery_configuration.value.destination
       destination_type = log_delivery_configuration.value.destination_type
       log_format       = log_delivery_configuration.value.log_format
       log_type         = try(log_delivery_configuration.value.log_type, each.key)
@@ -86,10 +86,10 @@ resource "aws_elasticache_replication_group" "this" {
   kms_key_id                  = var.at_rest_encryption_enabled ? var.kms_key_arn : null
 
   dynamic "log_delivery_configuration" {
-    for_each = var.log_delivery_configuration
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" }
 
     content {
-      destination      = log_delivery_configuration.value.destination
+      destination      = try(v.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[each.key].name : log_delivery_configuration.value.destination
       destination_type = log_delivery_configuration.value.destination_type
       log_format       = log_delivery_configuration.value.log_format
       log_type         = try(log_delivery_configuration.value.log_type, each.key)
@@ -119,6 +119,24 @@ resource "aws_elasticache_replication_group" "this" {
   user_group_ids              = var.user_group_ids
 
   tags = local.tags
+}
+
+################################################################################
+# Cloudwatch Log Group
+################################################################################
+
+locals {
+  create_cloudwatch_log_group = var.create && var.engine == "redis"
+}
+
+resource "aws_cloudwatch_log_group" "this" {
+  for_each = { for k, v in var.log_delivery_configuration : k => v if local.create_cloudwatch_log_group && try(v.create_cloudwatch_log_group, true) && try(v.destination_type, "") == "cloudwatch-logs" }
+
+  name              = "/aws/elasticache/${try(each.value.cloudwatch_log_group_name, coalesce(var.cluster_id, var.replication_group_id), "")}"
+  retention_in_days = try(each.value.cloudwatch_log_group_retention_in_days, 14)
+  kms_key_id        = try(each.value.cloudwatch_log_group_kms_key_id, null)
+
+  tags = merge(local.tags, try(each.value.tags, {}))
 }
 
 ################################################################################
