@@ -25,6 +25,7 @@ locals {
 module "elasticache" {
   source = "../../"
 
+  create_cluster           = false
   create_replication_group = true
   replication_group_id     = local.name
 
@@ -42,6 +43,8 @@ module "elasticache" {
   transit_encryption_enabled = true
   auth_token                 = "PickSomethingMoreSecure123!"
 
+  # Security group
+  vpc_id = module.vpc.vpc_id
   security_group_rules = {
     ingress_vpc = {
       # Default type is `ingress`
@@ -62,16 +65,12 @@ module "elasticache" {
   # parameter group
   create_parameter_group      = true
   parameter_group_name        = local.name
-  parameter_group_family      = "redis7.1"
+  parameter_group_family      = "redis7"
   parameter_group_description = "${title(local.name)} parameter group"
   parameters = [
     {
-      name  = "activerehashing"
+      name  = "latency-tracking"
       value = "yes"
-    },
-    {
-      name  = "min-slaves-to-write"
-      value = "2"
     }
   ]
 

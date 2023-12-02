@@ -236,7 +236,7 @@ variable "kms_key_arn" {
 variable "multi_az_enabled" {
   description = "Specifies whether to enable Multi-AZ Support for the replication group. If true, `automatic_failover_enabled` must also be enabled. Defaults to `false`"
   type        = bool
-  default     = null
+  default     = false
 }
 
 variable "num_cache_clusters" {
@@ -278,7 +278,7 @@ variable "security_group_names" {
 variable "user_group_ids" {
   description = "User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid"
   type        = list(string)
-  default     = []
+  default     = null
 }
 
 ################################################################################

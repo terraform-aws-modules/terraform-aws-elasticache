@@ -2,7 +2,7 @@ locals {
   # https://github.com/hashicorp/terraform-provider-aws/blob/3c4cb52c5dc2c09e10e5a717f73d1d8bc4186e87/internal/service/elasticache/cluster.go#L271
   in_replication_group = var.replication_group_id != null
 
-  security_group_ids = local.create_security_group ? concat(var.security_group_ids, aws_security_group.this[0].id) : var.security_group_ids
+  security_group_ids = local.create_security_group ? concat(var.security_group_ids, [aws_security_group.this[0].id]) : var.security_group_ids
   port               = var.engine == "memcached" ? 11211 : 6379
 
   tags = merge(var.tags, { terraform-aws-modules = "elasticache" })
@@ -29,10 +29,10 @@ resource "aws_elasticache_cluster" "this" {
     for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" }
 
     content {
-      destination      = try(v.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[each.key].name : log_delivery_configuration.value.destination
+      destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
       destination_type = log_delivery_configuration.value.destination_type
       log_format       = log_delivery_configuration.value.log_format
-      log_type         = try(log_delivery_configuration.value.log_type, each.key)
+      log_type         = try(log_delivery_configuration.value.log_type, log_delivery_configuration.key)
     }
   }
 
@@ -52,7 +52,7 @@ resource "aws_elasticache_cluster" "this" {
   snapshot_name                = local.in_replication_group ? null : var.snapshot_name
   snapshot_retention_limit     = local.in_replication_group ? null : var.snapshot_retention_limit
   snapshot_window              = local.in_replication_group ? null : var.snapshot_window
-  subnet_group_name            = local.in_replication_group ? null : var.subnet_group_name
+  subnet_group_name            = local.in_replication_group ? null : local.subnet_group_name
   transit_encryption_enabled   = var.transit_encryption_enabled
 
   tags = local.tags
@@ -89,10 +89,10 @@ resource "aws_elasticache_replication_group" "this" {
     for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" }
 
     content {
-      destination      = try(v.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[each.key].name : log_delivery_configuration.value.destination
+      destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
       destination_type = log_delivery_configuration.value.destination_type
       log_format       = log_delivery_configuration.value.log_format
-      log_type         = try(log_delivery_configuration.value.log_type, each.key)
+      log_type         = try(log_delivery_configuration.value.log_type, log_delivery_configuration.key)
     }
   }
 
@@ -114,7 +114,7 @@ resource "aws_elasticache_replication_group" "this" {
   snapshot_name               = local.in_global_replication_group ? null : var.snapshot_name
   snapshot_retention_limit    = var.snapshot_retention_limit
   snapshot_window             = var.snapshot_window
-  subnet_group_name           = var.subnet_group_name
+  subnet_group_name           = local.subnet_group_name
   transit_encryption_enabled  = local.in_global_replication_group ? null : var.transit_encryption_enabled
   user_group_ids              = var.user_group_ids
 
@@ -166,10 +166,6 @@ resource "aws_elasticache_parameter_group" "this" {
     }
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
-
   tags = local.tags
 }
 
@@ -178,13 +174,14 @@ resource "aws_elasticache_parameter_group" "this" {
 ################################################################################
 
 locals {
-  subnet_group_name = try(coalesce(var.subnet_group_name, var.cluster_id, var.replication_group_id), "")
+  inter_subnet_group_name = try(coalesce(var.subnet_group_name, var.cluster_id, var.replication_group_id), "")
+  subnet_group_name       = var.create && var.create_subnet_group ? aws_elasticache_subnet_group.this[0].name : var.subnet_group_name
 }
 
 resource "aws_elasticache_subnet_group" "this" {
   count = var.create && var.create_subnet_group ? 1 : 0
 
-  name        = local.subnet_group_name
+  name        = local.inter_subnet_group_name
   description = coalesce(var.subnet_group_description, "ElastiCache subnet group")
   subnet_ids  = var.subnet_ids
 
@@ -216,7 +213,7 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "this" {
-  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type == "ingress") }
+  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "ingress" }
 
   # Required
   security_group_id = aws_security_group.this[0].id
@@ -235,7 +232,7 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "this" {
-  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type == "egress") }
+  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "egress" }
 
   # Required
   security_group_id = aws_security_group.this[0].id

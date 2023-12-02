@@ -28,11 +28,13 @@ module "elasticache" {
   cluster_id = local.name
 
   engine          = "memcached"
-  engine_version  = "1.6"
+  engine_version  = "1.6.17"
   node_type       = "cache.t4g.small"
   num_cache_nodes = 2
   az_mode         = "cross-az"
 
+  # Security group
+  vpc_id = module.vpc.vpc_id
   security_group_rules = {
     ingress_vpc = {
       # Default type is `ingress`
