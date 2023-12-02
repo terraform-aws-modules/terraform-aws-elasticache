@@ -25,7 +25,10 @@ locals {
 module "elasticache" {
   source = "../../"
 
-  cluster_id     = local.name
+  cluster_id               = local.name
+  create_cluster           = true
+  create_replication_group = false
+
   engine_version = "7.1"
   node_type      = "cache.t4g.small"
 

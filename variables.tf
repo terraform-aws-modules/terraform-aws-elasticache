@@ -17,7 +17,7 @@ variable "tags" {
 variable "create_cluster" {
   description = "Determines whether an ElastiCache cluster will be created or not"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "apply_immediately" {
@@ -59,7 +59,7 @@ variable "cluster_id" {
 variable "engine" {
   description = "Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis`"
   type        = string
-  default     = "redis"
+  default     = null
 }
 
 variable "engine_version" {
@@ -188,7 +188,7 @@ variable "transit_encryption_enabled" {
 variable "create_replication_group" {
   description = "Determines whether an ElastiCache replication group will be created or not"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "auth_token" {
@@ -283,6 +283,16 @@ variable "user_group_ids" {
 
 variable "cluster_mode_enabled" {
   description = "Whether to enable Redis [cluster mode https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html]"
+  type        = bool
+  default     = false
+}
+
+################################################################################
+# Global Replication Group
+################################################################################
+
+variable "create_primary_global_replication_group" {
+  description = "Determines whether an primary ElastiCache global replication group will be created"
   type        = bool
   default     = false
 }

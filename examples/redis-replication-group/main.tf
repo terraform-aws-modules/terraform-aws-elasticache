@@ -25,11 +25,10 @@ locals {
 module "elasticache" {
   source = "../../"
 
-  replication_group_id     = local.name
-  create_cluster           = false
-  create_replication_group = true
-  engine_version           = "7.1"
-  node_type                = "cache.t4g.small"
+  replication_group_id = local.name
+
+  engine_version = "7.1"
+  node_type      = "cache.t4g.small"
 
   transit_encryption_enabled = true
   auth_token                 = "PickSomethingMoreSecure123!"

@@ -51,7 +51,9 @@ No modules.
 |------|------|
 | [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_elasticache_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster) | resource |
+| [aws_elasticache_global_replication_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_global_replication_group) | resource |
 | [aws_elasticache_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_parameter_group) | resource |
+| [aws_elasticache_replication_group.global](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
 | [aws_elasticache_replication_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
 | [aws_elasticache_subnet_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_subnet_group) | resource |
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -74,14 +76,15 @@ No modules.
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | Group identifier. ElastiCache converts this name to lowercase. Changing this value will re-create the resource | `string` | `""` | no |
 | <a name="input_cluster_mode_enabled"></a> [cluster\_mode\_enabled](#input\_cluster\_mode\_enabled) | Whether to enable Redis [cluster mode https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html] | `bool` | `false` | no |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether resources will be created (affects all resources) | `bool` | `true` | no |
-| <a name="input_create_cluster"></a> [create\_cluster](#input\_create\_cluster) | Determines whether an ElastiCache cluster will be created or not | `bool` | `true` | no |
+| <a name="input_create_cluster"></a> [create\_cluster](#input\_create\_cluster) | Determines whether an ElastiCache cluster will be created or not | `bool` | `false` | no |
 | <a name="input_create_parameter_group"></a> [create\_parameter\_group](#input\_create\_parameter\_group) | Determines whether the ElastiCache parameter group will be created or not | `bool` | `false` | no |
-| <a name="input_create_replication_group"></a> [create\_replication\_group](#input\_create\_replication\_group) | Determines whether an ElastiCache replication group will be created or not | `bool` | `false` | no |
+| <a name="input_create_primary_global_replication_group"></a> [create\_primary\_global\_replication\_group](#input\_create\_primary\_global\_replication\_group) | Determines whether an primary ElastiCache global replication group will be created | `bool` | `false` | no |
+| <a name="input_create_replication_group"></a> [create\_replication\_group](#input\_create\_replication\_group) | Determines whether an ElastiCache replication group will be created or not | `bool` | `true` | no |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Determines if a security group is created | `bool` | `true` | no |
 | <a name="input_create_subnet_group"></a> [create\_subnet\_group](#input\_create\_subnet\_group) | Determines whether the Elasticache subnet group will be created or not | `bool` | `true` | no |
 | <a name="input_data_tiering_enabled"></a> [data\_tiering\_enabled](#input\_data\_tiering\_enabled) | Enables data tiering. Data tiering is only supported for replication groups using the `r6gd` node type. This parameter must be set to true when using `r6gd` nodes | `bool` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | User-created description for the replication group | `string` | `null` | no |
-| <a name="input_engine"></a> [engine](#input\_engine) | Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis` | `string` | `"redis"` | no |
+| <a name="input_engine"></a> [engine](#input\_engine) | Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis` | `string` | `null` | no |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version number of the cache engine to be used. If not set, defaults to the latest version | `string` | `null` | no |
 | <a name="input_final_snapshot_identifier"></a> [final\_snapshot\_identifier](#input\_final\_snapshot\_identifier) | (Redis only) Name of your final cluster snapshot. If omitted, no final snapshot will be made | `string` | `null` | no |
 | <a name="input_global_replication_group_id"></a> [global\_replication\_group\_id](#input\_global\_replication\_group\_id) | The ID of the global replication group to which this replication group should belong | `string` | `null` | no |
@@ -137,15 +140,19 @@ No modules.
 | <a name="output_cluster_cache_nodes"></a> [cluster\_cache\_nodes](#output\_cluster\_cache\_nodes) | List of node objects including `id`, `address`, `port` and `availability_zone` |
 | <a name="output_cluster_configuration_endpoint"></a> [cluster\_configuration\_endpoint](#output\_cluster\_configuration\_endpoint) | (Memcached only) Configuration endpoint to allow host discovery |
 | <a name="output_cluster_engine_version_actual"></a> [cluster\_engine\_version\_actual](#output\_cluster\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
+| <a name="output_global_replication_group_arn"></a> [global\_replication\_group\_arn](#output\_global\_replication\_group\_arn) | ARN of the created ElastiCache Global Replication Group |
+| <a name="output_global_replication_group_engine_version_actual"></a> [global\_replication\_group\_engine\_version\_actual](#output\_global\_replication\_group\_engine\_version\_actual) | The full version number of the cache engine running on the members of this global replication group |
+| <a name="output_global_replication_group_id"></a> [global\_replication\_group\_id](#output\_global\_replication\_group\_id) | ID of the ElastiCache Global Replication Group |
+| <a name="output_global_replication_group_node_groups"></a> [global\_replication\_group\_node\_groups](#output\_global\_replication\_group\_node\_groups) | Set of node groups (shards) on the global replication group |
 | <a name="output_parameter_group_arn"></a> [parameter\_group\_arn](#output\_parameter\_group\_arn) | The AWS ARN associated with the parameter group |
 | <a name="output_parameter_group_id"></a> [parameter\_group\_id](#output\_parameter\_group\_id) | The ElastiCache parameter group name |
-| <a name="output_rep_group_arn"></a> [rep\_group\_arn](#output\_rep\_group\_arn) | ARN of the created ElastiCache Replication Group |
-| <a name="output_rep_group_coniguration_endpoint_address"></a> [rep\_group\_coniguration\_endpoint\_address](#output\_rep\_group\_coniguration\_endpoint\_address) | Address of the replication group configuration endpoint when cluster mode is enabled |
-| <a name="output_rep_group_engine_version_actual"></a> [rep\_group\_engine\_version\_actual](#output\_rep\_group\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
-| <a name="output_rep_group_id"></a> [rep\_group\_id](#output\_rep\_group\_id) | ID of the ElastiCache Replication Group |
-| <a name="output_rep_group_member_clusters"></a> [rep\_group\_member\_clusters](#output\_rep\_group\_member\_clusters) | Identifiers of all the nodes that are part of this replication group |
-| <a name="output_rep_group_primary_endpoint_address"></a> [rep\_group\_primary\_endpoint\_address](#output\_rep\_group\_primary\_endpoint\_address) | Address of the endpoint for the primary node in the replication group, if the cluster mode is disabled |
-| <a name="output_rep_group_reader_endpoint_address"></a> [rep\_group\_reader\_endpoint\_address](#output\_rep\_group\_reader\_endpoint\_address) | Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled |
+| <a name="output_replication_group_arn"></a> [replication\_group\_arn](#output\_replication\_group\_arn) | ARN of the created ElastiCache Replication Group |
+| <a name="output_replication_group_coniguration_endpoint_address"></a> [replication\_group\_coniguration\_endpoint\_address](#output\_replication\_group\_coniguration\_endpoint\_address) | Address of the replication group configuration endpoint when cluster mode is enabled |
+| <a name="output_replication_group_engine_version_actual"></a> [replication\_group\_engine\_version\_actual](#output\_replication\_group\_engine\_version\_actual) | Because ElastiCache pulls the latest minor or patch for a version, this attribute returns the running version of the cache engine |
+| <a name="output_replication_group_id"></a> [replication\_group\_id](#output\_replication\_group\_id) | ID of the ElastiCache Replication Group |
+| <a name="output_replication_group_member_clusters"></a> [replication\_group\_member\_clusters](#output\_replication\_group\_member\_clusters) | Identifiers of all the nodes that are part of this replication group |
+| <a name="output_replication_group_primary_endpoint_address"></a> [replication\_group\_primary\_endpoint\_address](#output\_replication\_group\_primary\_endpoint\_address) | Address of the endpoint for the primary node in the replication group, if the cluster mode is disabled |
+| <a name="output_replication_group_reader_endpoint_address"></a> [replication\_group\_reader\_endpoint\_address](#output\_replication\_group\_reader\_endpoint\_address) | Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled |
 | <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | Amazon Resource Name (ARN) of the security group |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | ID of the security group |
 | <a name="output_subnet_group_name"></a> [subnet\_group\_name](#output\_subnet\_group\_name) | The ElastiCache subnet group name |

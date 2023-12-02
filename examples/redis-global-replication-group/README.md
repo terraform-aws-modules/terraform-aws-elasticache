@@ -1,8 +1,10 @@
-# ElastiCache example for [Redis cluster mode](https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html)
+# ElastiCache example for Redis global replication group
 
-Configuration in this directory creates set of ElastiCaChe resources including replication group, subnet group and parameter group.
+Configuration in this directory creates:
 
-![Redis (Cluster Mode Disabled) vs. Redis (Cluster Mode Enabled)](https://docs.aws.amazon.com/images/AmazonElastiCache/latest/red-ug/images/ElastiCache-NodeGroups.png)
+- Global replication group
+- Primary Redis replication group in `us-east-1`
+- Secondary Redis replication group in `eu-west-1`
 
 ## Usage
 
@@ -29,20 +31,23 @@ Note that this example may create resources which will incur monetary charges on
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.27 |
+| <a name="provider_aws.euwest1"></a> [aws.euwest1](#provider\_aws.euwest1) | >= 5.27 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../../ | n/a |
-| <a name="module_elasticache_user_group"></a> [elasticache\_user\_group](#module\_elasticache\_user\_group) | ../../modules/user-group | n/a |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
+| <a name="module_elasticache_primary"></a> [elasticache\_primary](#module\_elasticache\_primary) | ../../ | n/a |
+| <a name="module_elasticache_secondary"></a> [elasticache\_secondary](#module\_elasticache\_secondary) | ../../ | n/a |
+| <a name="module_vpc_primary"></a> [vpc\_primary](#module\_vpc\_primary) | terraform-aws-modules/vpc/aws | ~> 5.0 |
+| <a name="module_vpc_secondary"></a> [vpc\_secondary](#module\_vpc\_secondary) | terraform-aws-modules/vpc/aws | ~> 5.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+| [aws_availability_zones.primary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+| [aws_availability_zones.secondary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
 ## Inputs
 
