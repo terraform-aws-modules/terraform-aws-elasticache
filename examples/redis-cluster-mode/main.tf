@@ -31,8 +31,14 @@ module "elasticache" {
   engine_version           = "7.1"
   node_type                = "cache.t4g.small"
 
-  transit_encryption_enabled = true
-  auth_token                 = "PickSomethingMoreSecure123!"
+  # Cluster mode
+  cluster_mode_enabled       = true
+  num_node_groups            = 2
+  replicas_per_node_group    = 3
+  automatic_failover_enabled = true
+  multi_az_enabled           = true
+
+  user_group_ids = [module.elasticache_user_group.group_id]
 
   # Security group
   vpc_id = module.vpc.vpc_id
@@ -55,7 +61,6 @@ module "elasticache" {
 
   # parameter group
   create_parameter_group      = true
-  parameter_group_name        = local.name
   parameter_group_family      = "redis7"
   parameter_group_description = "${title(local.name)} parameter group"
   parameters = [
@@ -64,6 +69,47 @@ module "elasticache" {
       value = "yes"
     }
   ]
+
+  tags = local.tags
+}
+
+################################################################################
+# ElastiCache Module
+################################################################################
+
+module "elasticache_user_group" {
+  source = "../../modules/user-group"
+
+  user_group_id = local.name
+
+  default_user = {
+    user_id   = "default${lower(replace(local.name, "-", ""))}"
+    passwords = ["password123456789"]
+  }
+
+  users = {
+    moe = {
+      access_string = "on ~* +@all"
+      passwords     = ["password123456789"]
+    }
+
+    larry = {
+      access_string = "on ~* +@all"
+
+      authentication_mode = {
+        type = "iam"
+      }
+    }
+
+    curly = {
+      access_string = "on ~* +@all"
+
+      authentication_mode = {
+        type      = "password"
+        passwords = ["password123456789", "password987654321"]
+      }
+    }
+  }
 
   tags = local.tags
 }

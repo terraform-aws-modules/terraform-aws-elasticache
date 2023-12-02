@@ -178,7 +178,7 @@ variable "snapshot_window" {
 variable "transit_encryption_enabled" {
   description = "Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC"
   type        = bool
-  default     = null
+  default     = true
 }
 
 ################################################################################
@@ -279,6 +279,12 @@ variable "user_group_ids" {
   description = "User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid"
   type        = list(string)
   default     = null
+}
+
+variable "cluster_mode_enabled" {
+  description = "Whether to enable Redis [cluster mode https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html]"
+  type        = bool
+  default     = false
 }
 
 ################################################################################

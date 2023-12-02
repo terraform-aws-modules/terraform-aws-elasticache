@@ -25,8 +25,7 @@ locals {
 module "elasticache" {
   source = "../../"
 
-  cluster_id = local.name
-
+  cluster_id     = local.name
   engine_version = "7.1"
   node_type      = "cache.t4g.small"
 
@@ -63,7 +62,6 @@ module "elasticache" {
 
   tags = local.tags
 }
-
 
 module "elasticache_disabled" {
   source = "../.."

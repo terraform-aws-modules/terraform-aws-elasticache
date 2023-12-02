@@ -41,3 +41,21 @@ variable "users" {
   type        = any
   default     = {}
 }
+
+variable "create_default_user" {
+  description = "Determines whether a default user will be created"
+  type        = bool
+  default     = true
+}
+
+variable "default_user" {
+  description = "A map of default user attributes"
+  type        = any
+  default     = {}
+}
+
+variable "default_user_id" {
+  description = "The ID of the default user"
+  type        = string
+  default     = "default"
+}

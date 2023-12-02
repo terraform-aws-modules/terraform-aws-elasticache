@@ -65,6 +65,8 @@ resource "aws_elasticache_cluster" "this" {
 locals {
   # https://github.com/hashicorp/terraform-provider-aws/blob/8c993e552d1396fac6f4706890bc7c9e44a852f3/internal/service/elasticache/replication_group.go#L130
   in_global_replication_group = var.global_replication_group_id != null
+
+  num_node_groups = var.cluster_mode_enabled ? var.num_node_groups : null
 }
 
 resource "aws_elasticache_replication_group" "this" {
@@ -75,7 +77,7 @@ resource "aws_elasticache_replication_group" "this" {
   auth_token                  = var.auth_token
   auth_token_update_strategy  = var.auth_token_update_strategy
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
-  automatic_failover_enabled  = var.multi_az_enabled ? true : var.automatic_failover_enabled
+  automatic_failover_enabled  = var.multi_az_enabled || var.cluster_mode_enabled ? true : var.automatic_failover_enabled
   data_tiering_enabled        = var.data_tiering_enabled
   description                 = coalesce(var.description, "Replication group")
   engine                      = local.in_global_replication_group ? null : var.engine
@@ -101,8 +103,8 @@ resource "aws_elasticache_replication_group" "this" {
   network_type                = var.network_type
   node_type                   = local.in_global_replication_group ? null : var.node_type
   notification_topic_arn      = var.notification_topic_arn
-  num_cache_clusters          = var.num_cache_clusters
-  num_node_groups             = local.in_global_replication_group ? null : var.num_node_groups
+  num_cache_clusters          = var.cluster_mode_enabled ? null : var.num_cache_clusters
+  num_node_groups             = local.in_global_replication_group ? null : local.num_node_groups
   parameter_group_name        = local.in_global_replication_group ? null : local.parameter_group_name_result
   port                        = coalesce(var.port, local.port)
   preferred_cache_cluster_azs = var.preferred_cache_cluster_azs
@@ -143,11 +145,18 @@ resource "aws_cloudwatch_log_group" "this" {
 # Parameter Group
 ################################################################################
 
-locals {
-  inter_parameter_group_name = "${try(coalesce(var.cluster_id, var.replication_group_id), "")}-${var.parameter_group_family}"
-  parameter_group_name       = coalesce(var.parameter_group_name, local.inter_parameter_group_name)
+resource "random_id" "this" {
+  count = var.create && var.create_parameter_group ? 1 : 0
 
+  byte_length = 8
+}
+
+locals {
+  inter_parameter_group_name  = "${try(coalesce(var.cluster_id, var.replication_group_id), "")}-${var.parameter_group_family}-${try(random_id.this[0].hex, "")}"
+  parameter_group_name        = coalesce(var.parameter_group_name, local.inter_parameter_group_name)
   parameter_group_name_result = var.create && var.create_parameter_group ? aws_elasticache_parameter_group.this[0].id : var.parameter_group_name
+
+  parameters = var.cluster_mode_enabled ? concat([{ name = "cluster-enabled", value = "yes" }], var.parameters) : var.parameters
 }
 
 resource "aws_elasticache_parameter_group" "this" {
@@ -158,7 +167,7 @@ resource "aws_elasticache_parameter_group" "this" {
   name        = local.parameter_group_name
 
   dynamic "parameter" {
-    for_each = var.parameters
+    for_each = local.parameters
 
     content {
       name  = parameter.value.name
@@ -167,6 +176,10 @@ resource "aws_elasticache_parameter_group" "this" {
   }
 
   tags = local.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 ################################################################################

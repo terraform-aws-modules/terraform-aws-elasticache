@@ -31,13 +31,15 @@ Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.23 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.27 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.23 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.27 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.0 |
 
 ## Modules
 
@@ -55,6 +57,7 @@ No modules.
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_security_group_egress_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
 | [aws_vpc_security_group_ingress_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule) | resource |
+| [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
 ## Inputs
 
@@ -69,6 +72,7 @@ No modules.
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | Availability Zone for the cache cluster. If you want to create cache nodes in multi-az, use `preferred_availability_zones` instead | `string` | `null` | no |
 | <a name="input_az_mode"></a> [az\_mode](#input\_az\_mode) | Whether the nodes in this Memcached node group are created in a single Availability Zone or created across multiple Availability Zones in the cluster's region. Valid values for this parameter are `single-az` or `cross-az`, default is `single-az` | `string` | `null` | no |
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | Group identifier. ElastiCache converts this name to lowercase. Changing this value will re-create the resource | `string` | `""` | no |
+| <a name="input_cluster_mode_enabled"></a> [cluster\_mode\_enabled](#input\_cluster\_mode\_enabled) | Whether to enable Redis [cluster mode https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html] | `bool` | `false` | no |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether resources will be created (affects all resources) | `bool` | `true` | no |
 | <a name="input_create_cluster"></a> [create\_cluster](#input\_create\_cluster) | Determines whether an ElastiCache cluster will be created or not | `bool` | `true` | no |
 | <a name="input_create_parameter_group"></a> [create\_parameter\_group](#input\_create\_parameter\_group) | Determines whether the ElastiCache parameter group will be created or not | `bool` | `false` | no |
@@ -118,7 +122,7 @@ No modules.
 | <a name="input_subnet_group_name"></a> [subnet\_group\_name](#input\_subnet\_group\_name) | The name of the subnet group. If `create_subnet_group` is `true`, this is the name assigned to the subnet group created. Otherwise, this is the name of an existing subnet group | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC Subnet IDs for the Elasticache subnet group | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
-| <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC | `bool` | `null` | no |
+| <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC | `bool` | `true` | no |
 | <a name="input_user_group_ids"></a> [user\_group\_ids](#input\_user\_group\_ids) | User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid | `list(string)` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Identifier of the VPC where the security group will be created | `string` | `null` | no |
 
