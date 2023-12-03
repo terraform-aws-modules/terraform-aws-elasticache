@@ -35,7 +35,10 @@ module "elasticache" {
   num_cache_nodes = 2
   az_mode         = "cross-az"
 
-  # Security group
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # Security Group
   vpc_id = module.vpc.vpc_id
   security_group_rules = {
     ingress_vpc = {
@@ -46,15 +49,12 @@ module "elasticache" {
     }
   }
 
-  # subnet group
+  # Subnet Group
   subnet_group_name        = local.name
   subnet_group_description = "${title(local.name)} subnet group"
   subnet_ids               = module.vpc.private_subnets
 
-  maintenance_window = "sun:05:00-sun:09:00"
-  apply_immediately  = true
-
-  # parameter group
+  # Parameter Group
   create_parameter_group      = true
   parameter_group_name        = local.name
   parameter_group_family      = "memcached1.6"

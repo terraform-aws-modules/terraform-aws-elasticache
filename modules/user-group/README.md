@@ -54,7 +54,11 @@ module "elasticache_user_group" {
 
 Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
-- [Complete](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/complete)
+- [Memcached Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/memcached-cluster)
+- [Redis Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-cluster)
+- [Redis Clustered Mode](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-clustered-mode)
+- [Redis Global Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-global-replication-group)
+- [Redis Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-replication-group)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

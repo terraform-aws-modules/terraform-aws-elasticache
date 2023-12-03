@@ -39,7 +39,7 @@ module "elasticache_primary" {
   engine_version = "7.1"
   node_type      = "cache.r7g.large"
 
-  # Security group
+  # Security Group
   vpc_id = module.vpc_primary.vpc_id
   security_group_rules = {
     ingress_vpc = {
@@ -50,7 +50,7 @@ module "elasticache_primary" {
     }
   }
 
-  # subnet group
+  # Subnet Group
   subnet_ids = module.vpc_primary.private_subnets
 
   tags = local.tags
@@ -66,7 +66,7 @@ module "elasticache_secondary" {
   replication_group_id        = local.name
   global_replication_group_id = module.elasticache_primary.global_replication_group_id
 
-  # Security group
+  # Security Group
   vpc_id = module.vpc_secondary.vpc_id
   security_group_rules = {
     ingress_vpc = {
@@ -77,7 +77,7 @@ module "elasticache_secondary" {
     }
   }
 
-  # subnet group
+  # Subnet Group
   subnet_ids = module.vpc_secondary.private_subnets
 
   tags = local.tags

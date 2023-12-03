@@ -32,7 +32,10 @@ module "elasticache" {
   engine_version = "7.1"
   node_type      = "cache.t4g.small"
 
-  # Security group
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # Security Group
   vpc_id = module.vpc.vpc_id
   security_group_rules = {
     ingress_vpc = {
@@ -43,15 +46,12 @@ module "elasticache" {
     }
   }
 
-  # subnet group
+  # Subnet Group
   subnet_group_name        = local.name
   subnet_group_description = "${title(local.name)} subnet group"
   subnet_ids               = module.vpc.private_subnets
 
-  maintenance_window = "sun:05:00-sun:09:00"
-  apply_immediately  = true
-
-  # parameter group
+  # Parameter Group
   create_parameter_group      = true
   parameter_group_name        = local.name
   parameter_group_family      = "redis7"

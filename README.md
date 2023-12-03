@@ -8,9 +8,258 @@ Terraform module which creates AWS ElastiCache resources.
 
 See [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) directory for working examples to reference:
 
+### Memcached Cluster
+
 ```hcl
 module "elasticache" {
   source = "clowdhaus/elasticache/aws"
+
+  cluster_id               = "example-memcached"
+  create_cluster           = true
+  create_replication_group = false
+
+  engine          = "memcached"
+  engine_version  = "1.6.17"
+  node_type       = "cache.t4g.small"
+  num_cache_nodes = 2
+  az_mode         = "cross-az"
+
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # Security group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_ids = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group = true
+  parameter_group_family = "memcached1.6"
+  parameters = [
+    {
+      name  = "idle_timeout"
+      value = 60
+    }
+  ]
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+```
+
+### Redis Cluster
+
+```hcl
+module "elasticache" {
+  source = "clowdhaus/elasticache/aws"
+
+  cluster_id               = "example-redis"
+  create_cluster           = true
+  create_replication_group = false
+
+  engine_version = "7.1"
+  node_type      = "cache.t4g.small"
+
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # Security group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_ids = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group = true
+  parameter_group_family = "redis7"
+  parameters = [
+    {
+      name  = "latency-tracking"
+      value = "yes"
+    }
+  ]
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+```
+
+### Redis Cluster Mode
+
+```hcl
+module "elasticache" {
+  source = "clowdhaus/elasticache/aws"
+
+  replication_group_id = "example-redis-cluster"
+
+  # Cluster mode
+  cluster_mode_enabled       = true
+  num_node_groups            = 2
+  replicas_per_node_group    = 3
+  automatic_failover_enabled = true
+  multi_az_enabled           = true
+
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # Security group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_ids = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group = true
+  parameter_group_family = "redis7"
+  parameters = [
+    {
+      name  = "latency-tracking"
+      value = "yes"
+    }
+  ]
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+```
+
+### Redis Global Replication Group
+
+```hcl
+module "elasticache_primary" {
+  source = "clowdhaus/elasticache/aws"
+
+  replication_group_id                    = "example-redis-global-replication-group"
+  create_primary_global_replication_group = true
+
+  engine_version = "7.1"
+  node_type      = "cache.r7g.large"
+
+  # Security group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_ids = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group = true
+  parameter_group_family = "redis7"
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+module "elasticache_secondary" {
+  source = "clowdhaus/elasticache/aws"
+
+  providers = {
+    aws = aws.other_region
+  }
+
+  replication_group_id        = "example-redis-global-replication-group"
+  global_replication_group_id = module.elasticache_primary.global_replication_group_id
+
+  # Security group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_ids = module.vpc.private_subnets
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+```
+
+### Redis Replication Group
+
+```hcl
+module "elasticache" {
+  source = "clowdhaus/elasticache/aws"
+
+  replication_group_id = "example-redis-replication-group"
+
+  engine_version = "7.1"
+  node_type      = "cache.t4g.small"
+
+  transit_encryption_enabled = true
+  auth_token                 = "PickSomethingMoreSecure123!"
+  maintenance_window         = "sun:05:00-sun:09:00"
+  apply_immediately          = true
+
+  # Security group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_ids = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group = true
+  parameter_group_family = "redis7"
+  parameters = [
+    {
+      name  = "latency-tracking"
+      value = "yes"
+    }
+  ]
 
   tags = {
     Terraform   = "true"
@@ -23,7 +272,11 @@ module "elasticache" {
 
 Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
-- [Complete](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/complete)
+- [Memcached Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/memcached-cluster)
+- [Redis Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-cluster)
+- [Redis Cluster Mode](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-cluster-mode)
+- [Redis Global Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-global-replication-group)
+- [Redis Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-replication-group)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
