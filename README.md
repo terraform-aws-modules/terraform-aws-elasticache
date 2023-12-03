@@ -6,13 +6,13 @@ Terraform module which creates AWS ElastiCache resources.
 
 ## Usage
 
-See [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) directory for working examples to reference:
+See [`examples`](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples) directory for working examples to reference:
 
 ### Memcached Cluster
 
 ```hcl
 module "elasticache" {
-  source = "clowdhaus/elasticache/aws"
+  source = "terraform-aws-modules/elasticache/aws"
 
   cluster_id               = "example-memcached"
   create_cluster           = true
@@ -62,7 +62,7 @@ module "elasticache" {
 
 ```hcl
 module "elasticache" {
-  source = "clowdhaus/elasticache/aws"
+  source = "terraform-aws-modules/elasticache/aws"
 
   cluster_id               = "example-redis"
   create_cluster           = true
@@ -109,7 +109,7 @@ module "elasticache" {
 
 ```hcl
 module "elasticache" {
-  source = "clowdhaus/elasticache/aws"
+  source = "terraform-aws-modules/elasticache/aws"
 
   replication_group_id = "example-redis-cluster"
 
@@ -158,7 +158,7 @@ module "elasticache" {
 
 ```hcl
 module "elasticache_primary" {
-  source = "clowdhaus/elasticache/aws"
+  source = "terraform-aws-modules/elasticache/aws"
 
   replication_group_id                    = "example-redis-global-replication-group"
   create_primary_global_replication_group = true
@@ -191,7 +191,7 @@ module "elasticache_primary" {
 }
 
 module "elasticache_secondary" {
-  source = "clowdhaus/elasticache/aws"
+  source = "terraform-aws-modules/elasticache/aws"
 
   providers = {
     aws = aws.other_region
@@ -225,7 +225,7 @@ module "elasticache_secondary" {
 
 ```hcl
 module "elasticache" {
-  source = "clowdhaus/elasticache/aws"
+  source = "terraform-aws-modules/elasticache/aws"
 
   replication_group_id = "example-redis-replication-group"
 
@@ -270,13 +270,13 @@ module "elasticache" {
 
 ## Examples
 
-Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
+Examples codified under the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
-- [Memcached Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/memcached-cluster)
-- [Redis Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-cluster)
-- [Redis Cluster Mode](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-cluster-mode)
-- [Redis Global Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-global-replication-group)
-- [Redis Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-replication-group)
+- [Memcached Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/memcached-cluster)
+- [Redis Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster)
+- [Redis Cluster Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster-mode)
+- [Redis Global Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-global-replication-group)
+- [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -414,4 +414,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/clowdhaus/terraform-aws-elasticache/blob/main/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-elasticache/blob/master/LICENSE).

@@ -6,11 +6,11 @@ Terraform module which creates AWS ElastiCache users & group resources.
 
 ## Usage
 
-See [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) directory for working examples to reference:
+See [`examples`](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples) directory for working examples to reference:
 
 ```hcl
 module "elasticache_user_group" {
-  source = "clowdhaus/elasticache/aws//modules/user-group"
+  source = "terraform-aws-modules/elasticache/aws//modules/user-group"
 
   user_group_id = "example"
 
@@ -52,13 +52,13 @@ module "elasticache_user_group" {
 
 ## Examples
 
-Examples codified under the [`examples`](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
+Examples codified under the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
-- [Memcached Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/memcached-cluster)
-- [Redis Cluster](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-cluster)
-- [Redis Clustered Mode](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-clustered-mode)
-- [Redis Global Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-global-replication-group)
-- [Redis Replication Group](https://github.com/clowdhaus/terraform-aws-elasticache/tree/main/examples/redis-replication-group)
+- [Memcached Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/memcached-cluster)
+- [Redis Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster)
+- [Redis Clustered Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-clustered-mode)
+- [Redis Global Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-global-replication-group)
+- [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -112,4 +112,4 @@ No modules.
 
 ## License
 
-Apache-2.0 Licensed. See [LICENSE](https://github.com/clowdhaus/terraform-aws-elasticache/blob/main/LICENSE).
+Apache-2.0 Licensed. See [LICENSE](https://github.com/terraform-aws-modules/terraform-aws-elasticache/blob/master/LICENSE).
