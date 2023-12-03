@@ -39,7 +39,7 @@ resource "aws_elasticache_user" "default" {
   user_id              = var.default_user.user_id
   user_name            = "default"
 
-  tags = var.tags
+  tags = local.tags
 }
 
 ################################################################################

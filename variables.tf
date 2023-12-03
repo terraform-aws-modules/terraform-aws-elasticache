@@ -59,7 +59,7 @@ variable "cluster_id" {
 variable "engine" {
   description = "Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis`"
   type        = string
-  default     = null
+  default     = "redis"
 }
 
 variable "engine_version" {
@@ -293,6 +293,12 @@ variable "cluster_mode_enabled" {
 
 variable "create_primary_global_replication_group" {
   description = "Determines whether an primary ElastiCache global replication group will be created"
+  type        = bool
+  default     = false
+}
+
+variable "create_secondary_global_replication_group" {
+  description = "Determines whether an secondary ElastiCache global replication group will be created"
   type        = bool
   default     = false
 }

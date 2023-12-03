@@ -63,8 +63,9 @@ module "elasticache_secondary" {
     aws = aws.euwest1
   }
 
-  replication_group_id        = local.name
-  global_replication_group_id = module.elasticache_primary.global_replication_group_id
+  replication_group_id                      = local.name
+  create_secondary_global_replication_group = true
+  global_replication_group_id               = module.elasticache_primary.global_replication_group_id
 
   # Security Group
   vpc_id = module.vpc_secondary.vpc_id

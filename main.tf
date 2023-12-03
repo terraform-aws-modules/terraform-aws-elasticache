@@ -53,7 +53,7 @@ resource "aws_elasticache_cluster" "this" {
   snapshot_retention_limit     = local.in_replication_group ? null : var.snapshot_retention_limit
   snapshot_window              = local.in_replication_group ? null : var.snapshot_window
   subnet_group_name            = local.in_replication_group ? null : local.subnet_group_name
-  transit_encryption_enabled   = var.transit_encryption_enabled
+  transit_encryption_enabled   = var.engine == "memcached" ? var.transit_encryption_enabled : null
 
   tags = local.tags
 }
@@ -125,9 +125,8 @@ resource "aws_elasticache_replication_group" "this" {
 ################################################################################
 
 locals {
-  create_global_replication_group = (var.create_primary_global_replication_group || local.create_secondary_global_replication_group)
+  create_global_replication_group = var.create_primary_global_replication_group || var.create_secondary_global_replication_group
 
-  create_secondary_global_replication_group = var.global_replication_group_id != null
 }
 
 resource "aws_elasticache_global_replication_group" "this" {
@@ -147,17 +146,17 @@ resource "aws_elasticache_replication_group" "global" {
   count = var.create && var.create_replication_group && local.create_global_replication_group ? 1 : 0
 
   apply_immediately           = var.apply_immediately
-  at_rest_encryption_enabled  = local.create_secondary_global_replication_group ? null : var.at_rest_encryption_enabled
+  at_rest_encryption_enabled  = var.create_secondary_global_replication_group ? null : var.at_rest_encryption_enabled
   auth_token                  = var.auth_token
   auth_token_update_strategy  = var.auth_token_update_strategy
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   automatic_failover_enabled  = var.multi_az_enabled || var.cluster_mode_enabled ? true : var.automatic_failover_enabled
   data_tiering_enabled        = var.data_tiering_enabled
   description                 = coalesce(var.description, "Global replication group")
-  engine                      = local.create_secondary_global_replication_group ? null : var.engine
-  engine_version              = local.create_secondary_global_replication_group ? null : var.engine_version
+  engine                      = var.create_secondary_global_replication_group ? null : var.engine
+  engine_version              = var.create_secondary_global_replication_group ? null : var.engine_version
   final_snapshot_identifier   = var.final_snapshot_identifier
-  global_replication_group_id = local.create_secondary_global_replication_group ? var.global_replication_group_id : null
+  global_replication_group_id = var.create_secondary_global_replication_group ? var.global_replication_group_id : null
   ip_discovery                = var.ip_discovery
   kms_key_id                  = var.at_rest_encryption_enabled ? var.kms_key_arn : null
 
@@ -178,20 +177,20 @@ resource "aws_elasticache_replication_group" "global" {
   node_type                   = var.node_type
   notification_topic_arn      = var.notification_topic_arn
   num_cache_clusters          = var.cluster_mode_enabled ? null : var.num_cache_clusters
-  num_node_groups             = local.create_secondary_global_replication_group ? null : local.num_node_groups
-  parameter_group_name        = local.create_secondary_global_replication_group ? null : local.parameter_group_name_result
+  num_node_groups             = var.create_secondary_global_replication_group ? null : local.num_node_groups
+  parameter_group_name        = var.create_secondary_global_replication_group ? null : local.parameter_group_name_result
   port                        = coalesce(var.port, local.port)
   preferred_cache_cluster_azs = var.preferred_cache_cluster_azs
   replicas_per_node_group     = var.replicas_per_node_group
   replication_group_id        = var.replication_group_id
-  security_group_names        = local.create_secondary_global_replication_group ? null : var.security_group_names
+  security_group_names        = var.create_secondary_global_replication_group ? null : var.security_group_names
   security_group_ids          = local.security_group_ids
-  snapshot_arns               = local.create_secondary_global_replication_group ? null : var.snapshot_arns
-  snapshot_name               = local.create_secondary_global_replication_group ? null : var.snapshot_name
+  snapshot_arns               = var.create_secondary_global_replication_group ? null : var.snapshot_arns
+  snapshot_name               = var.create_secondary_global_replication_group ? null : var.snapshot_name
   snapshot_retention_limit    = var.snapshot_retention_limit
   snapshot_window             = var.snapshot_window
   subnet_group_name           = local.subnet_group_name
-  transit_encryption_enabled  = local.create_secondary_global_replication_group ? null : var.transit_encryption_enabled
+  transit_encryption_enabled  = var.create_secondary_global_replication_group ? null : var.transit_encryption_enabled
   user_group_ids              = var.user_group_ids
 
   tags = local.tags
