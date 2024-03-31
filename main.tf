@@ -254,7 +254,7 @@ resource "aws_elasticache_serverless_cache" "this" {
 ################################################################################
 
 locals {
-  create_cloudwatch_log_group = var.create && var.engine != "memcached"
+  create_cloudwatch_log_group = var.create && var.engine != "memcached" && !var.create_serverless_cache
 }
 
 resource "aws_cloudwatch_log_group" "this" {
@@ -333,7 +333,7 @@ resource "aws_elasticache_subnet_group" "this" {
 
 locals {
   create_security_group = var.create && var.create_security_group
-  security_group_name   = try(coalesce(var.security_group_name, var.cluster_id, var.replication_group_id), "")
+  security_group_name   = try(coalesce(var.security_group_name, var.cluster_id, var.replication_group_id, var.cache_name), "")
 }
 
 resource "aws_security_group" "this" {
