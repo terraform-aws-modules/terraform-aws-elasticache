@@ -284,14 +284,14 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.27 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.41 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.27 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.41 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.0 |
 
 ## Modules
@@ -308,6 +308,7 @@ No modules.
 | [aws_elasticache_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_parameter_group) | resource |
 | [aws_elasticache_replication_group.global](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
 | [aws_elasticache_replication_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group) | resource |
+| [aws_elasticache_serverless_cache.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_serverless_cache) | resource |
 | [aws_elasticache_subnet_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_subnet_group) | resource |
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_security_group_egress_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_egress_rule) | resource |
@@ -326,6 +327,8 @@ No modules.
 | <a name="input_automatic_failover_enabled"></a> [automatic\_failover\_enabled](#input\_automatic\_failover\_enabled) | Specifies whether a read-only replica will be automatically promoted to read/write primary if the existing primary fails. If true, Multi-AZ is enabled for this replication group. If false, Multi-AZ is disabled for this replication group. Must be enabled for Redis (cluster mode enabled) replication groups | `bool` | `null` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | Availability Zone for the cache cluster. If you want to create cache nodes in multi-az, use `preferred_availability_zones` instead | `string` | `null` | no |
 | <a name="input_az_mode"></a> [az\_mode](#input\_az\_mode) | Whether the nodes in this Memcached node group are created in a single Availability Zone or created across multiple Availability Zones in the cluster's region. Valid values for this parameter are `single-az` or `cross-az`, default is `single-az` | `string` | `null` | no |
+| <a name="input_cache_name"></a> [cache\_name](#input\_cache\_name) | The name which serves as a unique identifier to the serverless cache. | `string` | `null` | no |
+| <a name="input_cache_usage_limits"></a> [cache\_usage\_limits](#input\_cache\_usage\_limits) | Sets the cache usage limits for storage and ElastiCache Processing Units for the cache. | `map(any)` | `{}` | no |
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | Group identifier. ElastiCache converts this name to lowercase. Changing this value will re-create the resource | `string` | `""` | no |
 | <a name="input_cluster_mode_enabled"></a> [cluster\_mode\_enabled](#input\_cluster\_mode\_enabled) | Whether to enable Redis [cluster mode https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis-RedisCluster.html] | `bool` | `false` | no |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether resources will be created (affects all resources) | `bool` | `true` | no |
@@ -335,7 +338,9 @@ No modules.
 | <a name="input_create_replication_group"></a> [create\_replication\_group](#input\_create\_replication\_group) | Determines whether an ElastiCache replication group will be created or not | `bool` | `true` | no |
 | <a name="input_create_secondary_global_replication_group"></a> [create\_secondary\_global\_replication\_group](#input\_create\_secondary\_global\_replication\_group) | Determines whether an secondary ElastiCache global replication group will be created | `bool` | `false` | no |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Determines if a security group is created | `bool` | `true` | no |
+| <a name="input_create_serverless_cache"></a> [create\_serverless\_cache](#input\_create\_serverless\_cache) | Determines whether serverless resource will be created | `bool` | `false` | no |
 | <a name="input_create_subnet_group"></a> [create\_subnet\_group](#input\_create\_subnet\_group) | Determines whether the Elasticache subnet group will be created or not | `bool` | `true` | no |
+| <a name="input_daily_snapshot_time"></a> [daily\_snapshot\_time](#input\_daily\_snapshot\_time) | The daily time that snapshots will be created from the new serverless cache. Only supported for engine type `redis`. Defaults to 0. | `string` | `null` | no |
 | <a name="input_data_tiering_enabled"></a> [data\_tiering\_enabled](#input\_data\_tiering\_enabled) | Enables data tiering. Data tiering is only supported for replication groups using the `r6gd` node type. This parameter must be set to true when using `r6gd` nodes | `bool` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | User-created description for the replication group | `string` | `null` | no |
 | <a name="input_engine"></a> [engine](#input\_engine) | Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis` | `string` | `"redis"` | no |
@@ -344,8 +349,10 @@ No modules.
 | <a name="input_global_replication_group_id"></a> [global\_replication\_group\_id](#input\_global\_replication\_group\_id) | The ID of the global replication group to which this replication group should belong | `string` | `null` | no |
 | <a name="input_ip_discovery"></a> [ip\_discovery](#input\_ip\_discovery) | The IP version to advertise in the discovery protocol. Valid values are `ipv4` or `ipv6` | `string` | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The ARN of the key that you wish to use if encrypting at rest. If not supplied, uses service managed encryption. Can be specified only if `at_rest_encryption_enabled = true` | `string` | `null` | no |
+| <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | ARN of the customer managed key for encrypting the data at rest. If no KMS key is provided, a default service key is used. | `string` | `null` | no |
 | <a name="input_log_delivery_configuration"></a> [log\_delivery\_configuration](#input\_log\_delivery\_configuration) | (Redis only) Specifies the destination and format of Redis SLOWLOG or Redis Engine Log | `any` | <pre>{<br>  "slow-log": {<br>    "destination_type": "cloudwatch-logs",<br>    "log_format": "json"<br>  }<br>}</pre> | no |
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | Specifies the weekly time range for when maintenance on the cache cluster is performed. The format is `ddd:hh24:mi-ddd:hh24:mi` (24H Clock UTC) | `string` | `null` | no |
+| <a name="input_major_engine_version"></a> [major\_engine\_version](#input\_major\_engine\_version) | The version of the cache engine that will be used to create the serverless cache. | `string` | `null` | no |
 | <a name="input_multi_az_enabled"></a> [multi\_az\_enabled](#input\_multi\_az\_enabled) | Specifies whether to enable Multi-AZ Support for the replication group. If true, `automatic_failover_enabled` must also be enabled. Defaults to `false` | `bool` | `false` | no |
 | <a name="input_network_type"></a> [network\_type](#input\_network\_type) | The IP versions for cache cluster connections. Valid values are `ipv4`, `ipv6` or `dual_stack` | `string` | `null` | no |
 | <a name="input_node_type"></a> [node\_type](#input\_node\_type) | The instance class used. For Memcached, changing this value will re-create the resource | `string` | `null` | no |
@@ -372,6 +379,7 @@ No modules.
 | <a name="input_security_group_tags"></a> [security\_group\_tags](#input\_security\_group\_tags) | A map of additional tags to add to the security group created | `map(string)` | `{}` | no |
 | <a name="input_security_group_use_name_prefix"></a> [security\_group\_use\_name\_prefix](#input\_security\_group\_use\_name\_prefix) | Determines whether the security group name (`security_group_name`) is used as a prefix | `bool` | `true` | no |
 | <a name="input_snapshot_arns"></a> [snapshot\_arns](#input\_snapshot\_arns) | (Redis only) Single-element string list containing an Amazon Resource Name (ARN) of a Redis RDB snapshot file stored in Amazon S3 | `list(string)` | `[]` | no |
+| <a name="input_snapshot_arns_to_restore"></a> [snapshot\_arns\_to\_restore](#input\_snapshot\_arns\_to\_restore) | The list of ARN(s) of the snapshot that the new serverless cache will be created from. Available for Redis only. | `list(string)` | `null` | no |
 | <a name="input_snapshot_name"></a> [snapshot\_name](#input\_snapshot\_name) | (Redis only) Name of a snapshot from which to restore data into the new node group. Changing `snapshot_name` forces a new resource | `string` | `null` | no |
 | <a name="input_snapshot_retention_limit"></a> [snapshot\_retention\_limit](#input\_snapshot\_retention\_limit) | (Redis only) Number of days for which ElastiCache will retain automatic cache cluster snapshots before deleting them | `number` | `null` | no |
 | <a name="input_snapshot_window"></a> [snapshot\_window](#input\_snapshot\_window) | (Redis only) Daily time range (in UTC) during which ElastiCache will begin taking a daily snapshot of your cache cluster. Example: `05:00-09:00` | `string` | `null` | no |
@@ -379,7 +387,9 @@ No modules.
 | <a name="input_subnet_group_name"></a> [subnet\_group\_name](#input\_subnet\_group\_name) | The name of the subnet group. If `create_subnet_group` is `true`, this is the name assigned to the subnet group created. Otherwise, this is the name of an existing subnet group | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC Subnet IDs for the Elasticache subnet group | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
+| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for creating, updating, and deleting serverless resources. | `map(string)` | `{}` | no |
 | <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC | `bool` | `true` | no |
+| <a name="input_user_group_id"></a> [user\_group\_id](#input\_user\_group\_id) | The identifier of the UserGroup to be associated with the serverless cache. Available for Redis only. Default is NULL. | `string` | `null` | no |
 | <a name="input_user_group_ids"></a> [user\_group\_ids](#input\_user\_group\_ids) | User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid | `list(string)` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Identifier of the VPC where the security group will be created | `string` | `null` | no |
 
@@ -409,6 +419,13 @@ No modules.
 | <a name="output_replication_group_reader_endpoint_address"></a> [replication\_group\_reader\_endpoint\_address](#output\_replication\_group\_reader\_endpoint\_address) | Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled |
 | <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | Amazon Resource Name (ARN) of the security group |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | ID of the security group |
+| <a name="output_serverless_cache_arn"></a> [serverless\_cache\_arn](#output\_serverless\_cache\_arn) | The amazon resource name of the serverless cache |
+| <a name="output_serverless_cache_create_time"></a> [serverless\_cache\_create\_time](#output\_serverless\_cache\_create\_time) | Timestamp of when the serverless cache was created |
+| <a name="output_serverless_cache_endpoint"></a> [serverless\_cache\_endpoint](#output\_serverless\_cache\_endpoint) | Represents the information required for client programs to connect to a cache node |
+| <a name="output_serverless_cache_full_engine_version"></a> [serverless\_cache\_full\_engine\_version](#output\_serverless\_cache\_full\_engine\_version) | The name and version number of the engine the serverless cache is compatible with |
+| <a name="output_serverless_cache_major_engine_version"></a> [serverless\_cache\_major\_engine\_version](#output\_serverless\_cache\_major\_engine\_version) | The version number of the engine the serverless cache is compatible with |
+| <a name="output_serverless_cache_reader_endpoint"></a> [serverless\_cache\_reader\_endpoint](#output\_serverless\_cache\_reader\_endpoint) | Represents the information required for client programs to connect to a cache node |
+| <a name="output_serverless_cache_status"></a> [serverless\_cache\_status](#output\_serverless\_cache\_status) | The current status of the serverless cache. The allowed values are CREATING, AVAILABLE, DELETING, CREATE-FAILED and MODIFYING |
 | <a name="output_subnet_group_name"></a> [subnet\_group\_name](#output\_subnet\_group\_name) | The ElastiCache subnet group name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -13,7 +13,7 @@ locals {
 ################################################################################
 
 resource "aws_elasticache_cluster" "this" {
-  count = var.create && var.create_cluster ? 1 : 0
+  count = var.create && var.create_cluster && !var.create_serverless_cache ? 1 : 0
 
   apply_immediately          = var.apply_immediately
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
@@ -67,7 +67,7 @@ locals {
 }
 
 resource "aws_elasticache_replication_group" "this" {
-  count = var.create && var.create_replication_group && !local.create_global_replication_group ? 1 : 0
+  count = var.create && var.create_replication_group && !local.create_global_replication_group && !var.create_serverless_cache ? 1 : 0
 
   apply_immediately           = var.apply_immediately
   at_rest_encryption_enabled  = var.at_rest_encryption_enabled
@@ -130,7 +130,7 @@ locals {
 }
 
 resource "aws_elasticache_global_replication_group" "this" {
-  count = var.create && var.create_replication_group && var.create_primary_global_replication_group ? 1 : 0
+  count = var.create && var.create_replication_group && var.create_primary_global_replication_group && !var.create_serverless_cache ? 1 : 0
 
   automatic_failover_enabled = var.automatic_failover_enabled
   cache_node_type            = var.node_type
@@ -143,7 +143,7 @@ resource "aws_elasticache_global_replication_group" "this" {
 }
 
 resource "aws_elasticache_replication_group" "global" {
-  count = var.create && var.create_replication_group && local.create_global_replication_group ? 1 : 0
+  count = var.create && var.create_replication_group && local.create_global_replication_group && !var.create_serverless_cache ? 1 : 0
 
   apply_immediately           = var.apply_immediately
   at_rest_encryption_enabled  = var.create_secondary_global_replication_group ? null : var.at_rest_encryption_enabled
@@ -201,6 +201,55 @@ resource "aws_elasticache_replication_group" "global" {
 }
 
 ################################################################################
+# Serverless Cache
+################################################################################
+
+resource "aws_elasticache_serverless_cache" "this" {
+  count = var.create && var.create_serverless_cache ? 1 : 0
+
+  engine = var.engine
+  name   = var.cache_name
+
+  dynamic "cache_usage_limits" {
+    for_each = try([var.cache_usage_limits], [])
+    content {
+
+      dynamic "data_storage" {
+        for_each = try([cache_usage_limits.value.data_storage], [])
+        content {
+          maximum = data_storage.value.maximum
+          unit    = try(data_storage.value.unit, "GB")
+        }
+      }
+
+      dynamic "ecpu_per_second" {
+        for_each = try([cache_usage_limits.value.ecpu_per_second], [])
+        content {
+          maximum = ecpu_per_second.value.maximum
+        }
+      }
+    }
+  }
+  daily_snapshot_time      = var.daily_snapshot_time
+  description              = coalesce(var.description, "Serverless Cache")
+  kms_key_id               = var.kms_key_id
+  major_engine_version     = var.major_engine_version
+  security_group_ids       = local.security_group_ids
+  snapshot_arns_to_restore = var.snapshot_arns_to_restore
+  snapshot_retention_limit = var.snapshot_retention_limit
+  subnet_ids               = var.subnet_ids
+  user_group_id            = var.user_group_id
+
+  timeouts {
+    create = try(var.timeouts.create, "40m")
+    delete = try(var.timeouts.delete, "80m")
+    update = try(var.timeouts.update, "40m")
+  }
+
+  tags = var.tags
+}
+
+################################################################################
 # Cloudwatch Log Group
 ################################################################################
 
@@ -223,7 +272,7 @@ resource "aws_cloudwatch_log_group" "this" {
 ################################################################################
 
 resource "random_id" "this" {
-  count = var.create && var.create_parameter_group ? 1 : 0
+  count = var.create && var.create_parameter_group && !var.create_serverless_cache ? 1 : 0
 
   byte_length = 8
 }
@@ -237,7 +286,7 @@ locals {
 }
 
 resource "aws_elasticache_parameter_group" "this" {
-  count = var.create && var.create_parameter_group ? 1 : 0
+  count = var.create && var.create_parameter_group && !var.create_serverless_cache ? 1 : 0
 
   description = coalesce(var.parameter_group_description, "ElastiCache parameter group")
   family      = var.parameter_group_family
@@ -265,11 +314,11 @@ resource "aws_elasticache_parameter_group" "this" {
 
 locals {
   inter_subnet_group_name = try(coalesce(var.subnet_group_name, var.cluster_id, var.replication_group_id), "")
-  subnet_group_name       = var.create && var.create_subnet_group ? aws_elasticache_subnet_group.this[0].name : var.subnet_group_name
+  subnet_group_name       = var.create && var.create_subnet_group && !var.create_serverless_cache ? aws_elasticache_subnet_group.this[0].name : var.subnet_group_name
 }
 
 resource "aws_elasticache_subnet_group" "this" {
-  count = var.create && var.create_subnet_group ? 1 : 0
+  count = var.create && var.create_subnet_group && !var.create_serverless_cache ? 1 : 0
 
   name        = local.inter_subnet_group_name
   description = coalesce(var.subnet_group_description, "ElastiCache subnet group")
