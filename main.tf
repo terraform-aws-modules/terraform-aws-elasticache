@@ -217,7 +217,8 @@ resource "aws_elasticache_serverless_cache" "this" {
       dynamic "data_storage" {
         for_each = try([cache_usage_limits.value.data_storage], [])
         content {
-          maximum = data_storage.value.maximum
+          maximum = try(data_storage.value.maximum, null)
+          minimum = try(data_storage.value.minimum, null)
           unit    = try(data_storage.value.unit, "GB")
         }
       }
@@ -225,7 +226,8 @@ resource "aws_elasticache_serverless_cache" "this" {
       dynamic "ecpu_per_second" {
         for_each = try([cache_usage_limits.value.ecpu_per_second], [])
         content {
-          maximum = ecpu_per_second.value.maximum
+          maximum = try(ecpu_per_second.value.maximum, null)
+          minimum = try(ecpu_per_second.value.minimum, null)
         }
       }
     }
