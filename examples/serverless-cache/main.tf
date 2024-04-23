@@ -19,11 +19,10 @@ locals {
 }
 
 module "serverless" {
-  source = "../../"
+  source = "../../modules/serverless-cache"
 
-  create_serverless_cache = true
-  engine                  = "redis"
-  cache_name              = local.name
+  engine     = "redis"
+  cache_name = local.name
 
   cache_usage_limits = {
     data_storage = {
@@ -38,16 +37,7 @@ module "serverless" {
   description          = "${local.name} serverless cluster"
   kms_key_id           = aws_kms_key.this.arn
   major_engine_version = "7"
-
-  vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
-      # Default port is based on the default engine port
-      description = "VPC traffic"
-      cidr_ipv4   = module.vpc.vpc_cidr_block
-    }
-  }
+  security_group_ids   = [module.sg.security_group_id]
 
   snapshot_retention_limit = 7
   subnet_ids               = module.vpc.private_subnets
@@ -100,6 +90,20 @@ module "vpc" {
 resource "aws_kms_key" "this" {
   description         = "KMS CMK for ${local.name}"
   enable_key_rotation = true
+
+  tags = local.tags
+}
+
+module "sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name        = local.name
+  description = "Security group for VPC traffic"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_cidr_blocks = [module.vpc.vpc_cidr_block]
+  ingress_rules       = ["redis-tcp"]
 
   tags = local.tags
 }
