@@ -181,6 +181,12 @@ variable "transit_encryption_enabled" {
   default     = true
 }
 
+variable "transit_encryption_mode" {
+  description = "A setting that enables clients to migrate to in-transit encryption with no downtime. Valid values are preferred and required"
+  type        = string
+  default     = null
+}
+
 ################################################################################
 # Replication Group
 ################################################################################
