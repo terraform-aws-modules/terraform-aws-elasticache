@@ -115,6 +115,7 @@ resource "aws_elasticache_replication_group" "this" {
   snapshot_window             = var.snapshot_window
   subnet_group_name           = local.subnet_group_name
   transit_encryption_enabled  = var.transit_encryption_enabled
+  transit_encryption_mode     = var.transit_encryption_mode
   user_group_ids              = var.user_group_ids
 
   tags = local.tags
@@ -214,6 +215,8 @@ resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/elasticache/${try(each.value.cloudwatch_log_group_name, coalesce(var.cluster_id, var.replication_group_id), "")}"
   retention_in_days = try(each.value.cloudwatch_log_group_retention_in_days, 14)
   kms_key_id        = try(each.value.cloudwatch_log_group_kms_key_id, null)
+  skip_destroy      = try(each.value.cloudwatch_log_group_skip_destroy, null)
+  log_group_class   = try(each.value.cloudwatch_log_group_class, null)
 
   tags = merge(local.tags, try(each.value.tags, {}))
 }
