@@ -26,7 +26,7 @@ resource "aws_elasticache_cluster" "this" {
   ip_discovery               = var.ip_discovery
 
   dynamic "log_delivery_configuration" {
-    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" }
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" && try(v.create_cloudwatch_log_group, true) }
 
     content {
       destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
@@ -85,7 +85,7 @@ resource "aws_elasticache_replication_group" "this" {
   kms_key_id                  = var.at_rest_encryption_enabled ? var.kms_key_arn : null
 
   dynamic "log_delivery_configuration" {
-    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" }
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" && try(v.create_cloudwatch_log_group, true) }
 
     content {
       destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
@@ -162,7 +162,7 @@ resource "aws_elasticache_replication_group" "global" {
   kms_key_id                  = var.at_rest_encryption_enabled ? var.kms_key_arn : null
 
   dynamic "log_delivery_configuration" {
-    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" }
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" && try(v.create_cloudwatch_log_group, true) }
 
     content {
       destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
