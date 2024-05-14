@@ -34,6 +34,7 @@ Note that this example may create resources which will incur monetary charges on
 |------|--------|---------|
 | <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../../ | n/a |
 | <a name="module_elasticache_disabled"></a> [elasticache\_disabled](#module\_elasticache\_disabled) | ../.. | n/a |
+| <a name="module_elasticache_logging_disabled"></a> [elasticache\_logging\_disabled](#module\_elasticache\_logging\_disabled) | ../../ | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
 
 ## Resources
