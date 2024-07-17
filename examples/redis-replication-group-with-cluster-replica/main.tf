@@ -19,10 +19,65 @@ locals {
 }
 
 ################################################################################
-# ElastiCache Module
+# Replication Group with Cluster Replica (single module)
 ################################################################################
+module "replication_group_with_cluster_replica" {
+  source = "../../"
 
-module "elasticache" {
+  cluster_id               = "cluster"
+  create_cluster           = true
+  create_replication_group = true
+  replication_group_id     = "repl-grp-with-cluster-replica"
+
+  log_delivery_configuration = {
+    slow-log = {
+      cloudwatch_log_group_name = "repl-grp-with-cluster-replica"
+      destination_type          = "cloudwatch-logs"
+      log_format                = "json"
+    }
+  }
+
+  engine_version = "7.1"
+  node_type      = "cache.t4g.small"
+
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
+
+  # Security Group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_group_name        = "repl-grp-with-cluster-replica"
+  subnet_group_description = "repl-grp-with-cluster-replica subnet group"
+  subnet_ids               = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group      = true
+  parameter_group_name        = "repl-grp-with-cluster-replica"
+  parameter_group_family      = "redis7"
+  parameter_group_description = "repl-grp-with-cluster-replica parameter group"
+  parameters = [
+    {
+      name  = "latency-tracking"
+      value = "yes"
+    }
+  ]
+
+  tags = local.tags
+}
+
+################################################################################
+# Add Cluster Replica to Existing Replication Group (separate modules)
+################################################################################
+module "replication_group" {
   source = "../../"
 
   replication_group_id = "ex-replication-group"
@@ -47,13 +102,13 @@ module "elasticache" {
   }
 
   # Subnet Group
-  subnet_group_name        = local.name
+  subnet_group_name        = "ex-replication-group"
   subnet_group_description = "${title(local.name)} subnet group"
   subnet_ids               = module.vpc.private_subnets
 
   # Parameter Group
   create_parameter_group      = true
-  parameter_group_name        = local.name
+  parameter_group_name        = "ex-replication-group"
   parameter_group_family      = "redis7"
   parameter_group_description = "${title(local.name)} parameter group"
   parameters = [
@@ -72,7 +127,7 @@ module "cluster_replica" {
   cluster_id               = "ex-cluster-replica"
   create_cluster           = true
   cluster_mode_enabled     = false
-  replication_group_id     = module.elasticache.replication_group_id
+  replication_group_id     = module.replication_group.replication_group_id
   create_replication_group = false
   create_subnet_group      = false
 

@@ -1,6 +1,6 @@
 # ElastiCache example for Redis replication group with cluster replica
 
-Configuration in this directory creates set of ElastiCaChe resources including replication group, subnet group, parameter group, and ElastiCache cluster replica.
+Configuration in this directory creates a replication group with a cluster replica both in a single module and separate modules as well to show adding a cluster replica to an existing replication group.
 
 ## Usage
 
@@ -33,7 +33,8 @@ Note that this example may create resources which will incur monetary charges on
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cluster_replica"></a> [cluster\_replica](#module\_cluster\_replica) | ../../ | n/a |
-| <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../../ | n/a |
+| <a name="module_replication_group"></a> [replication\_group](#module\_replication\_group) | ../../ | n/a |
+| <a name="module_replication_group_with_cluster_replica"></a> [replication\_group\_with\_cluster\_replica](#module\_replication\_group\_with\_cluster\_replica) | ../../ | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
 
 ## Resources
