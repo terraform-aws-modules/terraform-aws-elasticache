@@ -20,13 +20,13 @@ resource "aws_elasticache_cluster" "this" {
   availability_zone          = var.availability_zone
   az_mode                    = local.in_replication_group ? null : var.az_mode
   cluster_id                 = var.cluster_id
-  engine                     = var.engine
+  engine                     = local.in_replication_group ? null : var.engine
   engine_version             = local.in_replication_group ? null : var.engine_version
   final_snapshot_identifier  = var.final_snapshot_identifier
   ip_discovery               = var.ip_discovery
 
   dynamic "log_delivery_configuration" {
-    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" }
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" && !local.in_replication_group }
 
     content {
       destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
