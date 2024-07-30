@@ -232,7 +232,7 @@ resource "random_id" "this" {
 }
 
 locals {
-  inter_parameter_group_name  = "${try(coalesce(var.cluster_id, var.replication_group_id), "")}-${var.parameter_group_family}-${try(random_id.this[0].hex, "")}"
+  inter_parameter_group_name  = "${try(coalesce(var.cluster_id, var.replication_group_id), "")}-${replace(var.parameter_group_family, ".", "")}-${try(random_id.this[0].hex, "")}"
   parameter_group_name        = coalesce(var.parameter_group_name, local.inter_parameter_group_name)
   parameter_group_name_result = var.create && var.create_parameter_group ? aws_elasticache_parameter_group.this[0].id : var.parameter_group_name
 
