@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.1...v1.2.2) (2024-08-04)
+
+
+### Bug Fixes
+
+* Argument `replication_group_id` conflicts with `engine` and `log_delivery_configuration` ([#10](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/10)) ([97bc4b5](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/97bc4b5dbab8d2ea78ffd6aaf5716ab271f11f59))
+
 ## [1.2.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.0...v1.2.1) (2024-08-03)
 
 
