@@ -5,7 +5,7 @@ resource "aws_elasticache_serverless_cache" "this" {
   name   = var.cache_name
 
   dynamic "cache_usage_limits" {
-    for_each = try([var.cache_usage_limits], [])
+    for_each = length(var.cache_usage_limits) > 0 ? [var.cache_usage_limits] : []
     content {
 
       dynamic "data_storage" {
