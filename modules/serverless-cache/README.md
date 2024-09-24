@@ -29,7 +29,7 @@ module "elasticache_serverless_cache" {
   kms_key_id           = aws_kms_key.this.arn
   major_engine_version = "7"
 
-  security_group_rules = [module.sg.security_group_id]
+  security_group_ids = [module.sg.security_group_id]
 
   snapshot_retention_limit = 7
   subnet_ids               = module.vpc.private_subnets
