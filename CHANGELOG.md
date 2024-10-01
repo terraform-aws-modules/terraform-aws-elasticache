@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.3...v1.2.4) (2024-10-01)
+
+
+### Bug Fixes
+
+* Correct output attribute mis-spelling ([#18](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/18)) ([a4940aa](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/a4940aa5d8d3f6f9427c050c57b4cda90bf09856))
+
 ## [1.2.3](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.2...v1.2.3) (2024-09-09)
 
 
