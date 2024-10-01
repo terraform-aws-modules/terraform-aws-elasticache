@@ -29,7 +29,7 @@ module "elasticache_serverless_cache" {
   kms_key_id           = aws_kms_key.this.arn
   major_engine_version = "7"
 
-  security_group_rules = [module.sg.security_group_id]
+  security_group_ids = [module.sg.security_group_id]
 
   snapshot_retention_limit = 7
   subnet_ids               = module.vpc.private_subnets
@@ -54,7 +54,7 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 - [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
 - [Serverless Cache](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/serverless-cache)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -109,7 +109,7 @@ No modules.
 | <a name="output_serverless_cache_major_engine_version"></a> [serverless\_cache\_major\_engine\_version](#output\_serverless\_cache\_major\_engine\_version) | The version number of the engine the serverless cache is compatible with |
 | <a name="output_serverless_cache_reader_endpoint"></a> [serverless\_cache\_reader\_endpoint](#output\_serverless\_cache\_reader\_endpoint) | Represents the information required for client programs to connect to a cache node |
 | <a name="output_serverless_cache_status"></a> [serverless\_cache\_status](#output\_serverless\_cache\_status) | The current status of the serverless cache. The allowed values are CREATING, AVAILABLE, DELETING, CREATE-FAILED and MODIFYING |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
 
 ## License
 
