@@ -41,7 +41,7 @@ output "replication_group_engine_version_actual" {
   value       = try(aws_elasticache_replication_group.this[0].engine_version_actual, aws_elasticache_replication_group.global[0].engine_version_actual, null)
 }
 
-output "replication_group_coniguration_endpoint_address" {
+output "replication_group_configuration_endpoint_address" {
   description = "Address of the replication group configuration endpoint when cluster mode is enabled"
   value       = try(aws_elasticache_replication_group.this[0].configuration_endpoint_address, aws_elasticache_replication_group.global[0].configuration_endpoint_address, null)
 }
