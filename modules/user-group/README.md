@@ -60,7 +60,7 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 - [Redis Global Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-global-replication-group)
 - [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -108,7 +108,7 @@ No modules.
 | <a name="output_group_arn"></a> [group\_arn](#output\_group\_arn) | The ARN that identifies the user group |
 | <a name="output_group_id"></a> [group\_id](#output\_group\_id) | The user group identifier |
 | <a name="output_users"></a> [users](#output\_users) | A map of users created and their attributes |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
 
 ## License
 
