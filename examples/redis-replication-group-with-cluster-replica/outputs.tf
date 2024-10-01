@@ -41,9 +41,9 @@ output "replication_group_engine_version_actual" {
   value       = module.replication_group_with_cluster_replica.replication_group_engine_version_actual
 }
 
-output "replication_group_coniguration_endpoint_address" {
+output "replication_group_configuration_endpoint_address" {
   description = "Address of the replication group configuration endpoint when cluster mode is enabled"
-  value       = module.replication_group_with_cluster_replica.replication_group_coniguration_endpoint_address
+  value       = module.replication_group_with_cluster_replica.replication_group_configuration_endpoint_address
 }
 
 output "replication_group_id" {
