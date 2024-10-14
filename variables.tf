@@ -269,6 +269,12 @@ variable "replicas_per_node_group" {
   default     = null
 }
 
+variable "replication_group_cluster_mode" {
+  description = "Specifies whether cluster mode is enabled or disabled. Valid values are enabled or disabled or compatible"
+  type        = string
+  default     = null
+}
+
 variable "replication_group_id" {
   description = "Replication group identifier. When `create_replication_group` is set to `true`, this is the ID assigned to the replication group created. When `create_replication_group` is set to `false`, this is the ID of an externally created replication group"
   type        = string

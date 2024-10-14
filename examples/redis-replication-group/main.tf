@@ -63,6 +63,33 @@ module "elasticache" {
     }
   ]
 
+  # log group configuration examples
+  log_delivery_configuration = {
+    slow-log = {
+      destination_type = "cloudwatch-logs"
+      log_format       = "json"
+    }
+    engine-log = {
+      destination_type = "cloudwatch-logs"
+      log_format       = "json"
+      # to use the same log group for different log types
+      create_cloudwatch_log_group = false
+    }
+
+    # to create a cloudwatch log group for each log type
+    # specify cloudwatch_log_group_name
+    # slow-log = {
+    #   cloudwatch_log_group_name = "${local.name}-slow-log"
+    #   destination_type          = "cloudwatch-logs"
+    #   log_format                = "json"
+    # }
+    # engine-log = {
+    #   cloudwatch_log_group_name = "${local.name}-engine-log"
+    #   destination_type          = "cloudwatch-logs"
+    #   log_format                = "json"
+    # }
+  }
+
   tags = local.tags
 }
 
