@@ -63,6 +63,9 @@ module "cache_user_group" {
       authentication_mode = {
         type = "no-password-required"
       }
+      timeouts = {
+        create = "20m"
+      }
     }
   }
 

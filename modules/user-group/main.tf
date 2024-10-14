@@ -75,8 +75,11 @@ resource "aws_elasticache_user_group_association" "this" {
   user_group_id = var.create && var.create_group ? aws_elasticache_user_group.this[0].user_group_id : each.value.user_group_id
   user_id       = aws_elasticache_user.this[each.key].user_id
 
-  timeouts {
-    create = try(each.value.timeouts.create, null)
-    delete = try(each.value.timeouts.delete, null)
+  dynamic "timeouts" {
+    for_each = try([each.value.timeouts], [])
+    content {
+      create = try(timeouts.value.create, null)
+      delete = try(timeouts.value.delete, null)
+    }
   }
 }
