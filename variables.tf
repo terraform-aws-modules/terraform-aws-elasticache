@@ -269,7 +269,7 @@ variable "replicas_per_node_group" {
   default     = null
 }
 
-variable "replication_group_cluster_mode" {
+variable "cluster_mode" {
   description = "Specifies whether cluster mode is enabled or disabled. Valid values are enabled or disabled or compatible"
   type        = string
   default     = null
