@@ -94,14 +94,9 @@ output "global_replication_group_node_groups" {
 # CloudWatch Log Group
 ################################################################################
 
-output "cloudwatch_log_group_name" {
-  description = "Name of cloudwatch log group created"
-  value       = module.elasticache.cloudwatch_log_group_name
-}
-
-output "cloudwatch_log_group_arn" {
-  description = "Arn of cloudwatch log group created"
-  value       = module.elasticache.cloudwatch_log_group_arn
+output "cloudwatch_log_groups" {
+  description = "Map of CloudWatch log groups created and their attributes"
+  value       = module.elasticache.cloudwatch_log_groups
 }
 
 ################################################################################
