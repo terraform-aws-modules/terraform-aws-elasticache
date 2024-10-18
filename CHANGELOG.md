@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.4...v1.3.0) (2024-10-17)
+
+
+### Features
+
+* Support `aws_elasticache_user_group_association.timeouts` and `aws_elasticache_replication_group.cluster_mode` ([#21](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/21)) ([1135640](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/1135640455df0ee16ef76bb5b0c6c3f069483b98))
+
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#20](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/20)) ([1bd81be](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/1bd81beec317d4b05fc847c4e3b41bbbcc8460ea))
+
 ## [1.2.4](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.3...v1.2.4) (2024-10-01)
 
 

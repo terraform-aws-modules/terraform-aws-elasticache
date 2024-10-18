@@ -75,6 +75,7 @@ resource "aws_elasticache_replication_group" "this" {
   auth_token_update_strategy  = var.auth_token_update_strategy
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   automatic_failover_enabled  = var.multi_az_enabled || var.cluster_mode_enabled ? true : var.automatic_failover_enabled
+  cluster_mode                = var.cluster_mode
   data_tiering_enabled        = var.data_tiering_enabled
   description                 = coalesce(var.description, "Replication group")
   engine                      = var.engine
@@ -152,6 +153,7 @@ resource "aws_elasticache_replication_group" "global" {
   auth_token_update_strategy  = var.auth_token_update_strategy
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   automatic_failover_enabled  = var.multi_az_enabled || var.cluster_mode_enabled ? true : var.automatic_failover_enabled
+  cluster_mode                = var.cluster_mode
   data_tiering_enabled        = var.data_tiering_enabled
   description                 = coalesce(var.description, "Global replication group")
   engine                      = var.create_secondary_global_replication_group ? null : var.engine
