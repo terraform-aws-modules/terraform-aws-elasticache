@@ -91,6 +91,12 @@ variable "log_delivery_configuration" {
   }
 }
 
+variable "create_cloudwatch_log_group" {
+  description = "Enable ot disable cloudwatch log group"
+  type        = bool
+  default     = true
+}
+
 variable "maintenance_window" {
   description = "Specifies the weekly time range for when maintenance on the cache cluster is performed. The format is `ddd:hh24:mi-ddd:hh24:mi` (24H Clock UTC)"
   type        = string
