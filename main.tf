@@ -4,8 +4,11 @@ locals {
 
   security_group_ids = local.create_security_group ? concat(var.security_group_ids, [aws_security_group.this[0].id]) : var.security_group_ids
   port               = var.engine == "memcached" ? 11211 : 6379
+  module_tag = {
+    terraform-aws-modules = "elasticache"
+  }
 
-  tags = merge(var.tags, { terraform-aws-modules = "elasticache" })
+  tags = var.tags == null ? local.module_tag : var.tags
 }
 
 ################################################################################
