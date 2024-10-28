@@ -4,7 +4,7 @@ variable "create" {
   default     = true
 }
 
-variable "custom_tags" {
+variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
   default     = {}
@@ -82,8 +82,8 @@ variable "ip_discovery" {
 
 variable "create_cloudwatch_log_group" {
   description = "Enable ot disable cloudwatch log group"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "log_delivery_configuration" {
