@@ -1,6 +1,6 @@
-# ElastiCache example for Memcached cluster
+# ElastiCache example for Valkey Replication Group
 
-Configuration in this directory creates set of ElastiCaChe resources including cluster, subnet group and parameter group.
+Configuration in this directory creates set of ElastiCaChe resources including replication group, subnet group and parameter group.
 
 ## Usage
 
@@ -33,7 +33,6 @@ Note that this example may create resources which will incur monetary charges on
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../../ | n/a |
-| <a name="module_elasticache_disabled"></a> [elasticache\_disabled](#module\_elasticache\_disabled) | ../.. | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
 
 ## Resources
