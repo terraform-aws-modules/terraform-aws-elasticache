@@ -268,6 +268,86 @@ module "elasticache" {
 }
 ```
 
+### Serverless Cache
+
+```hcl
+module "elasticache" {
+  source = "terraform-aws-modules/elasticache/aws//modules/serverless-cache"
+
+  engine     = "redis"
+  cache_name = "example-serverless-cache"
+
+  cache_usage_limits = {
+    data_storage = {
+      maximum = 2
+    }
+    ecpu_per_second = {
+      maximum = 1000
+    }
+  }
+
+  daily_snapshot_time  = "22:00"
+  description          = "example-serverless-cache serverless cluster"
+  kms_key_id           = aws_kms_key.this.arn
+  major_engine_version = "7"
+  security_group_ids   = [module.sg.security_group_id]
+
+  snapshot_retention_limit = 7
+  subnet_ids               = module.vpc.private_subnets
+
+  user_group_id = module.cache_user_group.group_id
+}
+```
+
+### Valkey Replication Group
+
+```hcl
+module "elasticache" {
+  source = "terraform-aws-modules/elasticache/aws"
+
+  replication_group_id = local.name
+
+  engine         = "valkey"
+  engine_version = "7.2"
+  node_type      = "cache.t4g.small"
+
+  transit_encryption_enabled = true
+  auth_token                 = "PickSomethingMoreSecure123!"
+  maintenance_window         = "sun:05:00-sun:09:00"
+  apply_immediately          = true
+
+  # Security Group
+  vpc_id = module.vpc.vpc_id
+  security_group_rules = {
+    ingress_vpc = {
+      # Default type is `ingress`
+      # Default port is based on the default engine port
+      description = "VPC traffic"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
+    }
+  }
+
+  # Subnet Group
+  subnet_group_name        = local.name
+  subnet_group_description = "Valkey replication group subnet group"
+  subnet_ids               = module.vpc.private_subnets
+
+  # Parameter Group
+  create_parameter_group      = true
+  parameter_group_name        = local.name
+  parameter_group_family      = "valkey7"
+  parameter_group_description = "Valkey replication group parameter group"
+  parameters = [
+    {
+      name  = "latency-tracking"
+      value = "yes"
+    }
+  ]
+
+  tags = local.tags
+}
+```
+
 ## Examples
 
 Examples codified under the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
@@ -277,6 +357,8 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 - [Redis Cluster Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster-mode)
 - [Redis Global Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-global-replication-group)
 - [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
+- [Serverless Cache](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/serverless-cache)
+- [Valkey Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/valkey-replication-group)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
