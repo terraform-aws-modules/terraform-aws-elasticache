@@ -2,6 +2,11 @@ locals {
   # https://github.com/hashicorp/terraform-provider-aws/blob/3c4cb52c5dc2c09e10e5a717f73d1d8bc4186e87/internal/service/elasticache/cluster.go#L271
   in_replication_group = var.replication_group_id != null
 
+  # elasticache clusters currently do not support engine type valkey
+  # TODO: remove this local `create_cluster` conditional once this bug is addressed:
+  # https://github.com/hashicorp/terraform-provider-aws/issues/39905
+  create_cluster = var.create_cluster && var.engine != "valkey" ? true : false
+
   security_group_ids = local.create_security_group ? concat(var.security_group_ids, [aws_security_group.this[0].id]) : var.security_group_ids
   port               = var.engine == "memcached" ? 11211 : 6379
 
@@ -13,7 +18,7 @@ locals {
 ################################################################################
 
 resource "aws_elasticache_cluster" "this" {
-  count = var.create && var.create_cluster ? 1 : 0
+  count = var.create && local.create_cluster ? 1 : 0
 
   apply_immediately          = var.apply_immediately
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
@@ -86,7 +91,7 @@ resource "aws_elasticache_replication_group" "this" {
   kms_key_id                  = var.at_rest_encryption_enabled ? var.kms_key_arn : null
 
   dynamic "log_delivery_configuration" {
-    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine == "redis" }
+    for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" }
 
     content {
       destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination

@@ -27,7 +27,7 @@ variable "apply_immediately" {
 }
 
 variable "auto_minor_version_upgrade" {
-  description = "Specifies whether minor version engine upgrades will be applied automatically to the underlying Cache Cluster instances during the maintenance window. Only supported for engine type `redis` and if the engine version is 6 or higher. Defaults to `true`"
+  description = "Specifies whether minor version engine upgrades will be applied automatically to the underlying Cache Cluster instances during the maintenance window. Only supported for engine type `redis` and `valkey` and if the engine version is 6 or higher. Defaults to `true`"
   type        = bool
   default     = null
 }
@@ -57,7 +57,7 @@ variable "cluster_id" {
 }
 
 variable "engine" {
-  description = "Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis`"
+  description = "Name of the cache engine to be used for this cache cluster. Valid values are `memcached`, `redis`, or `valkey`"
   type        = string
   default     = "redis"
 }
@@ -81,7 +81,7 @@ variable "ip_discovery" {
 }
 
 variable "log_delivery_configuration" {
-  description = "(Redis only) Specifies the destination and format of Redis SLOWLOG or Redis Engine Log"
+  description = "(Redis OSS or Valkey) Specifies the destination and format of Redis OSS/Valkey SLOWLOG or Redis OSS/Valkey Engine Log"
   type        = any
   default = {
     slow-log = {

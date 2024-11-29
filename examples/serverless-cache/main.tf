@@ -45,6 +45,33 @@ module "serverless" {
   user_group_id = module.cache_user_group.group_id
 }
 
+module "valkey_serverless" {
+  source = "../../modules/serverless-cache"
+
+  engine     = "valkey"
+  cache_name = "${local.name}-valkey"
+
+  cache_usage_limits = {
+    data_storage = {
+      maximum = 2
+    }
+    ecpu_per_second = {
+      maximum = 1000
+    }
+  }
+
+  daily_snapshot_time  = "22:00"
+  description          = "${local.name} valkey serverless cluster"
+  kms_key_id           = aws_kms_key.this.arn
+  major_engine_version = "7"
+  security_group_ids   = [module.sg.security_group_id]
+
+  snapshot_retention_limit = 7
+  subnet_ids               = module.vpc.private_subnets
+
+  user_group_id = module.cache_user_group.group_id
+}
+
 module "cache_user_group" {
   source = "../../modules/user-group"
 
