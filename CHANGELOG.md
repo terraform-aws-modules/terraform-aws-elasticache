@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.4.0...v1.4.1) (2024-12-02)
+
+
+### Bug Fixes
+
+* Change cloudwatch log group output to include all created log groups ([#19](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/19)) ([cdc870e](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/cdc870e425fd34a93f3e38adccf8eb4c8fd1ef1a))
+
 ## [1.4.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.3.0...v1.4.0) (2024-11-29)
 
 
