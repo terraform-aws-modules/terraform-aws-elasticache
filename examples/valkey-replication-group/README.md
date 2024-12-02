@@ -1,6 +1,6 @@
-# ElastiCache example for Redis replication group with cluster replica
+# ElastiCache example for Valkey Replication Group
 
-Configuration in this directory creates a replication group with a cluster replica both in a single module and separate modules as well to show adding a cluster replica to an existing replication group.
+Configuration in this directory creates set of ElastiCaChe resources including replication group, subnet group and parameter group.
 
 ## Usage
 
@@ -32,9 +32,7 @@ Note that this example may create resources which will incur monetary charges on
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cluster_replica"></a> [cluster\_replica](#module\_cluster\_replica) | ../../ | n/a |
-| <a name="module_replication_group"></a> [replication\_group](#module\_replication\_group) | ../../ | n/a |
-| <a name="module_replication_group_with_cluster_replica"></a> [replication\_group\_with\_cluster\_replica](#module\_replication\_group\_with\_cluster\_replica) | ../../ | n/a |
+| <a name="module_elasticache"></a> [elasticache](#module\_elasticache) | ../../ | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.0 |
 
 ## Resources
@@ -51,7 +49,8 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cloudwatch_log_groups"></a> [cloudwatch\_log\_groups](#output\_cloudwatch\_log\_groups) | Map of CloudWatch log groups created and their attributes |
+| <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | Arn of cloudwatch log group created |
+| <a name="output_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#output\_cloudwatch\_log\_group\_name) | Name of cloudwatch log group created |
 | <a name="output_cluster_address"></a> [cluster\_address](#output\_cluster\_address) | (Memcached only) DNS name of the cache cluster without the port appended |
 | <a name="output_cluster_arn"></a> [cluster\_arn](#output\_cluster\_arn) | The ARN of the ElastiCache Cluster |
 | <a name="output_cluster_cache_nodes"></a> [cluster\_cache\_nodes](#output\_cluster\_cache\_nodes) | List of node objects including `id`, `address`, `port` and `availability_zone` |

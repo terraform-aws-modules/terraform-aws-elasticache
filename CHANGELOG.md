@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.3.0...v1.4.0) (2024-11-29)
+
+
+### Features
+
+* Support Valkey ([#26](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/26)) ([6b1b5aa](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/6b1b5aa4576942bad13a6c8a8420e958a7327fad))
+
 ## [1.3.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.2.4...v1.3.0) (2024-10-17)
 
 
