@@ -94,11 +94,18 @@ output "global_replication_group_node_groups" {
 # CloudWatch Log Group
 ################################################################################
 
+output "cloudwatch_log_groups" {
+  description = "Map of CloudWatch log groups created and their attributes"
+  value       = aws_cloudwatch_log_group.this
+}
+
+# TODO - remove at next breaking change
 output "cloudwatch_log_group_name" {
   description = "Name of cloudwatch log group created"
   value       = try(aws_cloudwatch_log_group.this[0].name, null)
 }
 
+# TODO - remove at next breaking change
 output "cloudwatch_log_group_arn" {
   description = "Arn of cloudwatch log group created"
   value       = try(aws_cloudwatch_log_group.this[0].arn, null)
