@@ -21,9 +21,9 @@ variable "create_cluster" {
 }
 
 variable "apply_immediately" {
-  description = "Whether any database modifications are applied immediately, or during the next maintenance window. Default is `false`"
+  description = "Whether any database modifications are applied immediately, or during the next maintenance window"
   type        = bool
-  default     = null
+  default     = false
 }
 
 variable "auto_minor_version_upgrade" {
