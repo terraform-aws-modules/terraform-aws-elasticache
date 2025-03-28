@@ -61,6 +61,15 @@ resource "aws_elasticache_cluster" "this" {
   transit_encryption_enabled   = var.engine == "memcached" ? var.transit_encryption_enabled : null
 
   tags = local.tags
+
+  dynamic "timeouts" {
+    for_each = length(var.timeouts) > 0 ? [true] : []
+    content {
+      create = try(var.timeouts.create, null)
+      update = try(var.timeouts.update, null)
+      delete = try(var.timeouts.delete, null)
+    }
+  }
 }
 
 ################################################################################
