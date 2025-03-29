@@ -187,6 +187,12 @@ variable "transit_encryption_mode" {
   default     = null
 }
 
+variable "timeouts" {
+  description = "Define maximum timeout for creating, updating, and deleting cluster resource"
+  type        = map(string)
+  default     = {}
+}
+
 ################################################################################
 # Replication Group
 ################################################################################
