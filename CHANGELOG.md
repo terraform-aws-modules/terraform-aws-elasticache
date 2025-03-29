@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.4.1...v1.5.0) (2025-03-29)
+
+
+### Features
+
+* Add elasticache cluster timeouts ([#33](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/33)) ([41e5c75](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/41e5c75b2ea15a8631f8bb9f7f73ad5d868eeddf))
+
 ## [1.4.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.4.0...v1.4.1) (2024-12-02)
 
 
