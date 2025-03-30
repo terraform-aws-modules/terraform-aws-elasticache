@@ -292,6 +292,10 @@ resource "aws_elasticache_subnet_group" "this" {
   subnet_ids  = var.subnet_ids
 
   tags = local.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 ################################################################################
