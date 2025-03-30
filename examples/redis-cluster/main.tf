@@ -64,6 +64,12 @@ module "elasticache" {
   ]
 
   tags = local.tags
+
+  timeouts = {
+    create = "1h"
+    update = "2h"
+    delete = "1h"
+  }
 }
 
 module "elasticache_disabled" {
