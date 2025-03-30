@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.5.0...v1.6.0) (2025-03-30)
+
+
+### Features
+
+* Set `create_before_destroy` on subnet group ([#29](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/29)) ([9133f1e](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/9133f1ec80c4cefef8dd5a763f6f6d9e4526276e))
+
 ## [1.5.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.4.1...v1.5.0) (2025-03-29)
 
 
