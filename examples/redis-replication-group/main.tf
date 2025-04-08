@@ -30,10 +30,9 @@ module "elasticache" {
   engine_version = "7.1"
   node_type      = "cache.t4g.small"
 
-  transit_encryption_enabled = true
-  auth_token                 = "PickSomethingMoreSecure123!"
-  maintenance_window         = "sun:05:00-sun:09:00"
-  apply_immediately          = true
+  auth_token         = "PickSomethingMoreSecure123!"
+  maintenance_window = "sun:05:00-sun:09:00"
+  apply_immediately  = true
 
   # Security Group
   vpc_id = module.vpc.vpc_id
@@ -62,6 +61,10 @@ module "elasticache" {
       value = "yes"
     }
   ]
+
+  # enable encryption in-transit
+  transit_encryption_enabled = true
+  transit_encryption_mode    = "preferred"
 
   tags = local.tags
 }

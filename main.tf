@@ -59,7 +59,7 @@ resource "aws_elasticache_cluster" "this" {
   snapshot_window              = local.in_replication_group ? null : var.snapshot_window
   subnet_group_name            = local.in_replication_group ? null : local.subnet_group_name
   # this makes it so that the transit encryption is enabled by default for memcached, which prevents a backwards incompatible change
-  transit_encryption_enabled   = var.engine == "memcached" ? true : var.transit_encryption_enabled
+  transit_encryption_enabled = var.engine == "memcached" ? true : var.transit_encryption_enabled
 
   tags = local.tags
 
