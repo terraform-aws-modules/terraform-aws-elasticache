@@ -64,7 +64,7 @@ module "elasticache" {
 
   # enable encryption in-transit
   transit_encryption_enabled = true
-  transit_encryption_mode    = "preferred"
+  transit_encryption_mode    = "required"
 
   tags = local.tags
 }
