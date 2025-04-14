@@ -225,7 +225,7 @@ locals {
 resource "aws_cloudwatch_log_group" "this" {
   for_each = { for k, v in var.log_delivery_configuration : k => v if local.create_cloudwatch_log_group && try(v.create_cloudwatch_log_group, true) && try(v.destination_type, "") == "cloudwatch-logs" }
 
-  name              = "/aws/elasticache/${try(each.value.cloudwatch_log_group_name, coalesce(var.cluster_id, var.replication_group_id), "")}"
+  name              = "/aws/elasticache/${try(each.value.cloudwatch_log_group_name, coalesce(var.cluster_id, var.replication_group_id), "")/${each.key}}"
   retention_in_days = try(each.value.cloudwatch_log_group_retention_in_days, 14)
   kms_key_id        = try(each.value.cloudwatch_log_group_kms_key_id, null)
   skip_destroy      = try(each.value.cloudwatch_log_group_skip_destroy, null)
