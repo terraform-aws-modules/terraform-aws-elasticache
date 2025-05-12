@@ -82,6 +82,7 @@ variable "ip_discovery" {
 
 variable "log_delivery_configuration" {
   description = "(Redis OSS or Valkey) Specifies the destination and format of Redis OSS/Valkey SLOWLOG or Redis OSS/Valkey Engine Log"
+  nullable    = false
   type        = any
   default = {
     slow-log = {
