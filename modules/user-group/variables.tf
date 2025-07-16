@@ -23,7 +23,7 @@ variable "create_group" {
 variable "engine" {
   description = "The current supported value is `REDIS`"
   type        = string
-  default     = "REDIS"
+  default     = "redis"
 }
 
 variable "user_group_id" {
