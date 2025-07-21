@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.1...v1.6.2) (2025-07-21)
+
+
+### Bug Fixes
+
+* Use lowercase form of default engine `"redis"` ([#41](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/41)) ([0695d6a](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/0695d6a0512b144651cd11dea5929f48730fb916))
+
 ## [1.6.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.0...v1.6.1) (2025-07-21)
 
 
