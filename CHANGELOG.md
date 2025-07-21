@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.0...v1.6.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* Remove restriction on engine to allow Valkey cluster creation ([#44](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/44)) ([b3fe278](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/b3fe278d2f12a76a34d6b32b847a58c3b210f7f1))
+
 ## [1.6.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.5.0...v1.6.0) (2025-03-30)
 
 
