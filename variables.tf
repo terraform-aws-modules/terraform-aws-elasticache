@@ -239,6 +239,12 @@ variable "global_replication_group_id" {
   default     = null
 }
 
+variable "global_replication_group_id_suffix" {
+  description = "The ID suffix of the global replication group"
+  type        = string
+  default     = null
+}
+
 variable "kms_key_arn" {
   description = "The ARN of the key that you wish to use if encrypting at rest. If not supplied, uses service managed encryption. Can be specified only if `at_rest_encryption_enabled = true`"
   type        = string
