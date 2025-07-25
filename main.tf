@@ -144,7 +144,7 @@ resource "aws_elasticache_global_replication_group" "this" {
   cache_node_type            = var.node_type
   engine_version             = var.engine_version
 
-  global_replication_group_id_suffix   = var.replication_group_id
+  global_replication_group_id_suffix   = coalesce(var.global_replication_group_id_suffix, var.replication_group_id)
   global_replication_group_description = coalesce(var.description, "Global replication group")
   primary_replication_group_id         = aws_elasticache_replication_group.global[0].id
   parameter_group_name                 = local.parameter_group_name_result
