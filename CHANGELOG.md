@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.2...v1.7.0) (2025-07-25)
+
+
+### Features
+
+* Add option to customize global_replication_group_id_suffix ([#47](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/47)) ([2f30ea2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/2f30ea2b2fdd017c747262061095b66bc6bf09a7))
+
 ## [1.6.2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.1...v1.6.2) (2025-07-21)
 
 
