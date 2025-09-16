@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.7.0...v1.8.0) (2025-09-16)
+
+
+### Features
+
+* Add replication group port to outputs ([#50](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/50)) ([0b06d8e](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/0b06d8e4a74a602ad774f9d8f0422734e19ab680))
+
 ## [1.7.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.2...v1.7.0) (2025-07-25)
 
 
