@@ -44,6 +44,11 @@ module "elasticache" {
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
     }
+    ingress-self-redis = {
+      type = "ingress"
+      referenced_security_group_id = "self"
+      description = "Allow traffic from this security group to itself."
+    }
   }
 
   # Subnet Group
