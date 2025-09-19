@@ -330,7 +330,7 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
   description                  = try(each.value.description, null)
   from_port                    = try(each.value.from_port, local.port)
   prefix_list_id               = lookup(each.value, "prefix_list_id", null)
-  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null)
+  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null) == "self" ? aws_security_group.this[0].id : lookup(each.value, "referenced_security_group_id", null)
   to_port                      = try(each.value.to_port, local.port)
 
   tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
@@ -349,7 +349,7 @@ resource "aws_vpc_security_group_egress_rule" "this" {
   description                  = try(each.value.description, null)
   from_port                    = try(each.value.from_port, null)
   prefix_list_id               = lookup(each.value, "prefix_list_id", null)
-  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null)
+  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null) == "self" ? aws_security_group.this[0].id : lookup(each.value, "referenced_security_group_id", null)
   to_port                      = try(each.value.to_port, null)
 
   tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
