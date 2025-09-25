@@ -39,9 +39,9 @@ module "elasticache" {
   vpc_id = module.vpc.vpc_id
   security_group_rules = {
     ingress-self-redis = {
-      type = "ingress"
+      type                         = "ingress"
       referenced_security_group_id = "self"
-      description = "Allow traffic from this security group to itself."
+      description                  = "Allow traffic from this security group to itself."
     }
   }
 
