@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.8.0...v1.9.0) (2025-09-25)
+
+
+### Features
+
+* Allow security group rules to reference the security group created by the module ([#51](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/51)) ([42ccd24](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/42ccd2429c927913a043ead7f14dc14277df5c7b))
+
 ## [1.8.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.7.0...v1.8.0) (2025-09-16)
 
 
