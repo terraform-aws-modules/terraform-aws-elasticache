@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.9.0...v1.10.0) (2025-10-01)
+
+
+### Features
+
+* Add Terragrunt wrappers ([#52](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/52)) ([1e4241a](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/1e4241a561af6d23bdef50da995a77502b6a9fa7))
+
 ## [1.9.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.8.0...v1.9.0) (2025-09-25)
 
 
