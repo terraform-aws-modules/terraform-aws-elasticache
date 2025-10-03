@@ -425,19 +425,19 @@ variable "vpc_id" {
 
 variable "security_group_rules" {
   description = "Security group ingress and egress rules to add to the security group created"
-  type        = map(object({
-    type = optional(string, "ingress")
-    ip_protocol = optional(string, "tcp")
-    cidr_ipv4 = optional(string)
-    cidr_ipv6 = optional(string)
-    description = optional(string)
-    from_port = optional(number)
-    to_port = optional(number)
-    prefix_list_id = optional(string)
+  type = map(object({
+    type                         = optional(string, "ingress")
+    ip_protocol                  = optional(string, "tcp")
+    cidr_ipv4                    = optional(string)
+    cidr_ipv6                    = optional(string)
+    description                  = optional(string)
+    from_port                    = optional(number)
+    to_port                      = optional(number)
+    prefix_list_id               = optional(string)
     referenced_security_group_id = optional(string)
-    tags = optional(map(string), {})
+    tags                         = optional(map(string), {})
   }))
-  default     = {}
+  default = {}
 }
 
 variable "security_group_tags" {
