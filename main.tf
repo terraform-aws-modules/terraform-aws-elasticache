@@ -322,35 +322,35 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
 
   # Required
   security_group_id = aws_security_group.this[0].id
-  ip_protocol       = try(each.value.ip_protocol, "tcp")
+  ip_protocol       = each.value.ip_protocol
 
   # Optional
-  cidr_ipv4                    = lookup(each.value, "cidr_ipv4", null)
-  cidr_ipv6                    = lookup(each.value, "cidr_ipv6", null)
+  cidr_ipv4                    = try(each.value.cidr_ipv4, null)
+  cidr_ipv6                    = try(each.value.cidr_ipv6, null)
   description                  = try(each.value.description, null)
   from_port                    = try(each.value.from_port, local.port)
-  prefix_list_id               = lookup(each.value, "prefix_list_id", null)
-  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null) == "self" ? aws_security_group.this[0].id : lookup(each.value, "referenced_security_group_id", null)
+  prefix_list_id               = try(each.value.prefix_list_id, null)
+  referenced_security_group_id = try(each.value.referenced_security_group_id, null)
   to_port                      = try(each.value.to_port, local.port)
 
   tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
 }
 
 resource "aws_vpc_security_group_egress_rule" "this" {
-  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "egress" }
+  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && v.type == "egress" }
 
   # Required
   security_group_id = aws_security_group.this[0].id
   ip_protocol       = try(each.value.ip_protocol, "tcp")
 
   # Optional
-  cidr_ipv4                    = lookup(each.value, "cidr_ipv4", null)
-  cidr_ipv6                    = lookup(each.value, "cidr_ipv6", null)
+  cidr_ipv4                    = try(each.value.cidr_ipv4, null)
+  cidr_ipv6                    = try(each.value.cidr_ipv6, null)
   description                  = try(each.value.description, null)
-  from_port                    = try(each.value.from_port, null)
-  prefix_list_id               = lookup(each.value, "prefix_list_id", null)
-  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null) == "self" ? aws_security_group.this[0].id : lookup(each.value, "referenced_security_group_id", null)
-  to_port                      = try(each.value.to_port, null)
+  from_port                    = try(each.value.from_port, local.port)
+  prefix_list_id               = try(each.value.prefix_list_id, null)
+  referenced_security_group_id = try(each.value.referenced_security_group_id, null)
+  to_port                      = try(each.value.to_port, local.port)
 
   tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
 }
