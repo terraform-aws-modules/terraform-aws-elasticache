@@ -19,4 +19,5 @@ output "group_id" {
 output "users" {
   description = "A map of users created and their attributes"
   value       = aws_elasticache_user.this
+  sensitive   = true
 }
