@@ -176,13 +176,13 @@ variable "snapshot_window" {
 }
 
 variable "transit_encryption_enabled" {
-  description = "Enable encryption in-transit. Supported on replication groups running Valkey 7.2 and later, and Redis OSS versions 3.2.6, 4.0.10 and later, running in a VPC"
+  description = "Enable encryption in-transit"
   type        = bool
   default     = true
 }
 
 variable "transit_encryption_mode" {
-  description = "A setting that enables clients to migrate to in-transit encryption with no downtime. Valid values are preferred and required"
+  description = "A setting that enables clients to migrate to in-transit encryption with no downtime. Valid values are `preferred` and `required`"
   type        = string
   default     = null
 }

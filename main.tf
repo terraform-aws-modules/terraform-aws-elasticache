@@ -53,7 +53,8 @@ resource "aws_elasticache_cluster" "this" {
   snapshot_retention_limit     = local.in_replication_group ? null : var.snapshot_retention_limit
   snapshot_window              = local.in_replication_group ? null : var.snapshot_window
   subnet_group_name            = local.in_replication_group ? null : local.subnet_group_name
-  transit_encryption_enabled   = var.transit_encryption_enabled
+  # ToDo - remove restriction at next breaking change https://github.com/terraform-aws-modules/terraform-aws-elasticache/pull/56
+  transit_encryption_enabled = var.engine == "memcached" ? var.transit_encryption_enabled : null
 
   tags = local.tags
 
