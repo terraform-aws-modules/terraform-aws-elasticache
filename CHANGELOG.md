@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.0...v1.10.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* Enable `transit_encryption_enabled` for all avialble engines now that Elasticache supports this ([#56](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/56)) ([2ee85ee](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/2ee85eebdf450f3125ca6542b7f6a4f2f13fbecc))
+
 ## [1.10.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.9.0...v1.10.0) (2025-10-01)
 
 
