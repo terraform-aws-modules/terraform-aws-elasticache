@@ -53,7 +53,7 @@ resource "aws_elasticache_cluster" "this" {
   snapshot_retention_limit     = local.in_replication_group ? null : var.snapshot_retention_limit
   snapshot_window              = local.in_replication_group ? null : var.snapshot_window
   subnet_group_name            = local.in_replication_group ? null : local.subnet_group_name
-  transit_encryption_enabled   = var.engine == "memcached" ? var.transit_encryption_enabled : null
+  transit_encryption_enabled   = var.transit_encryption_enabled
 
   tags = local.tags
 
