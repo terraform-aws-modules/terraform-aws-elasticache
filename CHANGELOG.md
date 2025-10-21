@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.3](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.2...v1.10.3) (2025-10-21)
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#58](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/58)) ([a13028d](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/a13028dea53c3679ec38b3e048405ab9f2c8481e))
+
 ## [1.10.2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.1...v1.10.2) (2025-10-08)
 
 
