@@ -33,7 +33,7 @@ resource "aws_elasticache_user" "default" {
     }
   }
 
-  engine               = try(var.default_user.engine, "REDIS")
+  engine               = try(var.default_user.engine, "redis")
   no_password_required = try(var.default_user.no_password_required, null)
   passwords            = try(var.default_user.passwords, null)
   user_id              = var.default_user.user_id
@@ -60,7 +60,7 @@ resource "aws_elasticache_user" "this" {
     }
   }
 
-  engine               = try(each.value.engine, "REDIS")
+  engine               = try(each.value.engine, "redis")
   no_password_required = try(each.value.no_password_required, null)
   passwords            = try(each.value.passwords, null)
   user_id              = try(each.value.user_id, each.key)
