@@ -2,6 +2,11 @@
 # Cluster
 ################################################################################
 
+output "cluster_id" {
+  description = "The ID of the ElastiCache Cluster"
+  value       = try(aws_elasticache_cluster.this[0].id, null)
+}
+
 output "cluster_arn" {
   description = "The ARN of the ElastiCache Cluster"
   value       = try(aws_elasticache_cluster.this[0].arn, null)
