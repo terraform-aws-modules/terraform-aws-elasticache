@@ -88,13 +88,27 @@ variable "ip_discovery" {
 
 variable "log_delivery_configuration" {
   description = "(Redis OSS or Valkey) Specifies the destination and format of Redis OSS/Valkey SLOWLOG or Redis OSS/Valkey Engine Log"
-  type        = any
+  type = map(object({
+    create_cloudwatch_log_group = optional(bool, true)
+    destination                 = optional(string)
+    destination_type            = optional(string, "cloudwatch-logs")
+    log_format                  = optional(string, "json")
+    log_type                    = optional(string)
+
+    # CloudWatch log group
+    cloudwatch_log_group_name              = optional(string)
+    cloudwatch_log_group_retention_in_days = optional(number, 14)
+    cloudwatch_log_group_kms_key_id        = optional(string)
+    cloudwatch_log_group_class             = optional(string)
+    cloudwatch_log_group_tags              = optional(map(string), {})
+  }))
   default = {
     slow-log = {
       destination_type = "cloudwatch-logs"
       log_format       = "json"
     }
   }
+  nullable = false
 }
 
 variable "maintenance_window" {
@@ -195,8 +209,12 @@ variable "transit_encryption_mode" {
 
 variable "timeouts" {
   description = "Define maximum timeout for creating, updating, and deleting cluster resource"
-  type        = map(string)
-  default     = {}
+  type = object({
+    create = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default = null
 }
 
 ################################################################################
@@ -363,8 +381,12 @@ variable "parameter_group_name" {
 
 variable "parameters" {
   description = "List of ElastiCache parameters to apply"
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default  = []
+  nullable = false
 }
 
 ################################################################################
@@ -429,14 +451,42 @@ variable "vpc_id" {
   default     = null
 }
 
-variable "security_group_rules" {
-  description = "Security group ingress and egress rules to add to the security group created"
-  type        = any
-  default     = {}
-}
-
 variable "security_group_tags" {
   description = "A map of additional tags to add to the security group created"
   type        = map(string)
   default     = {}
+}
+
+variable "security_group_ingress_rules" {
+  description = "Security group ingress rules to add to the security group created"
+  type = map(object({
+    name                         = optional(string)
+    cidr_ipv4                    = optional(string)
+    cidr_ipv6                    = optional(string)
+    description                  = optional(string)
+    from_port                    = optional(string)
+    ip_protocol                  = optional(string, "tcp")
+    prefix_list_id               = optional(string)
+    referenced_security_group_id = optional(string)
+    tags                         = optional(map(string), {})
+    to_port                      = optional(string)
+  }))
+  default = null
+}
+
+variable "security_group_egress_rules" {
+  description = "Security group egress rules to add to the security group created"
+  type = map(object({
+    name                         = optional(string)
+    cidr_ipv4                    = optional(string)
+    cidr_ipv6                    = optional(string)
+    description                  = optional(string)
+    from_port                    = optional(string)
+    ip_protocol                  = optional(string, "tcp")
+    prefix_list_id               = optional(string)
+    referenced_security_group_id = optional(string)
+    tags                         = optional(map(string), {})
+    to_port                      = optional(string)
+  }))
+  default = null
 }

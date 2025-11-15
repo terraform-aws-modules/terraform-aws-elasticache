@@ -29,9 +29,8 @@ module "elasticache" {
 
   # Security group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -76,9 +75,8 @@ module "elasticache" {
 
   # Security group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -125,9 +123,8 @@ module "elasticache" {
 
   # Security group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -168,9 +165,8 @@ module "elasticache_primary" {
 
   # Security group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -202,9 +198,8 @@ module "elasticache_secondary" {
 
   # Security group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -239,9 +234,8 @@ module "elasticache" {
 
   # Security group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -318,9 +312,8 @@ module "elasticache" {
 
   # Security Group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -428,7 +421,7 @@ No modules.
 | <a name="input_global_replication_group_id_suffix"></a> [global\_replication\_group\_id\_suffix](#input\_global\_replication\_group\_id\_suffix) | The ID suffix of the global replication group | `string` | `null` | no |
 | <a name="input_ip_discovery"></a> [ip\_discovery](#input\_ip\_discovery) | The IP version to advertise in the discovery protocol. Valid values are `ipv4` or `ipv6` | `string` | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The ARN of the key that you wish to use if encrypting at rest. If not supplied, uses service managed encryption. Can be specified only if `at_rest_encryption_enabled = true` | `string` | `null` | no |
-| <a name="input_log_delivery_configuration"></a> [log\_delivery\_configuration](#input\_log\_delivery\_configuration) | (Redis OSS or Valkey) Specifies the destination and format of Redis OSS/Valkey SLOWLOG or Redis OSS/Valkey Engine Log | `any` | <pre>{<br/>  "slow-log": {<br/>    "destination_type": "cloudwatch-logs",<br/>    "log_format": "json"<br/>  }<br/>}</pre> | no |
+| <a name="input_log_delivery_configuration"></a> [log\_delivery\_configuration](#input\_log\_delivery\_configuration) | (Redis OSS or Valkey) Specifies the destination and format of Redis OSS/Valkey SLOWLOG or Redis OSS/Valkey Engine Log | <pre>map(object({<br/>    create_cloudwatch_log_group = optional(bool, true)<br/>    destination                 = optional(string)<br/>    destination_type            = optional(string, "cloudwatch-logs")<br/>    log_format                  = optional(string, "json")<br/>    log_type                    = optional(string)<br/><br/>    # CloudWatch log group<br/>    cloudwatch_log_group_name              = optional(string)<br/>    cloudwatch_log_group_retention_in_days = optional(number, 14)<br/>    cloudwatch_log_group_kms_key_id        = optional(string)<br/>    cloudwatch_log_group_class             = optional(string)<br/>    cloudwatch_log_group_tags              = optional(map(string), {})<br/>  }))</pre> | <pre>{<br/>  "slow-log": {<br/>    "destination_type": "cloudwatch-logs",<br/>    "log_format": "json"<br/>  }<br/>}</pre> | no |
 | <a name="input_maintenance_window"></a> [maintenance\_window](#input\_maintenance\_window) | Specifies the weekly time range for when maintenance on the cache cluster is performed. The format is `ddd:hh24:mi-ddd:hh24:mi` (24H Clock UTC) | `string` | `null` | no |
 | <a name="input_multi_az_enabled"></a> [multi\_az\_enabled](#input\_multi\_az\_enabled) | Specifies whether to enable Multi-AZ Support for the replication group. If true, `automatic_failover_enabled` must also be enabled. Defaults to `false` | `bool` | `false` | no |
 | <a name="input_network_type"></a> [network\_type](#input\_network\_type) | The IP versions for cache cluster connections. Valid values are `ipv4`, `ipv6` or `dual_stack` | `string` | `null` | no |
@@ -441,7 +434,7 @@ No modules.
 | <a name="input_parameter_group_description"></a> [parameter\_group\_description](#input\_parameter\_group\_description) | The description of the ElastiCache parameter group. Defaults to `Managed by Terraform` | `string` | `null` | no |
 | <a name="input_parameter_group_family"></a> [parameter\_group\_family](#input\_parameter\_group\_family) | The family of the ElastiCache parameter group | `string` | `""` | no |
 | <a name="input_parameter_group_name"></a> [parameter\_group\_name](#input\_parameter\_group\_name) | The name of the parameter group. If `create_parameter_group` is `true`, this is the name assigned to the parameter group created. Otherwise, this is the name of an existing parameter group | `string` | `null` | no |
-| <a name="input_parameters"></a> [parameters](#input\_parameters) | List of ElastiCache parameters to apply | `list(map(string))` | `[]` | no |
+| <a name="input_parameters"></a> [parameters](#input\_parameters) | List of ElastiCache parameters to apply | <pre>list(object({<br/>    name  = string<br/>    value = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_port"></a> [port](#input\_port) | The port number on which each of the cache nodes will accept connections. For Memcached the default is `11211`, and for Redis the default port is `6379` | `number` | `null` | no |
 | <a name="input_preferred_availability_zones"></a> [preferred\_availability\_zones](#input\_preferred\_availability\_zones) | List of the Availability Zones in which cache nodes are created | `list(string)` | `[]` | no |
 | <a name="input_preferred_cache_cluster_azs"></a> [preferred\_cache\_cluster\_azs](#input\_preferred\_cache\_cluster\_azs) | List of EC2 availability zones in which the replication group's cache clusters will be created. The order of the availability zones in the list is considered. The first item in the list will be the primary node. Ignored when updating | `list(string)` | `[]` | no |
@@ -450,10 +443,11 @@ No modules.
 | <a name="input_replicas_per_node_group"></a> [replicas\_per\_node\_group](#input\_replicas\_per\_node\_group) | Number of replica nodes in each node group. Changing this number will trigger a resizing operation before other settings modifications. Valid values are 0 to 5 | `number` | `null` | no |
 | <a name="input_replication_group_id"></a> [replication\_group\_id](#input\_replication\_group\_id) | Replication group identifier. When `create_replication_group` is set to `true`, this is the ID assigned to the replication group created. When `create_replication_group` is set to `false`, this is the ID of an externally created replication group | `string` | `null` | no |
 | <a name="input_security_group_description"></a> [security\_group\_description](#input\_security\_group\_description) | Description of the security group created | `string` | `null` | no |
+| <a name="input_security_group_egress_rules"></a> [security\_group\_egress\_rules](#input\_security\_group\_egress\_rules) | Security group egress rules to add to the security group created | <pre>map(object({<br/>    name                         = optional(string)<br/>    cidr_ipv4                    = optional(string)<br/>    cidr_ipv6                    = optional(string)<br/>    description                  = optional(string)<br/>    from_port                    = optional(string)<br/>    ip_protocol                  = optional(string, "tcp")<br/>    prefix_list_id               = optional(string)<br/>    referenced_security_group_id = optional(string)<br/>    tags                         = optional(map(string), {})<br/>    to_port                      = optional(string)<br/>  }))</pre> | `null` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | One or more VPC security groups associated with the cache cluster | `list(string)` | `[]` | no |
+| <a name="input_security_group_ingress_rules"></a> [security\_group\_ingress\_rules](#input\_security\_group\_ingress\_rules) | Security group ingress rules to add to the security group created | <pre>map(object({<br/>    name                         = optional(string)<br/>    cidr_ipv4                    = optional(string)<br/>    cidr_ipv6                    = optional(string)<br/>    description                  = optional(string)<br/>    from_port                    = optional(string)<br/>    ip_protocol                  = optional(string, "tcp")<br/>    prefix_list_id               = optional(string)<br/>    referenced_security_group_id = optional(string)<br/>    tags                         = optional(map(string), {})<br/>    to_port                      = optional(string)<br/>  }))</pre> | `null` | no |
 | <a name="input_security_group_name"></a> [security\_group\_name](#input\_security\_group\_name) | Name to use on security group created | `string` | `null` | no |
 | <a name="input_security_group_names"></a> [security\_group\_names](#input\_security\_group\_names) | Names of one or more Amazon VPC security groups associated with this replication group | `list(string)` | `[]` | no |
-| <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | Security group ingress and egress rules to add to the security group created | `any` | `{}` | no |
 | <a name="input_security_group_tags"></a> [security\_group\_tags](#input\_security\_group\_tags) | A map of additional tags to add to the security group created | `map(string)` | `{}` | no |
 | <a name="input_security_group_use_name_prefix"></a> [security\_group\_use\_name\_prefix](#input\_security\_group\_use\_name\_prefix) | Determines whether the security group name (`security_group_name`) is used as a prefix | `bool` | `true` | no |
 | <a name="input_snapshot_arns"></a> [snapshot\_arns](#input\_snapshot\_arns) | (Redis only) Single-element string list containing an Amazon Resource Name (ARN) of a Redis RDB snapshot file stored in Amazon S3 | `list(string)` | `[]` | no |
@@ -464,7 +458,7 @@ No modules.
 | <a name="input_subnet_group_name"></a> [subnet\_group\_name](#input\_subnet\_group\_name) | The name of the subnet group. If `create_subnet_group` is `true`, this is the name assigned to the subnet group created. Otherwise, this is the name of an existing subnet group | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC Subnet IDs for the Elasticache subnet group | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
-| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for creating, updating, and deleting cluster resource | `map(string)` | `{}` | no |
+| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for creating, updating, and deleting cluster resource | <pre>object({<br/>    create = optional(string)<br/>    update = optional(string)<br/>    delete = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_transit_encryption_enabled"></a> [transit\_encryption\_enabled](#input\_transit\_encryption\_enabled) | Enable encryption in-transit | `bool` | `true` | no |
 | <a name="input_transit_encryption_mode"></a> [transit\_encryption\_mode](#input\_transit\_encryption\_mode) | A setting that enables clients to migrate to in-transit encryption with no downtime. Valid values are `preferred` and `required` | `string` | `null` | no |
 | <a name="input_user_group_ids"></a> [user\_group\_ids](#input\_user\_group\_ids) | User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid | `list(string)` | `null` | no |

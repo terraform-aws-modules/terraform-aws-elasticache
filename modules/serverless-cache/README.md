@@ -83,10 +83,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cache_name"></a> [cache\_name](#input\_cache\_name) | The name which serves as a unique identifier to the serverless cache. | `string` | `null` | no |
-| <a name="input_cache_usage_limits"></a> [cache\_usage\_limits](#input\_cache\_usage\_limits) | Sets the cache usage limits for storage and ElastiCache Processing Units for the cache. | `map(any)` | `{}` | no |
+| <a name="input_cache_usage_limits"></a> [cache\_usage\_limits](#input\_cache\_usage\_limits) | Sets the cache usage limits for storage and ElastiCache Processing Units for the cache. | <pre>object({<br/>    data_storage = optional(object({<br/>      maximum = optional(number)<br/>      minimum = optional(number)<br/>      unit    = optional(string, "GB")<br/>    }))<br/>    ecpu_per_second = optional(object({<br/>      maximum = optional(number)<br/>      minimum = optional(number)<br/>    }))<br/>  })</pre> | `null` | no |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether serverless resource will be created. | `bool` | `true` | no |
 | <a name="input_daily_snapshot_time"></a> [daily\_snapshot\_time](#input\_daily\_snapshot\_time) | The daily time that snapshots will be created from the new serverless cache. Only supported for engine type `redis`. Defaults to 0. | `string` | `null` | no |
-| <a name="input_description"></a> [description](#input\_description) | User-created description for the serverless cache. | `string` | `null` | no |
+| <a name="input_description"></a> [description](#input\_description) | User-created description for the serverless cache. | `string` | `"Serverless Cache"` | no |
 | <a name="input_engine"></a> [engine](#input\_engine) | Name of the cache engine to be used for this cache cluster. Valid values are `memcached` or `redis`. | `string` | `"redis"` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | ARN of the customer managed key for encrypting the data at rest. If no KMS key is provided, a default service key is used. | `string` | `null` | no |
 | <a name="input_major_engine_version"></a> [major\_engine\_version](#input\_major\_engine\_version) | The version of the cache engine that will be used to create the serverless cache. | `string` | `null` | no |
@@ -96,7 +96,7 @@ No modules.
 | <a name="input_snapshot_retention_limit"></a> [snapshot\_retention\_limit](#input\_snapshot\_retention\_limit) | (Redis only) The number of snapshots that will be retained for the serverless cache that is being created. | `number` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of the identifiers of the subnets where the VPC endpoint for the serverless cache will be deployed. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
-| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for creating, updating, and deleting serverless resources. | `map(string)` | `{}` | no |
+| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for creating, updating, and deleting serverless resources. | <pre>object({<br/>    create = optional(string)<br/>    update = optional(string)<br/>    delete = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_user_group_id"></a> [user\_group\_id](#input\_user\_group\_id) | The identifier of the UserGroup to be associated with the serverless cache. Available for Redis only. Default is NULL. | `string` | `null` | no |
 
 ## Outputs

@@ -31,10 +31,10 @@ resource "aws_elasticache_cluster" "this" {
     for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" && !local.in_replication_group }
 
     content {
-      destination      = try(log_delivery_configuration.value.create_cloudwatch_log_group, true) && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
+      destination      = log_delivery_configuration.value.create_cloudwatch_log_group && log_delivery_configuration.value.destination_type == "cloudwatch-logs" ? aws_cloudwatch_log_group.this[log_delivery_configuration.key].name : log_delivery_configuration.value.destination
       destination_type = log_delivery_configuration.value.destination_type
       log_format       = log_delivery_configuration.value.log_format
-      log_type         = try(log_delivery_configuration.value.log_type, log_delivery_configuration.key)
+      log_type         = try(coalesce(log_delivery_configuration.value.log_type, log_delivery_configuration.key))
     }
   }
 
@@ -60,10 +60,14 @@ resource "aws_elasticache_cluster" "this" {
 
   tags = local.tags
 
-  timeouts {
-    create = try(var.timeouts.create, null)
-    update = try(var.timeouts.update, null)
-    delete = try(var.timeouts.delete, null)
+  dynamic "timeouts" {
+    for_each = var.timeouts != null ? [var.timeouts] : []
+
+    content {
+      create = each.value.create
+      update = each.value.update
+      delete = each.value.delete
+    }
   }
 }
 
@@ -226,17 +230,16 @@ locals {
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  for_each = { for k, v in var.log_delivery_configuration : k => v if local.create_cloudwatch_log_group && try(v.create_cloudwatch_log_group, true) && try(v.destination_type, "") == "cloudwatch-logs" }
+  for_each = { for k, v in var.log_delivery_configuration : k => v if local.create_cloudwatch_log_group && v.create_cloudwatch_log_group && v.destination_type == "cloudwatch-logs" }
 
   region = var.region
 
-  name              = "/aws/elasticache/${try(each.value.cloudwatch_log_group_name, coalesce(var.cluster_id, var.replication_group_id), "")}"
-  retention_in_days = try(each.value.cloudwatch_log_group_retention_in_days, 14)
-  kms_key_id        = try(each.value.cloudwatch_log_group_kms_key_id, null)
-  skip_destroy      = try(each.value.cloudwatch_log_group_skip_destroy, null)
-  log_group_class   = try(each.value.cloudwatch_log_group_class, null)
+  name              = "/aws/elasticache/${try(coalesce(each.value.cloudwatch_log_group_name, var.cluster_id, var.replication_group_id))}"
+  retention_in_days = each.value.cloudwatch_log_group_retention_in_days
+  kms_key_id        = each.value.cloudwatch_log_group_kms_key_id
+  log_group_class   = each.value.cloudwatch_log_group_class
 
-  tags = merge(local.tags, try(each.value.tags, {}))
+  tags = merge(local.tags, each.value.cloudwatch_log_group_tags)
 }
 
 ################################################################################
@@ -334,43 +337,45 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "this" {
-  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "ingress" }
+  for_each = { for k, v in var.security_group_ingress_rules : k => v if local.create_security_group }
 
   region = var.region
 
-  # Required
-  security_group_id = aws_security_group.this[0].id
-  ip_protocol       = try(each.value.ip_protocol, "tcp")
-
-  # Optional
-  cidr_ipv4                    = lookup(each.value, "cidr_ipv4", null)
-  cidr_ipv6                    = lookup(each.value, "cidr_ipv6", null)
-  description                  = try(each.value.description, null)
-  from_port                    = try(each.value.from_port, local.port)
-  prefix_list_id               = lookup(each.value, "prefix_list_id", null)
-  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null) == "self" ? aws_security_group.this[0].id : lookup(each.value, "referenced_security_group_id", null)
-  to_port                      = try(each.value.to_port, local.port)
-
-  tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
+  cidr_ipv4                    = each.value.cidr_ipv4
+  cidr_ipv6                    = each.value.cidr_ipv6
+  description                  = each.value.description
+  from_port                    = each.value.from_port
+  ip_protocol                  = each.value.ip_protocol
+  prefix_list_id               = each.value.prefix_list_id
+  referenced_security_group_id = each.value.referenced_security_group_id == "self" ? aws_security_group.this[0].id : each.value.referenced_security_group_id
+  security_group_id            = aws_security_group.this[0].id
+  tags = merge(
+    var.tags,
+    var.security_group_tags,
+    { Name = try(coalesce(each.value.name, "${local.security_group_name}-${each.key}")) },
+    each.value.tags
+  )
+  to_port = try(coalesce(each.value.to_port, each.value.from_port))
 }
 
 resource "aws_vpc_security_group_egress_rule" "this" {
-  for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "egress" }
+  for_each = { for k, v in var.security_group_egress_rules : k => v if local.create_security_group }
 
   region = var.region
 
-  # Required
-  security_group_id = aws_security_group.this[0].id
-  ip_protocol       = try(each.value.ip_protocol, "tcp")
-
-  # Optional
-  cidr_ipv4                    = lookup(each.value, "cidr_ipv4", null)
-  cidr_ipv6                    = lookup(each.value, "cidr_ipv6", null)
-  description                  = try(each.value.description, null)
-  from_port                    = try(each.value.from_port, null)
-  prefix_list_id               = lookup(each.value, "prefix_list_id", null)
-  referenced_security_group_id = lookup(each.value, "referenced_security_group_id", null) == "self" ? aws_security_group.this[0].id : lookup(each.value, "referenced_security_group_id", null)
-  to_port                      = try(each.value.to_port, null)
-
-  tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
+  cidr_ipv4                    = each.value.cidr_ipv4
+  cidr_ipv6                    = each.value.cidr_ipv6
+  description                  = each.value.description
+  from_port                    = try(coalesce(each.value.from_port, each.value.to_port))
+  ip_protocol                  = each.value.ip_protocol
+  prefix_list_id               = each.value.prefix_list_id
+  referenced_security_group_id = each.value.referenced_security_group_id == "self" ? aws_security_group.this[0].id : each.value.referenced_security_group_id
+  security_group_id            = aws_security_group.this[0].id
+  tags = merge(
+    var.tags,
+    var.security_group_tags,
+    { Name = try(coalesce(each.value.name, "${local.security_group_name}-${each.key}")) },
+    each.value.tags
+  )
+  to_port = each.value.to_port
 }

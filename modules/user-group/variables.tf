@@ -38,6 +38,12 @@ variable "user_group_id" {
   default     = ""
 }
 
+variable "user_ids" {
+  description = "The list of user IDs that belong to the user group"
+  type        = list(string)
+  default     = []
+}
+
 ################################################################################
 # User(s)
 ################################################################################

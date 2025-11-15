@@ -10,6 +10,10 @@ variable "region" {
   default     = null
 }
 
+################################################################################
+# Serverless Cache
+################################################################################
+
 variable "cache_name" {
   description = "The name which serves as a unique identifier to the serverless cache."
   type        = string
@@ -18,8 +22,18 @@ variable "cache_name" {
 
 variable "cache_usage_limits" {
   description = "Sets the cache usage limits for storage and ElastiCache Processing Units for the cache."
-  type        = map(any)
-  default     = {}
+  type = object({
+    data_storage = optional(object({
+      maximum = optional(number)
+      minimum = optional(number)
+      unit    = optional(string, "GB")
+    }))
+    ecpu_per_second = optional(object({
+      maximum = optional(number)
+      minimum = optional(number)
+    }))
+  })
+  default = null
 }
 
 variable "daily_snapshot_time" {
@@ -31,7 +45,7 @@ variable "daily_snapshot_time" {
 variable "description" {
   description = "User-created description for the serverless cache."
   type        = string
-  default     = null
+  default     = "Serverless Cache"
 }
 
 variable "engine" {
@@ -82,14 +96,18 @@ variable "user_group_id" {
   default     = null
 }
 
-variable "timeouts" {
-  description = "Define maximum timeout for creating, updating, and deleting serverless resources."
-  type        = map(string)
-  default     = {}
-}
-
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
   default     = {}
+}
+
+variable "timeouts" {
+  description = "Define maximum timeout for creating, updating, and deleting serverless resources."
+  type = object({
+    create = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default = null
 }

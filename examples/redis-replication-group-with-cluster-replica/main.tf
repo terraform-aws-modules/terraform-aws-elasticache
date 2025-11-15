@@ -45,9 +45,8 @@ module "replication_group_with_cluster_replica" {
 
   # Security Group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -92,9 +91,8 @@ module "replication_group" {
 
   # Security Group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block
@@ -132,7 +130,9 @@ module "cluster_replica" {
   create_subnet_group      = false
 
   log_delivery_configuration = {
-    create_cloudwatch_log_group = false
+    this = {
+      create_cloudwatch_log_group = false
+    }
   }
 }
 

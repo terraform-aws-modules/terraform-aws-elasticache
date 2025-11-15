@@ -13,13 +13,17 @@ resource "aws_elasticache_user_group" "this" {
 
   engine        = var.engine
   user_group_id = var.user_group_id
+  user_ids      = var.create_default_user ? concat(aws_elasticache_user.default[*].user_id, var.user_ids) : var.user_ids
   tags          = local.tags
-  user_ids      = var.create_default_user ? [aws_elasticache_user.default[0].user_id] : [var.default_user_id]
 
   lifecycle {
     ignore_changes = [user_ids]
   }
 }
+
+################################################################################
+# User - Default
+################################################################################
 
 resource "aws_elasticache_user" "default" {
   count = var.create && var.create_default_user ? 1 : 0
@@ -84,10 +88,11 @@ resource "aws_elasticache_user_group_association" "this" {
   user_id       = aws_elasticache_user.this[each.key].user_id
 
   dynamic "timeouts" {
-    for_each = try([each.value.timeouts], [])
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+
     content {
-      create = try(timeouts.value.create, null)
-      delete = try(timeouts.value.delete, null)
+      create = timeouts.value.create
+      delete = timeouts.value.delete
     }
   }
 }

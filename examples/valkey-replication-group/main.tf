@@ -38,9 +38,8 @@ module "elasticache" {
 
   # Security Group
   vpc_id = module.vpc.vpc_id
-  security_group_rules = {
-    ingress_vpc = {
-      # Default type is `ingress`
+  security_group_ingress_rules = {
+    vpc = {
       # Default port is based on the default engine port
       description = "VPC traffic"
       cidr_ipv4   = module.vpc.vpc_cidr_block

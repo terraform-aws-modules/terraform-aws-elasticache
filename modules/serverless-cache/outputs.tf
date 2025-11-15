@@ -1,3 +1,7 @@
+################################################################################
+# Serverless Cache
+################################################################################
+
 output "serverless_cache_arn" {
   description = "The amazon resource name of the serverless cache"
   value       = try(aws_elasticache_serverless_cache.this[0].arn, null)
