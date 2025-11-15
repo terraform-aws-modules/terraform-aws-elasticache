@@ -9,6 +9,8 @@ locals {
 resource "aws_elasticache_user_group" "this" {
   count = var.create && var.create_group ? 1 : 0
 
+  region = var.region
+
   engine        = var.engine
   user_group_id = var.user_group_id
   tags          = local.tags
@@ -21,6 +23,8 @@ resource "aws_elasticache_user_group" "this" {
 
 resource "aws_elasticache_user" "default" {
   count = var.create && var.create_default_user ? 1 : 0
+
+  region = var.region
 
   access_string = try(var.default_user.access_string, "on ~* +@read")
 
@@ -49,6 +53,8 @@ resource "aws_elasticache_user" "default" {
 resource "aws_elasticache_user" "this" {
   for_each = { for k, v in var.users : k => v if var.create }
 
+  region = var.region
+
   access_string = each.value.access_string
 
   dynamic "authentication_mode" {
@@ -71,6 +77,8 @@ resource "aws_elasticache_user" "this" {
 
 resource "aws_elasticache_user_group_association" "this" {
   for_each = { for k, v in var.users : k => v if var.create }
+
+  region = var.region
 
   user_group_id = var.create && var.create_group ? aws_elasticache_user_group.this[0].user_group_id : each.value.user_group_id
   user_id       = aws_elasticache_user.this[each.key].user_id

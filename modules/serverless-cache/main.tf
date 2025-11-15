@@ -1,6 +1,8 @@
 resource "aws_elasticache_serverless_cache" "this" {
   count = var.create ? 1 : 0
 
+  region = var.region
+
   engine = var.engine
   name   = var.cache_name
 

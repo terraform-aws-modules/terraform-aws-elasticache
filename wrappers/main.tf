@@ -54,6 +54,7 @@ module "wrapper" {
   preferred_availability_zones   = try(each.value.preferred_availability_zones, var.defaults.preferred_availability_zones, [])
   preferred_cache_cluster_azs    = try(each.value.preferred_cache_cluster_azs, var.defaults.preferred_cache_cluster_azs, [])
   preferred_outpost_arn          = try(each.value.preferred_outpost_arn, var.defaults.preferred_outpost_arn, null)
+  region                         = try(each.value.region, var.defaults.region, null)
   replicas_per_node_group        = try(each.value.replicas_per_node_group, var.defaults.replicas_per_node_group, null)
   replication_group_id           = try(each.value.replication_group_id, var.defaults.replication_group_id, null)
   security_group_description     = try(each.value.security_group_description, var.defaults.security_group_description, null)

@@ -97,6 +97,7 @@ No modules.
 | <a name="input_default_user"></a> [default\_user](#input\_default\_user) | A map of default user attributes | `any` | `{}` | no |
 | <a name="input_default_user_id"></a> [default\_user\_id](#input\_default\_user\_id) | The ID of the default user | `string` | `"default"` | no |
 | <a name="input_engine"></a> [engine](#input\_engine) | The current supported value is `REDIS` | `string` | `"redis"` | no |
+| <a name="input_region"></a> [region](#input\_region) | Region where the resource(s) will be managed. Defaults to the Region set in the provider configuration | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
 | <a name="input_user_group_id"></a> [user\_group\_id](#input\_user\_group\_id) | The ID of the user group | `string` | `""` | no |
 | <a name="input_users"></a> [users](#input\_users) | A map of users to create | `any` | `{}` | no |

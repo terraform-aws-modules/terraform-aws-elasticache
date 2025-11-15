@@ -15,6 +15,8 @@ locals {
 resource "aws_elasticache_cluster" "this" {
   count = var.create && var.create_cluster ? 1 : 0
 
+  region = var.region
+
   apply_immediately          = var.apply_immediately
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
   availability_zone          = var.availability_zone
@@ -76,6 +78,8 @@ locals {
 resource "aws_elasticache_replication_group" "this" {
   count = var.create && var.create_replication_group && !local.create_global_replication_group ? 1 : 0
 
+  region = var.region
+
   apply_immediately           = var.apply_immediately
   at_rest_encryption_enabled  = var.at_rest_encryption_enabled
   auth_token                  = var.auth_token
@@ -135,11 +139,12 @@ resource "aws_elasticache_replication_group" "this" {
 
 locals {
   create_global_replication_group = var.create_primary_global_replication_group || var.create_secondary_global_replication_group
-
 }
 
 resource "aws_elasticache_global_replication_group" "this" {
   count = var.create && var.create_replication_group && var.create_primary_global_replication_group ? 1 : 0
+
+  region = var.region
 
   automatic_failover_enabled = var.automatic_failover_enabled
   cache_node_type            = var.node_type
@@ -153,6 +158,8 @@ resource "aws_elasticache_global_replication_group" "this" {
 
 resource "aws_elasticache_replication_group" "global" {
   count = var.create && var.create_replication_group && local.create_global_replication_group ? 1 : 0
+
+  region = var.region
 
   apply_immediately           = var.apply_immediately
   at_rest_encryption_enabled  = var.create_secondary_global_replication_group ? null : var.at_rest_encryption_enabled
@@ -221,6 +228,8 @@ locals {
 resource "aws_cloudwatch_log_group" "this" {
   for_each = { for k, v in var.log_delivery_configuration : k => v if local.create_cloudwatch_log_group && try(v.create_cloudwatch_log_group, true) && try(v.destination_type, "") == "cloudwatch-logs" }
 
+  region = var.region
+
   name              = "/aws/elasticache/${try(each.value.cloudwatch_log_group_name, coalesce(var.cluster_id, var.replication_group_id), "")}"
   retention_in_days = try(each.value.cloudwatch_log_group_retention_in_days, 14)
   kms_key_id        = try(each.value.cloudwatch_log_group_kms_key_id, null)
@@ -250,6 +259,8 @@ locals {
 
 resource "aws_elasticache_parameter_group" "this" {
   count = var.create && var.create_parameter_group ? 1 : 0
+
+  region = var.region
 
   description = coalesce(var.parameter_group_description, "ElastiCache parameter group")
   family      = var.parameter_group_family
@@ -283,6 +294,8 @@ locals {
 resource "aws_elasticache_subnet_group" "this" {
   count = var.create && var.create_subnet_group ? 1 : 0
 
+  region = var.region
+
   name        = local.inter_subnet_group_name
   description = coalesce(var.subnet_group_description, "ElastiCache subnet group")
   subnet_ids  = var.subnet_ids
@@ -306,6 +319,8 @@ locals {
 resource "aws_security_group" "this" {
   count = local.create_security_group ? 1 : 0
 
+  region = var.region
+
   name        = var.security_group_use_name_prefix ? null : local.security_group_name
   name_prefix = var.security_group_use_name_prefix ? "${local.security_group_name}-" : null
   description = var.security_group_description
@@ -320,6 +335,8 @@ resource "aws_security_group" "this" {
 
 resource "aws_vpc_security_group_ingress_rule" "this" {
   for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "ingress" }
+
+  region = var.region
 
   # Required
   security_group_id = aws_security_group.this[0].id
@@ -339,6 +356,8 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
 
 resource "aws_vpc_security_group_egress_rule" "this" {
   for_each = { for k, v in var.security_group_rules : k => v if local.create_security_group && try(v.type, "ingress") == "egress" }
+
+  region = var.region
 
   # Required
   security_group_id = aws_security_group.this[0].id

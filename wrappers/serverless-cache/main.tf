@@ -11,6 +11,7 @@ module "wrapper" {
   engine                   = try(each.value.engine, var.defaults.engine, "redis")
   kms_key_id               = try(each.value.kms_key_id, var.defaults.kms_key_id, null)
   major_engine_version     = try(each.value.major_engine_version, var.defaults.major_engine_version, null)
+  region                   = try(each.value.region, var.defaults.region, null)
   security_group_ids       = try(each.value.security_group_ids, var.defaults.security_group_ids, [])
   snapshot_arns_to_restore = try(each.value.snapshot_arns_to_restore, var.defaults.snapshot_arns_to_restore, null)
   snapshot_retention_limit = try(each.value.snapshot_retention_limit, var.defaults.snapshot_retention_limit, null)

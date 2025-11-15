@@ -9,6 +9,7 @@ module "wrapper" {
   default_user        = try(each.value.default_user, var.defaults.default_user, {})
   default_user_id     = try(each.value.default_user_id, var.defaults.default_user_id, "default")
   engine              = try(each.value.engine, var.defaults.engine, "redis")
+  region              = try(each.value.region, var.defaults.region, null)
   tags                = try(each.value.tags, var.defaults.tags, {})
   user_group_id       = try(each.value.user_group_id, var.defaults.user_group_id, "")
   users               = try(each.value.users, var.defaults.users, {})
