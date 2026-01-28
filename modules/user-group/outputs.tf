@@ -20,3 +20,8 @@ output "users" {
   description = "A map of users created and their attributes"
   value       = aws_elasticache_user.this
 }
+
+output "default_user" {
+  description = "List of attributes for the default user"
+  value       = aws_elasticache_user.default
+}
