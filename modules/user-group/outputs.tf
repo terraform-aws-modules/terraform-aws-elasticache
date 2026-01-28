@@ -21,7 +21,7 @@ output "users" {
   value       = aws_elasticache_user.this
 }
 
-output "default_user" {
-  description = "List of attributes for the default user"
-  value       = aws_elasticache_user.default
+output "default_user_arn" {
+  description = "ARN of the default user"
+  value       = try(aws_elasticache_user.default[0].arn, null)
 }
