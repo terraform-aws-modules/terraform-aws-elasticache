@@ -103,6 +103,18 @@ resource "aws_elasticache_replication_group" "this" {
     }
   }
 
+  dynamic "node_group_configuration" {
+    for_each = var.cluster_mode_enabled && var.node_group_configuration != null ? var.node_group_configuration : []
+
+    content {
+      node_group_id              = try(node_group_configuration.value.node_group_id, null)
+      primary_availability_zone  = try(node_group_configuration.value.primary_availability_zone, null)
+      replica_availability_zones = try(node_group_configuration.value.replica_availability_zones, null)
+      replica_count              = try(node_group_configuration.value.replica_count, null)
+      slots                      = try(node_group_configuration.value.slots, null)
+    }
+  }
+
   maintenance_window          = var.maintenance_window
   multi_az_enabled            = var.multi_az_enabled
   network_type                = var.network_type

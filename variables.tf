@@ -272,7 +272,7 @@ variable "num_node_groups" {
 variable "preferred_cache_cluster_azs" {
   description = "List of EC2 availability zones in which the replication group's cache clusters will be created. The order of the availability zones in the list is considered. The first item in the list will be the primary node. Ignored when updating"
   type        = list(string)
-  default     = []
+  default     = null
 }
 
 variable "replicas_per_node_group" {
@@ -303,6 +303,18 @@ variable "user_group_ids" {
   description = "User Group ID to associate with the replication group. Only a maximum of one (1) user group ID is valid"
   type        = list(string)
   default     = null
+}
+
+variable "node_group_configuration" {
+  description = "Configuration block for node groups (shards). Can be specified only if num_node_groups is set. Conflicts with preferred_cache_cluster_azs"
+  type = list(object({
+    node_group_id              = optional(string)
+    primary_availability_zone  = optional(string)
+    replica_availability_zones = optional(list(string))
+    replica_count              = optional(number)
+    slots                      = optional(string)
+  }))
+  default = null
 }
 
 variable "cluster_mode_enabled" {
