@@ -105,6 +105,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_default_user_arn"></a> [default\_user\_arn](#output\_default\_user\_arn) | ARN of the default user |
 | <a name="output_group_arn"></a> [group\_arn](#output\_group\_arn) | The ARN that identifies the user group |
 | <a name="output_group_id"></a> [group\_id](#output\_group\_id) | The user group identifier |
 | <a name="output_users"></a> [users](#output\_users) | A map of users created and their attributes |

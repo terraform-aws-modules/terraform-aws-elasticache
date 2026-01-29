@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.3...v1.11.0) (2026-01-29)
+
+### Features
+
+* Default User ARN Output ([#66](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/66)) ([9048b3c](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/9048b3cb0746834688da7a54eeb545d3534c6887))
+
 ## [1.10.3](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.2...v1.10.3) (2025-10-21)
 
 ### Bug Fixes
