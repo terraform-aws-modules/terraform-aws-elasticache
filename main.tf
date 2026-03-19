@@ -168,7 +168,7 @@ resource "aws_elasticache_replication_group" "global" {
   final_snapshot_identifier   = var.final_snapshot_identifier
   global_replication_group_id = var.create_secondary_global_replication_group ? var.global_replication_group_id : null
   ip_discovery                = var.ip_discovery
-  kms_key_id                  = var.at_rest_encryption_enabled ? var.kms_key_arn : null
+  kms_key_id                  = var.create_secondary_global_replication_group ? var.kms_key_arn : ( var.at_rest_encryption_enabled ? var.kms_key_arn : null )
 
   dynamic "log_delivery_configuration" {
     for_each = { for k, v in var.log_delivery_configuration : k => v if var.engine != "memcached" }
