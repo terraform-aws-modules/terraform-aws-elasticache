@@ -58,14 +58,14 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.73 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.73 |
 
 ## Modules
@@ -75,13 +75,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_elasticache_serverless_cache.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_serverless_cache) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_cache_name"></a> [cache\_name](#input\_cache\_name) | The name which serves as a unique identifier to the serverless cache. | `string` | `null` | no |
 | <a name="input_cache_usage_limits"></a> [cache\_usage\_limits](#input\_cache\_usage\_limits) | Sets the cache usage limits for storage and ElastiCache Processing Units for the cache. | `map(any)` | `{}` | no |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether serverless resource will be created. | `bool` | `true` | no |
@@ -101,7 +101,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_serverless_cache_arn"></a> [serverless\_cache\_arn](#output\_serverless\_cache\_arn) | The amazon resource name of the serverless cache |
 | <a name="output_serverless_cache_create_time"></a> [serverless\_cache\_create\_time](#output\_serverless\_cache\_create\_time) | Timestamp of when the serverless cache was created |
 | <a name="output_serverless_cache_endpoint"></a> [serverless\_cache\_endpoint](#output\_serverless\_cache\_endpoint) | Represents the information required for client programs to connect to a cache node |
