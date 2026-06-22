@@ -53,9 +53,3 @@ variable "default_user" {
   type        = any
   default     = {}
 }
-
-variable "default_user_id" {
-  description = "The ID of the default user"
-  type        = string
-  default     = "default"
-}

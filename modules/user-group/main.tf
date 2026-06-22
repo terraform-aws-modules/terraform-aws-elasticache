@@ -12,7 +12,7 @@ resource "aws_elasticache_user_group" "this" {
   engine        = var.engine
   user_group_id = var.user_group_id
   tags          = local.tags
-  user_ids      = var.create_default_user ? [aws_elasticache_user.default[0].user_id] : [var.default_user_id]
+  user_ids      = var.create_default_user ? [aws_elasticache_user.default[0].user_id] : []
 
   lifecycle {
     ignore_changes = [user_ids]
