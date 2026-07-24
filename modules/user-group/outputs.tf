@@ -17,8 +17,22 @@ output "group_id" {
 ################################################################################
 
 output "users" {
-  description = "A map of users created and their attributes"
+  description = "A sensitive map of users created and all of their resource attributes"
   value       = aws_elasticache_user.this
+  sensitive   = true
+}
+
+output "users_metadata" {
+  description = "A map of users created and their non-sensitive identifiers"
+
+  value = {
+    for key, user in aws_elasticache_user.this : key => {
+      arn       = user.arn
+      id        = user.id
+      user_id   = user.user_id
+      user_name = user.user_name
+    }
+  }
 }
 
 output "default_user_arn" {

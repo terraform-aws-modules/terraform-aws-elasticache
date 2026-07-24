@@ -6,6 +6,12 @@ You may want to use a single Terragrunt configuration file to manage multiple re
 
 This wrapper does not implement any extra functionality.
 
+## Sensitive wrapper output
+
+The wrapper output is marked as sensitive because each wrapped `user-group` module includes the complete sensitive `users` output. Any parent root module that re-exports this wrapper output must also mark its output as sensitive.
+
+For integrations that require only non-sensitive user identifiers, prefer the `users_metadata` output from the underlying `modules/user-group` module.
+
 ## Usage with Terragrunt
 
 `terragrunt.hcl`:

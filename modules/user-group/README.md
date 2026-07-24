@@ -50,6 +50,27 @@ module "elasticache_user_group" {
 }
 ```
 
+## User outputs and sensitive values
+
+The `users` output contains the complete `aws_elasticache_user` resource objects. Because the AWS provider schema includes password-related sensitive attributes, Terraform treats the complete value as sensitive even when a user is configured with IAM authentication and no static password.
+
+Use `users_metadata` when only non-sensitive identifiers such as an ARN, resource ID, ElastiCache user ID, or username are required. This is particularly useful for Terragrunt dependencies and IAM policies that grant `elasticache:Connect` permissions:
+
+```hcl
+output "application_user_arn" {
+  value = module.elasticache_user_group.users_metadata["larry"].arn
+}
+```
+
+Consumers that re-export the complete `users` output must also mark their output as sensitive:
+
+```hcl
+output "elasticache_users" {
+  value     = module.elasticache_user_group.users
+  sensitive = true
+}
+```
+
 ## Examples
 
 Examples codified under the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
@@ -108,7 +129,8 @@ No modules.
 | <a name="output_default_user_arn"></a> [default\_user\_arn](#output\_default\_user\_arn) | ARN of the default user |
 | <a name="output_group_arn"></a> [group\_arn](#output\_group\_arn) | The ARN that identifies the user group |
 | <a name="output_group_id"></a> [group\_id](#output\_group\_id) | The user group identifier |
-| <a name="output_users"></a> [users](#output\_users) | A map of users created and their attributes |
+| <a name="output_users"></a> [users](#output\_users) | A sensitive map of users created and all of their resource attributes |
+| <a name="output_users_metadata"></a> [users\_metadata](#output\_users\_metadata) | A map of users created and their non-sensitive identifiers |
 <!-- END_TF_DOCS -->
 
 ## License
