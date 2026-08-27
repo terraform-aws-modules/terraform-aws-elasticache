@@ -85,6 +85,7 @@ resource "aws_elasticache_replication_group" "this" {
   cluster_mode                = var.cluster_mode
   data_tiering_enabled        = var.data_tiering_enabled
   description                 = coalesce(var.description, "Replication group")
+  durability                  = var.durability
   engine                      = var.engine
   engine_version              = var.engine_version
   final_snapshot_identifier   = var.final_snapshot_identifier
@@ -163,6 +164,7 @@ resource "aws_elasticache_replication_group" "global" {
   cluster_mode                = var.cluster_mode
   data_tiering_enabled        = var.data_tiering_enabled
   description                 = coalesce(var.description, "Global replication group")
+  durability                  = var.create_secondary_global_replication_group ? null : var.durability
   engine                      = var.create_secondary_global_replication_group ? null : var.engine
   engine_version              = var.create_secondary_global_replication_group ? null : var.engine_version
   final_snapshot_identifier   = var.final_snapshot_identifier

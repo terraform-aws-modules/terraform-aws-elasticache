@@ -366,14 +366,14 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 | Name | Version |
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.93 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.51 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.93 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.51 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.0 |
 
 ## Modules
@@ -421,6 +421,7 @@ No modules.
 | <a name="input_create_subnet_group"></a> [create\_subnet\_group](#input\_create\_subnet\_group) | Determines whether the Elasticache subnet group will be created or not | `bool` | `true` | no |
 | <a name="input_data_tiering_enabled"></a> [data\_tiering\_enabled](#input\_data\_tiering\_enabled) | Enables data tiering. Data tiering is only supported for replication groups using the `r6gd` node type. This parameter must be set to true when using `r6gd` nodes | `bool` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | User-created description for the replication group | `string` | `null` | no |
+| <a name="input_durability"></a> [durability](#input\_durability) | Durability mode for the replication group. Valid values are `default`, `async`, `sync`, or `disabled`. Requires cluster mode enabled and Valkey 9.0 or higher. A change to this value re-creates the replication group | `string` | `"default"` | no |
 | <a name="input_engine"></a> [engine](#input\_engine) | Name of the cache engine to be used for this cache cluster. Valid values are `memcached`, `redis`, or `valkey` | `string` | `"redis"` | no |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Version number of the cache engine to be used. If not set, defaults to the latest version | `string` | `null` | no |
 | <a name="input_final_snapshot_identifier"></a> [final\_snapshot\_identifier](#input\_final\_snapshot\_identifier) | (Redis only) Name of your final cluster snapshot. If omitted, no final snapshot will be made | `string` | `null` | no |

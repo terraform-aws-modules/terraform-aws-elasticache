@@ -233,6 +233,12 @@ variable "description" {
   default     = null
 }
 
+variable "durability" {
+  description = "Durability mode for the replication group. Valid values are `default`, `async`, `sync`, or `disabled`. Requires cluster mode enabled and Valkey 9.0 or higher. A change to this value re-creates the replication group"
+  type        = string
+  default     = "default"
+}
+
 variable "global_replication_group_id" {
   description = "The ID of the global replication group to which this replication group should belong"
   type        = string

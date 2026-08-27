@@ -24,6 +24,7 @@ module "wrapper" {
   create_subnet_group                       = try(each.value.create_subnet_group, var.defaults.create_subnet_group, true)
   data_tiering_enabled                      = try(each.value.data_tiering_enabled, var.defaults.data_tiering_enabled, null)
   description                               = try(each.value.description, var.defaults.description, null)
+  durability                                = try(each.value.durability, var.defaults.durability, "default")
   engine                                    = try(each.value.engine, var.defaults.engine, "redis")
   engine_version                            = try(each.value.engine_version, var.defaults.engine_version, null)
   final_snapshot_identifier                 = try(each.value.final_snapshot_identifier, var.defaults.final_snapshot_identifier, null)
