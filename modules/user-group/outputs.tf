@@ -20,3 +20,8 @@ output "users" {
   description = "A map of users created and their attributes"
   value       = aws_elasticache_user.this
 }
+
+output "default_user_arn" {
+  description = "ARN of the default user"
+  value       = try(aws_elasticache_user.default[0].arn, null)
+}

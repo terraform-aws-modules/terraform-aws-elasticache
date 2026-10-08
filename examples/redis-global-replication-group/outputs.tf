@@ -61,6 +61,11 @@ output "replication_group_primary_endpoint_address" {
   value       = module.elasticache_primary.replication_group_primary_endpoint_address
 }
 
+output "replication_group_port" {
+  description = "Port of the primary node in the replication group, if the cluster mode is disabled"
+  value       = module.elasticache_primary.replication_group_port
+}
+
 output "replication_group_reader_endpoint_address" {
   description = "Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled"
   value       = module.elasticache_primary.replication_group_reader_endpoint_address

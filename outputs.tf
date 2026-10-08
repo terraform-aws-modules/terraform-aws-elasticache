@@ -61,6 +61,11 @@ output "replication_group_primary_endpoint_address" {
   value       = try(aws_elasticache_replication_group.this[0].primary_endpoint_address, aws_elasticache_replication_group.global[0].primary_endpoint_address, null)
 }
 
+output "replication_group_port" {
+  description = "Port of the primary node in the replication group, if the cluster mode is disabled"
+  value       = try(aws_elasticache_replication_group.this[0].port, aws_elasticache_replication_group.global[0].port, null)
+}
+
 output "replication_group_reader_endpoint_address" {
   description = "Address of the endpoint for the reader node in the replication group, if the cluster mode is disabled"
   value       = try(aws_elasticache_replication_group.this[0].reader_endpoint_address, aws_elasticache_replication_group.global[0].reader_endpoint_address, null)

@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.11.0...v1.11.1) (2026-08-06)
+
+### Bug Fixes
+
+* Update GitHub Actions and pre-commit hook versions ([#77](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/77)) ([27596cb](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/27596cb3cc9f7d711e446faf5370f3af5cd6ee5b))
+
+## [1.11.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.3...v1.11.0) (2026-01-29)
+
+### Features
+
+* Default User ARN Output ([#66](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/66)) ([9048b3c](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/9048b3cb0746834688da7a54eeb545d3534c6887))
+
+## [1.10.3](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.2...v1.10.3) (2025-10-21)
+
+### Bug Fixes
+
+* Update CI workflow versions to latest ([#58](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/58)) ([a13028d](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/a13028dea53c3679ec38b3e048405ab9f2c8481e))
+
+## [1.10.2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.1...v1.10.2) (2025-10-08)
+
+
+### Bug Fixes
+
+* Revert - Enable `transit_encryption_enabled` for all avialble engines now that Elasticache supports this [#56](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/56) ([#57](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/57)) ([b241dc0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/b241dc02309f03fe2475025aba9128caf565104f))
+
+## [1.10.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.10.0...v1.10.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* Enable `transit_encryption_enabled` for all avialble engines now that Elasticache supports this ([#56](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/56)) ([2ee85ee](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/2ee85eebdf450f3125ca6542b7f6a4f2f13fbecc))
+
+## [1.10.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.9.0...v1.10.0) (2025-10-01)
+
+
+### Features
+
+* Add Terragrunt wrappers ([#52](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/52)) ([1e4241a](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/1e4241a561af6d23bdef50da995a77502b6a9fa7))
+
+## [1.9.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.8.0...v1.9.0) (2025-09-25)
+
+
+### Features
+
+* Allow security group rules to reference the security group created by the module ([#51](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/51)) ([42ccd24](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/42ccd2429c927913a043ead7f14dc14277df5c7b))
+
+## [1.8.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.7.0...v1.8.0) (2025-09-16)
+
+
+### Features
+
+* Add replication group port to outputs ([#50](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/50)) ([0b06d8e](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/0b06d8e4a74a602ad774f9d8f0422734e19ab680))
+
 ## [1.7.0](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.6.2...v1.7.0) (2025-07-25)
 
 

@@ -176,13 +176,13 @@ variable "snapshot_window" {
 }
 
 variable "transit_encryption_enabled" {
-  description = "Enable encryption in-transit. Supported only with Memcached versions `1.6.12` and later, running in a VPC"
+  description = "Enable encryption in-transit"
   type        = bool
   default     = true
 }
 
 variable "transit_encryption_mode" {
-  description = "A setting that enables clients to migrate to in-transit encryption with no downtime. Valid values are preferred and required"
+  description = "A setting that enables clients to migrate to in-transit encryption with no downtime. Valid values are `preferred` and `required`"
   type        = string
   default     = null
 }
