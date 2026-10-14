@@ -434,3 +434,9 @@ variable "security_group_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "region" {
+  description = "AWS region where the resources will be managed."
+  type        = string
+  default     = null
+}
