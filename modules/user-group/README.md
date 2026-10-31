@@ -56,7 +56,7 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 
 - [Memcached Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/memcached-cluster)
 - [Redis Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster)
-- [Redis Clustered Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-clustered-mode)
+- [Redis Cluster Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster-mode)
 - [Redis Global Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-global-replication-group)
 - [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
 
