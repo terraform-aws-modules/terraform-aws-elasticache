@@ -2,7 +2,7 @@
 
 Configuration in this directory creates set of ElastiCaChe resources including replication group, subnet group and parameter group.
 
-![Redis (Cluster Mode Disabled) vs. Redis (Cluster Mode Enabled)](https://docs.aws.amazon.com/images/AmazonElastiCache/latest/red-ug/images/ElastiCache-NodeGroups.png)
+![Redis (Cluster Mode Disabled) vs. Redis (Cluster Mode Enabled)](https://docs.aws.amazon.com/images/AmazonElastiCache/latest/dg/images/ElastiCache-NodeGroups.png)
 
 ## Usage
 
