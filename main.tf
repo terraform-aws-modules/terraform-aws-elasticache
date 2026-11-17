@@ -206,7 +206,7 @@ resource "aws_elasticache_replication_group" "global" {
   tags = local.tags
 
   lifecycle {
-    ignore_changes = [engine_version]
+    ignore_changes = [engine, engine_version]
   }
 }
 
