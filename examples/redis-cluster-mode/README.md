@@ -2,7 +2,7 @@
 
 Configuration in this directory creates set of ElastiCaChe resources including replication group, subnet group and parameter group.
 
-![Redis (Cluster Mode Disabled) vs. Redis (Cluster Mode Enabled)](https://docs.aws.amazon.com/images/AmazonElastiCache/latest/red-ug/images/ElastiCache-NodeGroups.png)
+![Redis (Cluster Mode Disabled) vs. Redis (Cluster Mode Enabled)](https://docs.aws.amazon.com/images/AmazonElastiCache/latest/dg/images/ElastiCache-NodeGroups.png)
 
 ## Usage
 
@@ -22,13 +22,13 @@ Note that this example may create resources which will incur monetary charges on
 | Name | Version |
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.73 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.93 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.73 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.93 |
 
 ## Modules
 

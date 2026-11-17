@@ -21,7 +21,7 @@ variable "create_group" {
 }
 
 variable "engine" {
-  description = "The current supported value is `REDIS`"
+  description = "The engine of the user group. Valid values are `redis` and `valkey`"
   type        = string
   default     = "redis"
 }

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.2](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.11.1...v1.11.2) (2026-10-08)
+
+### Bug Fixes
+
+* Case insensitive matching deprecated ([#48](https://github.com/terraform-aws-modules/terraform-aws-elasticache/issues/48)) ([f043302](https://github.com/terraform-aws-modules/terraform-aws-elasticache/commit/f043302efa70ff5acdad30b8d1c745cf60d35ab2))
+
 ## [1.11.1](https://github.com/terraform-aws-modules/terraform-aws-elasticache/compare/v1.11.0...v1.11.1) (2026-08-06)
 
 ### Bug Fixes

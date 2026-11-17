@@ -49,7 +49,7 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 
 - [Memcached Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/memcached-cluster)
 - [Redis Cluster](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster)
-- [Redis Clustered Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-clustered-mode)
+- [Redis Cluster Mode](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-cluster-mode)
 - [Redis Global Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-global-replication-group)
 - [Redis Replication Group](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/redis-replication-group)
 - [Serverless Cache](https://github.com/terraform-aws-modules/terraform-aws-elasticache/tree/master/examples/serverless-cache)
@@ -60,13 +60,13 @@ Examples codified under the [`examples`](https://github.com/terraform-aws-module
 | Name | Version |
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.73 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.93 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.73 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.93 |
 
 ## Modules
 
